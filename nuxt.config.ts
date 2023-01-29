@@ -3,5 +3,20 @@ export default defineNuxtConfig({
   css: [
     '~/assets/style.styl',
   ],
-  modules: ['@nuxt/content']
+  app: {
+    head: {
+      link: [
+        { rel: 'stylesheet', href: 'https://use.typekit.net/fln1ury.css' }
+      ]
+    }
+  },
+  content: {
+    highlight: {
+      theme: 'css-variables'
+    }
+  },
+  modules: [
+    '@vueuse/nuxt',
+    '@nuxt/content'
+  ]
 })

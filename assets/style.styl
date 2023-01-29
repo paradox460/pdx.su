@@ -1,44 +1,70 @@
-:root
-  --base00: #ffffff;
-  --base01: #e0e0e0;
-  --base02: #d6d6d6;
-  --base03: #ffffff;
-  --base04: #969896;
-  --base05: #4d4d4c;
-  --base06: #282a2e;
-  --base07: #1d1f21;
-  --base08: #c82829;
-  --base09: #f5871f;
-  --base0a: #eab700;
-  --base0b: #718c00;
-  --base0c: #ffffff;
-  --base0d: #4271ae;
-  --base0e: #8959a8;
-  --base0f: #a3685a;
+@font-face{
+  font-family: 'JetBrainsMono';
+  src: url('https://cdn.jsdelivr.net/gh/JetBrains/JetBrainsMono/web/woff2/JetBrainsMono-Regular.woff2') format('woff2'),
+    url('https://cdn.jsdelivr.net/gh/JetBrains/JetBrainsMono/web/woff/JetBrainsMono-Regular.woff') format('woff'),
+    url('https://cdn.jsdelivr.net/gh/JetBrains/JetBrainsMono/ttf/JetBrainsMono-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+}
 
-  @media (prefers-color-scheme: dark)
-    --base00: #1d1f21;
-    --base01: #282a2e;
-    --base02: #373b41;
-    --base03: #969896;
-    --base04: #b4b7b4;
-    --base05: #c5c8c6;
-    --base06: #e0e0e0;
-    --base07: #ffffff;
-    --base08: #cc6666;
-    --base09: #de935f;
-    --base0a: #f0c674;
-    --base0b: #b5bd68;
-    --base0c: #8abeb7;
-    --base0d: #81a2be;
-    --base0e: #b294bb;
-    --base0f: #a3685a;
+@require '_colors.styl'
+:root
+  --background: var(--base00)
+  --foreground: var(--base07)
+
+  --content-width: 50rem;
+  --radius: 10px
+
+  --font-copy: "proxima-nova", sans-serif
+  --font-header: "ff-cocon-pro", sans-serif
+  --font-mono: "JetBrainsMono", monospace
+
+
+@require '_syntax.styl'
 
 body
-  background-color: var(--base00);
-  font-size: 13px
-  color: var(--base07)
+  background-color: var(--background);
+  font-size: 16px
+  color: var(--foreground)
 
 main
-  max-width: 800px;
-  margin: 0 auto;
+  // max-width: var(--max-width);
+  // margin: 0 auto;
+  position: relative
+  font-family: var(--font-copy)
+  display: grid
+  grid-template-areas:\
+    "nothing navigation"\
+    "sidebar content"\
+    "sidebar footer"
+  grid-template-columns: 16em minmax(0,1fr)
+  grid-template-rows: repeat(3, min-content)
+  max-width: 1300px
+  margin: 0 auto
+  gap: 20px
+
+#navigation
+  grid-area: navigation
+
+#toc
+  grid-area: sidebar
+
+#content
+  grid-area: content
+  max-width: var(--content-width)
+
+#footer
+  grid-area: footer
+  max-width: var(--content-width)
+
+.post
+  @require '_prose.styl'
+
+footer
+  font-size: 10px
+  font-family: var(--font-mono)
+  text-align center
+  margin-top 5rem
+
+  div
+    margin-bottom 0.5rem
