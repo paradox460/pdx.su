@@ -7,12 +7,15 @@
   font-style: normal;
 }
 
+root-font-size = 16px
+
 @require '_colors.styl'
 :root
   --background: var(--base00)
   --foreground: var(--base07)
 
-  --content-width: 50rem;
+  --content-width: root-font-size * 50 // 50rem equivalent
+  --sidebar-width: 256px;
   --radius: 10px
 
   --font-copy: "proxima-nova", sans-serif
@@ -22,15 +25,15 @@
 
 @require '_syntax.styl'
 
-body
+html
   background-color: var(--background);
-  font-size: 16px
+  font-size: root-font-size
   color: var(--foreground)
 
+body
+  margin: 10px
+
 main
-  // max-width: var(--max-width);
-  // margin: 0 auto;
-  position: relative
   font-family: var(--font-copy)
   display: grid
   grid-template-areas:\
@@ -39,15 +42,26 @@ main
     "sidebar footer"
   grid-template-columns: 16em minmax(0,1fr)
   grid-template-rows: repeat(3, min-content)
-  max-width: 1300px
+  max-width: calc(var(--content-width) + var(--sidebar-width))
   margin: 0 auto
   gap: 20px
+
+  @media screen and (max-width: 1056px)
+    grid-template-areas:\
+      "navigation"\
+      "content"\
+      "footer"
+    grid-template-columns: minmax(0,1fr)
+
 
 #navigation
   grid-area: navigation
 
 #toc
   grid-area: sidebar
+
+  @media screen and (max-width: 1056px)
+    display: none
 
 #content
   grid-area: content

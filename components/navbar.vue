@@ -21,7 +21,7 @@ nav
   border: 1px solid var(--base02)
   overflow: hidden
   border-radius: 10px
-  width: var(--content-width)
+  white-space: nowrap
 
 ul
   all: unset
@@ -30,6 +30,10 @@ ul
   list-style-type: none
   gap: 20px
   align-items: center
+
+  @media screen and (max-width: 500px)
+    justify-content: center
+    gap: 0
 
 li
   padding: 5px 0
@@ -42,6 +46,9 @@ a:not(.logo)
   font-family: var(--font-header)
   font-weight: 400;
   font-style: normal;
+
+  @media screen and (max-width: 500px)
+    display: none
 
   &::after
     content: ''
@@ -68,4 +75,7 @@ a:not(.logo)
   font-family: var(--font-header)
   font-weight: 700
   font-style: italic
+
+  @media screen and (max-width: 500px)
+    border-right: 0
 </style>
