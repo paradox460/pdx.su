@@ -10,12 +10,12 @@ const query: QueryBuilderParams = {
     <ContentList :query="query">
       <template v-slot="{ list }">
         <article v-for="article in list" :key="article._path">
-          <heading>
+          <header>
             <a :href="article._path">
               <h1>{{ article.title }}</h1>
             </a>
             <Timestamp :datetime="article.date" />
-          </heading>
+          </header>
           <div class="post">{{ article.description }}</div>
         </article>
       </template>
@@ -27,7 +27,7 @@ const query: QueryBuilderParams = {
 article
   margin-bottom 1.5rem
 
-article > heading
+article > header
   margin-bottom 1rem
   display: flex
   flex-direction: row
