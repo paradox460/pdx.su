@@ -9,7 +9,7 @@ const query: QueryBuilderParams = {
   <div id="content">
     <ContentList :query="query">
       <template v-slot="{ list }">
-        <article v-for="article in list" :key="article._path">
+        <article v-for="article in list" :key="article._path" :class="{ draft: article.draft }">
           <header>
             <a :href="article._path">
               <h1>{{ article.title }}</h1>
@@ -26,6 +26,9 @@ const query: QueryBuilderParams = {
 <style lang="stylus">
 article
   margin-bottom 1.5rem
+
+  &.draft
+    background: @css {hsl(var(--base0b-hsl) / 0.05)}
 
 article > header
   margin-bottom 1rem
