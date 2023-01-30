@@ -42,6 +42,7 @@ provide('activeToc', computed(() => props.activeToc))
     color: var(--base04)
     text-decoration none
     cursor: pointer
+    transition: all 0.2s ease-in-out
 
     &[data-active=true], &:hover
       color: var(--foreground)
