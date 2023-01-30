@@ -6,7 +6,11 @@ export default defineNuxtConfig({
   app: {
     head: {
       link: [
-        { rel: 'stylesheet', href: 'https://use.typekit.net/fln1ury.css' }
+        { rel: 'manifest', href: '/manifest.webmanifest'},
+        { rel: 'stylesheet', href: 'https://use.typekit.net/fln1ury.css' },
+        { rel: 'icon', href: '/favicon.ico', sizes: 'any' },
+        { rel: 'icon', href: '/favicon.svg', type: 'image/svg+xml' },
+        { rel: 'apple-touch-icon', href: '/apple-touch-icon.png'}
       ]
     }
   },
