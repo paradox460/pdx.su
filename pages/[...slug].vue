@@ -7,8 +7,6 @@
         <footer class="articlefooter">
           The article "{{ doc.title }}" was written on
           <Timestamp :datetime="doc.date" />.
-          <a :href="`https://github.com/paradox460/pdx.su/blob/main/content/${doc._file}`" class="ghl"
-            target="_blank">View Source</a>
         </footer>
       </div>
     </template>
