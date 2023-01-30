@@ -23,10 +23,6 @@ provide('activeToc', computed(() => props.activeToc))
   width: 256px
   font-size: 0.9rem
 
-  & > ul
-    position: sticky
-    top: 2rem
-    margin-top: 4rem
 
   ul
     list-style-type: none
@@ -42,10 +38,13 @@ provide('activeToc', computed(() => props.activeToc))
     color: var(--base04)
     text-decoration none
     cursor: pointer
-    transition: all 0.2s ease-in-out
+    transition: color 0.2s ease-in-out
 
     &[data-active=true], &:hover
       color: var(--foreground)
 
-
+  & > ul
+    position: sticky
+    top: 2rem
+    margin-top: 5rem
 </style>

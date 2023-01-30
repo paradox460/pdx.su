@@ -9,6 +9,8 @@
 
 root-font-size = 16px
 
+toc-hide = 1376px
+
 @require '_colors.styl'
 :root
   --background: var(--base00)
@@ -40,18 +42,21 @@ main
     "nothing navigation"\
     "sidebar content"\
     "sidebar footer"
-  grid-template-columns: 16em minmax(0,1fr)
+  grid-template-columns: 16rem minmax(0,1fr)
   grid-template-rows: repeat(3, min-content)
-  max-width: calc(var(--content-width) + var(--sidebar-width))
+  max-width: calc(var(--content-width) + var(--sidebar-width) + 20px)
   margin: 0 auto
   gap: 20px
+  translate: calc(((var(--sidebar-width) + 20px) / 2) * -1 ) 0
 
-  @media screen and (max-width: 1056px)
+  @media screen and (max-width: toc-hide)
     grid-template-areas:\
       "navigation"\
       "content"\
       "footer"
     grid-template-columns: minmax(0,1fr)
+    translate: 0
+    max-width: var(--content-width)
 
 
 #navigation
@@ -60,7 +65,7 @@ main
 #toc
   grid-area: sidebar
 
-  @media screen and (max-width: 1056px)
+  @media screen and (max-width: toc-hide)
     display: none
 
 #content
