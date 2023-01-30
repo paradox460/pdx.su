@@ -44,9 +44,15 @@ export default defineComponent({
 </template>
 
 <style lang="stylus">
+:has(.codeblock) pre
+  border: 1px solid var(--base02)
+  padding: 1em 0.5em
+  border-radius: 5px
+  overflow-x: auto
+
 pre code .line
   display: block
-  min-height: 1rem
+  min-height: 1.2em
 </style>
 
 <style lang="stylus" scoped>
@@ -55,14 +61,9 @@ pre code .line
   margin-block-start: 1rem
   margin-block-end: 1rem
 
-  border: 1px solid var(--base02)
-  padding: 1em 0.5em
-  border-radius: 5px
-
-
 .copybutton
   position: absolute
-  top: 10px
+  top: 0.5em
   right: 10px
   width 1em
   height 1em
@@ -71,8 +72,8 @@ pre code .line
   background: var(--base01)
   border-radius: 5px
   cursor pointer
-
   display: none
+
 
   .icon
     fill: var(--foreground)
