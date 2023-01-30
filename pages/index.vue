@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { QueryBuilderParams } from '@nuxt/content/dist/runtime/types';
 const query: QueryBuilderParams = {
-  path: "/_blog",
+  path: "/blog",
   sort: { date: -1 }
 }
 </script>
