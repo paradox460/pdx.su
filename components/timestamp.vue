@@ -3,7 +3,7 @@
 </template>
 
 <script setup lang="ts">
-const props = defineProps<{datetime?: string }>();
+const props = defineProps<{ datetime?: string }>();
 
 let language = "us"
 
@@ -13,7 +13,7 @@ onMounted(() => {
 
 const niceTimeStamp = computed(() => {
   if (props.datetime) {
-    return (new Intl.DateTimeFormat(language, { dateStyle: "short", timeStyle: undefined}).format(Date.parse(props.datetime)));
+    return (new Intl.DateTimeFormat(language, { dateStyle: "short", timeStyle: undefined }).format(Date.parse(props.datetime)));
   }
 })
 

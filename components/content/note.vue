@@ -2,7 +2,7 @@
 import { computed } from 'vue'
 
 const props = defineProps({
-  icon: { type: String, default: "💡"},
+  icon: { type: String, default: "💡" },
   color: { type: String }
 })
 
@@ -18,7 +18,9 @@ const customColor = computed(() => {
 <template>
   <aside class="note" :style=customColor>
     <div class="icon">{{ icon }}</div>
-    <div class="content"><slot/></div>
+    <div class="content">
+      <slot />
+    </div>
   </aside>
 </template>
 
