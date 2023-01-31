@@ -4,6 +4,27 @@ const query: QueryBuilderParams = {
   path: "/blog",
   sort: { date: -1 }
 }
+
+const title = "Jeff Sandberg's Blog"
+const description = "The personal blog of software engineer Jeff Sandberg. Mostly tech, but not always."
+const url = "https://pdx.su"
+
+useHead({
+  title: title,
+  meta: [
+    { property: "og:type", content: "website" },
+    { property: "og:title", content: title },
+    { property: "og:description", content: description },
+    { property: "og:image", content: `${url}/favicon.svg` },
+    { property: "og:url", content: url },
+    { property: "twitter:card", content: "summary" },
+    { property: "twitter:title", content: title },
+    { property: "twitter:description", content: description }
+  ],
+  link: [
+    { rel: 'canonical', href: url }
+  ]
+})
 </script>
 <template>
   <div id="content">
