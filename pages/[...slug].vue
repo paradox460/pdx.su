@@ -4,7 +4,7 @@
       <TableOfContents :activeToc="activeToc" :doc="doc" />
       <div id="content" class="post">
         <ContentRenderer ref="nuxtContent" :value="doc" />
-        <footer class="articlefooter">
+        <footer class="articlefooter" v-if="doc._path.match(/^\/blog/)">
           The article "{{ doc.title }}" was written on
           <Timestamp :datetime="doc.date" />.
         </footer>
