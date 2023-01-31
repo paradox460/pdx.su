@@ -6,11 +6,15 @@ export default defineNuxtConfig({
   app: {
     head: {
       link: [
+        // icons
         { rel: 'manifest', href: '/manifest.webmanifest'},
-        { rel: 'stylesheet', href: 'https://use.typekit.net/fln1ury.css' },
         { rel: 'icon', href: '/favicon.ico', sizes: 'any' },
         { rel: 'icon', href: '/favicon.svg', type: 'image/svg+xml' },
-        { rel: 'apple-touch-icon', href: '/apple-touch-icon.png'}
+        { rel: 'apple-touch-icon', href: '/apple-touch-icon.png'},
+        // Stylesheets
+        { rel: 'stylesheet', href: 'https://use.typekit.net/fln1ury.css' },
+        // RSS
+        { rel: 'alternate', type: 'application/rss+xml', href: '/rss.xml' }
       ]
     }
   },
@@ -21,5 +25,10 @@ export default defineNuxtConfig({
   },
   modules: [
     '@nuxt/content'
-  ]
+  ],
+  nitro: {
+    prerender: {
+      routes: ['/rss.xml']
+    }
+  }
 })
