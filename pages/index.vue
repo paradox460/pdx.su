@@ -27,9 +27,6 @@ const query: QueryBuilderParams = {
 article
   margin-bottom 1.5rem
 
-  &.draft
-    background: @css {hsl(var(--base0b-hsl) / 0.05)}
-
 article > header
   margin-bottom 1rem
   display: flex
