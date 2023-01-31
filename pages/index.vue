@@ -10,34 +10,34 @@ const query: QueryBuilderParams = {
     <ContentList :query="query">
       <template v-slot="{ list }">
         <article v-for="article in list" :key="article._path" :class="{ draft: article.draft }">
-          <header>
-            <a :href="article._path">
+          <NuxtLink :to="article._path" class="postlink">
+            <header class="postheader">
               <h1>{{ article.title }}</h1>
-            </a>
-            <Timestamp :datetime="article.date" />
-          </header>
-          <div class="post">{{ article.description }}</div>
+              <Timestamp :datetime="article.date" />
+            </header>
+            <div class="post">{{ article.description }}</div>
+          </NuxtLink>
         </article>
       </template>
     </ContentList>
   </div>
 </template>
 
-<style lang="stylus">
+<style lang="stylus" scoped>
 article
   margin-bottom 1.5rem
 
-article > header
+.postlink
+  all: unset
+  color: var(--foreground)
+  cursor: pointer
+
+.postheader
   margin-bottom 1rem
   display: flex
   flex-direction: row
   align-items: baseline
   justify-content: space-between
-
-  a
-    all: unset
-    color: var(--foreground)
-    cursor: pointer
 
   h1
     all: unset
