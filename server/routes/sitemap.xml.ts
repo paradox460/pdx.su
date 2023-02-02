@@ -1,14 +1,19 @@
 import { serverQueryContent } from "#content/server";
 import { SitemapStream, streamToPromise } from 'sitemap';
 
+function determineBaseUrl() {
+  const site_url = "https://pdx.su";
+  const config = useRuntimeConfig();
+  const url = config.app.baseURL || site_url;
+
+  return url === "/" ? site_url : url
+}
+
 export default defineEventHandler(async (event) => {
-
-  const config = useRuntimeConfig()
-
-  const docs = await serverQueryContent(event).where({_partial: false}).find()
+  const docs = await serverQueryContent(event).where({ _partial: false }).find()
 
   const sitemap = new SitemapStream({
-    hostname: config.app.baseURL
+    hostname: determineBaseUrl()
   })
 
   for (const doc of docs) {
@@ -20,5 +25,6 @@ export default defineEventHandler(async (event) => {
 
   sitemap.end()
 
-  return streamToPromise(sitemap)
+  event.node.res.setHeader('Content-Type', 'application/xml')
+  event.node.res.end(await streamToPromise(sitemap))
 })
