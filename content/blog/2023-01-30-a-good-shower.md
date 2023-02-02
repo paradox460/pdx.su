@@ -55,7 +55,9 @@ Taking a moment to just relax and enjoy the shower, I noted that it generates a 
 
 Stepping out, I decided to purchase these for _all_ 5 of my showers.
 
-For the master, I've ordered a [combo unit](https://highsierrashowerheads.com/shop/combination-shower-heads/), which has two 2.0gpm units, one fixed and one on a hose. You can turn them on and off independently, so if you want you can have a 4gpm shower.
+!["master bath shower combo unit, showing two showerheads"](/postimages/shower2.jpg)
+
+For the master, I've installed a [combo unit](https://highsierrashowerheads.com/shop/combination-shower-heads/), which has two 2.0gpm units, one fixed and one on a hose. You can turn them on and off independently, so if you want you can have a 4gpm shower.
 
 For the upstairs main, I ordered a [handheld unit](https://highsierrashowerheads.com/shop/handheld-shower-heads/), as it is a shower tub, and the handhelds are useful for cleaning the tub, a dirty child, and filling mop buckets.
 
