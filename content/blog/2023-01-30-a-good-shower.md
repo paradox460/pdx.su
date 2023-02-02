@@ -1,5 +1,6 @@
 ---
 date: 2023-01-30T22:00:54-07:00
+updated: 2023-02-02T12:19:02-07:00
 ---
 
 # Finally, a good shower
@@ -79,6 +80,10 @@ As a child, we had scald protectors on faucets. These simple devices have a mech
 You install it between the wall tap and your shower head, and it will let cold water pass through freely. As soon as the water gets hot, it shuts off. You can then come and pull the cord that hangs down from it, and the internal mechanism disengages and allows the hot water to flow freely.
 
 In practice, this means you get up, turn on the shower, go brush your teeth, play with the cat, and check your phone, and when you hear the water _stop_, you know it's time to get into the shower. Assuming you didn't wait too long, you get in, pull the cord, and have an instant hot shower.
+
+::note{icon='👀' color=base0a}
+Be careful when installing the ShowerStart device. They are no longer made out of metal, but rather ABS plastic. They tend to crack if you torque them down well. They're finicky about teflon tape on the threads.
+::
 
 [^1]: The U.S. Energy Policy Act of 1992 established this limit.
 
