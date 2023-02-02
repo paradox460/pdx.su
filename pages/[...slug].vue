@@ -11,6 +11,12 @@
         </footer>
       </div>
     </template>
+    <template #not-found>
+      <div id="content" class="post errorpage">
+        <h1>404 not found</h1>
+        <p>The content you're looking for does not exist. Check the URL, or return to the <NuxtLink to="/">homepage</NuxtLink></p>
+      </div>
+    </template>
   </ContentDoc>
 </template>
 
