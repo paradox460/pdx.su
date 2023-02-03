@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { computed } from 'vue'
 
 const props = defineProps({
@@ -6,12 +6,24 @@ const props = defineProps({
   color: { type: String }
 })
 
-
 const customColor = computed(() => {
   if (!props.color) {
-    return null
+    return undefined
   }
-  return `background: hsl(var(--${props.color}-hsl) / 0.25); border-color: hsl(var(--${props.color}-hsl) / 0.75)`
+
+  const colors: Record<string, string> = {
+    "red": "base08",
+    "orange": "base09",
+    "yellow": "base0a",
+    "green": "base0b",
+    "cyan": "base0c",
+    "blue": "base0d",
+    "purple": "base0e",
+    "brown": "base0f"
+  }
+
+  const color = props.color.match(/base0\p{Hex_Digit}/) ? props.color : colors[props.color]
+  return `background: hsl(var(--${color}-hsl) / 0.25); border-color: hsl(var(--${color}-hsl) / 0.75)`
 })
 </script>
 
