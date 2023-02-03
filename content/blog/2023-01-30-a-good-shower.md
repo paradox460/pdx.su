@@ -41,7 +41,7 @@ So I've now had two complaints about crappy showers. This nagged at me, and even
 
 Browsing online, I searched `wirecutter shower` to see if Wirecutter had a new review on showerheads. They'd praised the Moen and Delta showerheads I'd had before, so I wasn't really hoping for much, but lo and behold they'd updated [their review](https://www.nytimes.com/wirecutter/reviews/the-best-shower-head/). They still push the multi-head units I'd used before, but in the "also great" section, they mentioned a new brand, High Sierra.
 
-The review was generally positive, but the showerhead was critiqued for its lack of features. I've never used anything other than "spray," and so this didn't bother me. Figuring I could return it if I didn't like it, I bought one of the [2.0gpm fixed sprayers][hs].
+The review was generally positive, but the showerhead was critiqued for its lack of features. I've never used anything other than "spray," and so this didn't bother me. Figuring I could return it if I didn't like it, I bought one of the [2.0gpm fixed sprayers](https://www.highsierrashowerheads.com/shop/classic/).
 
 ## The future
 
@@ -88,5 +88,3 @@ You install it between the wall tap and your shower head, and it will let cold w
 In practice, this means you get up, turn on the shower, go brush your teeth, play with the cat, and check your phone, and when you hear the water _stop_, you know it's time to get into the shower. Assuming you didn't wait too long, you get in, pull the cord, and have an instant hot shower.
 
 [^1]: The U.S. Energy Policy Act of 1992 established this limit.
-
-[hs]: https://www.highsierrashowerheads.com/shop/classic/
