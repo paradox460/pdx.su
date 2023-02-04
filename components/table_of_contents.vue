@@ -66,8 +66,7 @@ onMounted(() => {
         }
       }
     })
-
-  })
+  }, { threshold: 1, rootMargin: '10px'})
 
   document.querySelectorAll(headersSelector).forEach((el) => {
     observer.value?.observe((el))
