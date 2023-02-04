@@ -1,15 +1,82 @@
 <script setup lang="ts">
-import { computed } from "vue"
+import { closetag } from "sitemap/dist/lib/sitemap-stream";
+import { Ref, computed } from "vue"
 
 const props = defineProps({
-  activeToc: { type: String },
   doc: { type: Object }
 })
 
 const tocLinks = computed(() => props.doc?.body.toc.links ?? [])
 
-provide('activeToc', computed(() => props.activeToc))
+const activeToc = ref(new Set<string>())
 
+provide('activeToc', computed(() => activeToc))
+
+const observer: Ref<IntersectionObserver | null | undefined> = ref()
+
+const isVisible = (id: string) => {
+  return (document.getElementById(id)?.getBoundingClientRect()?.top ?? 0) >= 0
+}
+
+const headersSelector = '#content :is(h2, h3)[id]'
+
+const findClosestOffscrenHeader = () => {
+  const headers = [...document.querySelectorAll(headersSelector)]
+  const { closestHeader } = headers.reduce<{ top: number, closestHeader?: Element }>((acc, header) => {
+    const { top, closestHeader } = acc;
+
+    const currentTop = header.getBoundingClientRect().top
+    if (currentTop >= 0) {
+      return acc
+    }
+
+    if (currentTop >= top) {
+      return {
+        top: currentTop,
+        closestHeader: header
+      }
+    }
+    return acc
+  }, { top: -Infinity, closestHeader: undefined })
+
+  return closestHeader
+}
+
+onMounted(() => {
+  observer.value = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        // If an entry is intersecting
+        // Add it to the registry
+        activeToc.value.add(entry.target.id)
+      } else {
+        // If the entry is no longer intersecting
+        // delete it from the registry
+        activeToc.value.delete(entry.target.id)
+        // And remove any old entries that are no longer intersecting
+        for (const oldId of activeToc.value) {
+          if (!isVisible(oldId)) {
+            activeToc.value.delete(oldId)
+          }
+        }
+        // If we have nothing in the registry, add the nearest header
+        if (activeToc.value.size == 0) {
+          const closest = findClosestOffscrenHeader()?.id;
+          if (closest) { activeToc.value.add(closest) }
+        }
+      }
+    })
+
+  })
+
+  document.querySelectorAll(headersSelector).forEach((el) => {
+    observer.value?.observe((el))
+  })
+})
+
+onUnmounted(() => {
+  observer.value?.disconnect()
+})
 </script>
 
 <template>
