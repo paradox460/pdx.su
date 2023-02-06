@@ -1,5 +1,6 @@
 ---
 date: 2023-02-05T17:39:53-07:00
+updated: 2023-02-06T13:49:47-07:00
 ---
 
 # I wish Asciidoc was more popular
@@ -77,7 +78,7 @@ Asciidoc is inherently extensible. Since the document structure is very well-def
 
 After reading all that, you might be wondering if there's anything bad about Asciidoc? I've waxed positive about it for nearly 8000 characters, but in fairness we should discuss some of the things that _aren't so good about it_.
 
-First off, it's a _single_ implementation. This is both a blessing and a curse. The blessing is that you only ever have to worry about how your document will be parsed _once_. The curse is that you have to be happy with whatever the main Asciidoc developers decide, or write your own extensions. If your extensions get too far out of sync with the main standard, you kind of run into the problem Markdown faces, where you're basically a language that looks and kind of reads the same, but is ultimately incompatible.
+First off, it's a _single_ implementation.[^1] This is both a blessing and a curse. The blessing is that you only ever have to worry about how your document will be parsed _once_. The curse is that you have to be happy with whatever the main Asciidoc developers decide, or write your own extensions. If your extensions get too far out of sync with the main standard, you kind of run into the problem Markdown faces, where you're basically a language that looks and kind of reads the same, but is ultimately incompatible.
 
 Single implementation also limits its utility for other systems. If you're maintaining a service, like StackOverflow, Reddit, or GitHub, and you want to parse Asciidoc content for your users, doing so can be more complicated than it would be with Markdown. I wouldn't be surprised if there's a Markdown parser in every programming language ever written, but I would be surprised if you can find more than a handful of Asciidoc processors. The Asciidoc website lists 3 official ones, a ruby one, a javascript one (transpiled from ruby), and a java one. There's no C implementation, no rust one, none of that. So if you want to get Asciidoc support in Elixir, you have to either write your own, hope someone else wrote one, or come up with some way to shim one of the official ones into your application (NIF, port, dedicated service).
 
@@ -106,3 +107,15 @@ If you want to build documentation sites, static sites, dynamic sites, use a CMS
 I looked into using Asciidoc for my blog. I got really excited to do so, but then ran out of steam almost immediately. There's just no real extensive support for it, so anything I was going to do, I'd be blazing my own trail. While those kinds of projects are often really enjoyable and educational, I just wanted to get the blog online, so I deferred.
 
 I'll still likely keep using Asciidoc for certain types of documentation sites, although with limited support in Elixir's HexDoc, I'm not sure how often I'll be able to.
+
+## Addendum
+
+In the [Hacker News](https://news.ycombinator.com/item?id=34680558#34683736) discussion on this post, `zh3` pointed out that, on many systems, an installation of Asciidoctor is frequently rather heavy. This, as pointed out by `yrro`, is because it tries to ship with support for db-LaTeX, which allows for the generation of LaTeX (and therefore PDF) files via Docbook. On systems that use Apt for package management, one can _just_ get Asciidoctor, and none of the latex support, by running
+
+```
+apt install asciidoc asciidoc-dblatex-
+```
+
+You can also just install the bare minimum package by running apt with `--no-install-recommends`
+
+[^1]: Many commenters on hackernews and reddit have pointed out that while its true that Asciidoctor is a single implementation, Asciidoctor itself is a reimplementation of the original, python2 implementation of asciidoc. There is a python3 continuation of asciidoc, but the "official" one is Asciidoctor. But they are all attempting to adhere to the same standard, the same flavor, unlike Markdown.
