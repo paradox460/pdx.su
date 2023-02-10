@@ -1,6 +1,6 @@
 ---
 date: 2023-02-05T17:39:53-07:00
-updated: 2023-02-06T13:49:47-07:00
+updated: 2023-02-10T16:13:42-07:00
 ---
 
 # I wish Asciidoc was more popular
@@ -110,12 +110,50 @@ I'll still likely keep using Asciidoc for certain types of documentation sites, 
 
 ## Addendum
 
-In the [Hacker News](https://news.ycombinator.com/item?id=34680558#34683736) discussion on this post, `zh3` pointed out that, on many systems, an installation of Asciidoctor is frequently rather heavy. This, as pointed out by `yrro`, is because it tries to ship with support for db-LaTeX, which allows for the generation of LaTeX (and therefore PDF) files via Docbook. On systems that use Apt for package management, one can _just_ get Asciidoctor, and none of the latex support, by running
+In the [Hacker News](https://news.ycombinator.com/item?id=34680558#34683736) discussion on this post, _zh3_ pointed out that, on many systems, an installation of Asciidoctor is frequently rather heavy. This, as pointed out by _yrro_, is because it tries to ship with support for db-LaTeX, which allows for the generation of LaTeX (and therefore PDF) files via Docbook. On systems that use Apt for package management, one can _just_ get Asciidoctor, and none of the latex support, by running
 
 ```
 apt install asciidoc asciidoc-dblatex-
 ```
 
 You can also just install the bare minimum package by running apt with `--no-install-recommends`
+
+### Djot
+
+Some other commenters, both on reddit and HackerNews, have pointed out the [djot](https://djot.net/) markup language as a markdown alternative. Djot was created by [John MacFarlane](https://johnmacfarlane.net/beyond-markdown.html), creator of Pandoc and driving author behind CommonMark. It's safe to say that he understands markdown more than almost anyone else, and Djot arose out of some of his ideas on how to "fix" markdown.
+
+Djot does a lot well, some less-well, and some that I've yet to form an opinion on. I've used it even less than AsciiDoc, so take that into account. I'm mostly writing this after skimming the [syntax cheat sheet](https://htmlpreview.github.io/?https://github.com/jgm/djot/blob/master/doc/syntax.html).
+
+I really like that it attempts to put user-controllable overrides to basic markdown parsing. Things like intra-word emphasis (where you have an emphasized section within a word) are tricky in Markdown, due to how the parser binds left or right delimiters. In djot, if the defaults don't do what you want, you can _force_ a delimiter to be left or right facing, by prepending/appending a `{}` as appropriate: `normal{_emphasis_}normal`.
+
+The "powers" granted by the use of `{}` as meaningful characters allow for some new syntaxes, such as `{+ins+}` and `{-del-}`, for their respective HTML tags. Similarly, super and subscript are simpler to use, because the whole block will be wrapped in `{}`
+
+I like the approach to soft line breaks, which is something AsciiDoc _also_ does better than markdown. I actually like the djot approach more, as its more inline with other tools that programmer-types might encounter. In djot you make a soft line break by ending a line with a `\` character.
+
+I'm not sure if I like the idea of smart punctuation by default. I understand, most of the stuff we're going to write in a markup language will be prose, and for a long time a lot of us just ran our MD content through SmartyPants or a similar tool, but I've fought too many battles with the punctuation prettifier on macOS to feel entirely comfortable with this approach. At least, with djot, there's an easy escape hatch via the slash-escape (`\"`), consistent with other special characters. And djot quotes also respect/listen to `{}`, similarly to how strong and emphasis characters do, to indicate the direction of a quote.
+
+Attributes and raw sections (both block and inline) are welcome, although I haven't run into much need for output-conditional segments of a document before.
+
+Djot's pipe tables are better than most markdown implementations, as they allow header-less tables to be constructed:
+
+```djot
+| cell 1 | cell 2 |
+| cell 3 | cell 4 |
+```
+
+Djot lets you have _multiple_ headers in a table, which is nice for more complex applications.
+
+Unfortunately, it doesn't improve on the ability to do col/row spans, so you're still stuck doing them by hand in pure HTML.
+
+Finally, heading links get a tiny improvement, in that every single heading defines itself as a reference link. Reference links are a feature of djot (and markdown) where you can put the url somewhere in your document, typically at the bottom, with an identifier, and then only use that identifier at the individual link sites.
+
+```
+
+This has a [reference link][]
+
+[reference link]: https://www.youtube.com/watch?v=t5JDypdHNnw
+```
+
+This solves the issue of having to figure out how the heading text would be transformed into an anchor tag, although I still would prefer the ability to make _explicit_ reference links, complete with their own text, like AsciiDoc permits
 
 [^1]: Many commenters on hackernews and reddit have pointed out that while its true that Asciidoctor is a single implementation, Asciidoctor itself is a reimplementation of the original, python2 implementation of asciidoc. There is a python3 continuation of asciidoc, but the "official" one is Asciidoctor. But they are all attempting to adhere to the same standard, the same flavor, unlike Markdown.
