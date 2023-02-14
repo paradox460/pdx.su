@@ -89,6 +89,8 @@ onUnmounted(() => {
   width: 256px
   font-size: 0.9rem
 
+  a
+    all: unset
 
   ul
     list-style-type: none

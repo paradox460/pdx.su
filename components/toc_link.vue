@@ -6,10 +6,21 @@ const props = defineProps({
 })
 
 
-const onClick = async (id: string) => {
-  if (document.getElementById(id)) {
+const onClick = async (id: string, event: Event) => {
+  event.preventDefault();
+  const elem = document.getElementById(id)
+  if (elem) {
     await navigateTo({ hash: `#${id}` })
+    highlightCurrent(elem);
   }
+}
+
+const highlightCurrent = (target: HTMLElement) => {
+  target.addEventListener('animationend', function removeActive() {
+    delete target.dataset.active
+    this.removeEventListener('animationend', removeActive)
+  })
+  target.dataset.active = ''
 }
 
 const activeToc = inject('activeToc') as ComputedRef<Ref<Set<string>>>
@@ -21,10 +32,21 @@ const isIntersecting = (id: string) => {
 
 <template>
   <ul>
-    <li v-for="{ id, text, children } in links" :id="`toc-${id}`" :key="id" @click="onClick(id)"
-      :data-active="isIntersecting(id)">
-      {{ text }}
+    <li v-for="{ id, text, children } in links" :id="`toc-${id}`" :key="id" :data-active="isIntersecting(id)">
+      <a :href="`#${id}`" @click="onClick(id, $event)">{{ text }}</a>
       <TocLink v-if="children" :links="children" />
     </li>
   </ul>
 </template>
+
+<style lang="stylus">
+@keyframes flash
+  0%
+    color: inherit
+  50%
+    color: var(--base0d)
+
+
+:is(h1, h2, h3, h4, h5, h6)[data-active]
+  animation: flash 0.75s 3 ease-in-out both
+</style>
