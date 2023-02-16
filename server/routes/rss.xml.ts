@@ -19,6 +19,6 @@ export default defineEventHandler(async (event) => {
     })
   }
 
-  event.node.res.setHeader('content-type', 'text/xml')
+  event.node.res.setHeader('content-type', 'application/rss+xml')
   event.node.res.end(feed.xml())
 });
