@@ -108,7 +108,7 @@ onUnmounted(() => {
     cursor: pointer
     transition: color 0.2s ease-in-out
 
-    &[data-active=true], &:hover
+    &[data-active=true] > a, a:hover
       color: var(--foreground)
 
   & > ul
