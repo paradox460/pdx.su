@@ -85,25 +85,25 @@ But that's just overriding values from the setup with your own values, on a per 
 Take this example of changing `insert_user/1` to handle things like the user being an administrator:
 
 ```elixir
-  def insert_user(%{admin: true}) do
-    # some code that makes a user and sets them up as an administrator
-  end
-  def insert_user(context) do
-    # code that just creates a normal user
-  end
+def insert_user(%{admin: true}) do
+  # some code that makes a user and sets them up as an administrator
+end
+def insert_user(context) do
+  # code that just creates a normal user
+end
 ```
 
 Now, without changing the `setup` calls at the top of the test suite (or `describe` block), we can make tags have an admin user on the fly:
 
 ```elixir
-  @tag admin: true
-  test "an admin can delete a post" do
-    # something that tests this
-  end
+@tag admin: true
+test "an admin can delete a post" do
+  # something that tests this
+end
 
-  test "a regular user cannot delete a post" do
-    # similar code, but it would refute that the post was deleted
-  end
+test "a regular user cannot delete a post" do
+  # similar code, but it would refute that the post was deleted
+end
 ```
 
 That's it! Very simple, very flexible, very useful.
@@ -141,6 +141,12 @@ And use it like this:
 ```elxir
 assert_html html, ".bar"
 ```
+
+::note{icon='️💡'}
+You don't have to use macros for these, they can be quite easily written as functions. However, if you write them as functions, you _must_ import the appropriate "things" into the module they are defined in.
+
+By using macros, you can step around this, because the macros generate code that lives at the call-site, which already has access to the appropriate "things"
+::
 
 ### Handling Event Boilerplate
 
