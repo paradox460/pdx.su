@@ -45,7 +45,7 @@ const customColor = computed(() => {
   grid-template-columns: 35px auto
   gap: 10px
   margin-block: 1em 0
-  padding-left: 10px
+  padding: 0 10px;
 
 .icon
   justify-self: center
