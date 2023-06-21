@@ -1,5 +1,6 @@
 ---
 date: 2023-06-14T00:00:00-06:00
+updated: 2023-06-21T02:11:28-06:00
 ---
 
 # Some Elixir Testing Tricks
@@ -33,7 +34,7 @@ An alternative that _supplements_ universal setup steps is _setup functions_. Wh
 
 Take for example the following helper module:
 
-```elixir
+```elixir [support/helpers.ex]
 defmodule MyApp.Support.Helpers do
   def insert_user(context) do
     # Some code that sets up a user and adds it to the context
@@ -55,7 +56,7 @@ As you can see, those functions are pretty small. They implement single, simple 
 
 If you added them to your `__using__` macros, you can then simply call `setup :functionname` anywhere you'd put a setup block, and it will be called, and passed in the current context. You can have each setup function take and return things to the context, and build pretty powerful setup pipelines.
 
-```elixir
+```elixir [somebigtest.exs]{4-5}
 defmodule MyAppWeb.SomeBigTest do
   use MyAppWeb.ConnCase
 
@@ -95,7 +96,7 @@ end
 
 Now, without changing the `setup` calls at the top of the test suite (or `describe` block), we can make tags have an admin user on the fly:
 
-```elixir
+```elixir {1}
 @tag admin: true
 test "an admin can delete a post" do
   # something that tests this
@@ -138,7 +139,7 @@ end
 
 And use it like this:
 
-```elxir
+```elixir
 assert_html html, ".bar"
 ```
 
@@ -213,10 +214,9 @@ defmacro assert_event(event, func) do
 end
 ```
 
-ANd you can use it like so:
+And you can use it like so:
 
 ```elixir
-
 assert_event(FooEvent, fn e ->
   assert "some event data == e.data
 end)
@@ -254,5 +254,12 @@ end
 While this is a contrived example, you can see how we were able to test 4 test cases for the moderator and admin roles with a single test, and then test the more specific user test cases separately.
 
 Remember, all that ExUnit provides is some useful tools around testing. Under the hood, its _just_ Elixir.
+
+
+----
+
+## Updates
+
++ **:timestamp{datetime="2023-06-21T02:11:28-06:00"}** Post was updated to add a note about why macros were used instead of plain functions
 
 [se1]: https://hexdocs.pm/ex_unit/ExUnit.Callbacks.html#setup/1
