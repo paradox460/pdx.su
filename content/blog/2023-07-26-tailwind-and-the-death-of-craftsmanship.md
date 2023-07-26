@@ -173,3 +173,4 @@ Everything I wrote about here is mostly a problem I noticed regarding Tailwind. 
 + [Why I Don't Like Tailwind CSS](https://www.aleksandrhovhannisyan.com/blog/why-i-dont-like-tailwind-CSS/)
 + [Why you’ll probably regret using Tailwind](https://johanronsse.be/2020/07/08/why-youll-probably-regret-using-tailwind/)
 + [Chris Coyer, of CSS-Tricks, notes the tailwind "smell"](https://twitter.com/chriscoyier/status/1331302651179495425?s=20)
++ [TailwindUI, And Here’s The Real Failwind Scam](https://medium.com/codex/tailwindui-and-heres-the-real-failwind-scam-b74357371ca5)
