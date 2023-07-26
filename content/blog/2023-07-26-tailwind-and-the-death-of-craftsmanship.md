@@ -130,27 +130,27 @@ Overrides are easy enough, you just add props to your component, that let you tw
 
 ## Common defenses of tailwind that I've heard
 
-*Tailwind is faster to write!*
+### Tailwind is faster to write!
 
 Not in my experience, and ultimately, who cares. I've never found the bottleneck of developing code to be having to write `margin` instead of `m`, and I have emmet anyway, so I just do `m10`, hit tab, and get `margin: 10px`. You might have a wee bit of credibility in that I don't have to come up with semantic names for _everything_, but that's solved by using scoped styles and components.
 
-*Tailwind isn't actually bloated, it compiles the classes you need only for prod*
+### Tailwind isn't actually bloated, it compiles the classes you need only for prod
 
 The CSS tailwind generates might not be bloated, but repeating the gigantic strings of classes all over your codebase certainly adds to the size of the final HTML output. And yes, things like gzip will reduce the network transfer size of said files, there's still the parsing complexity. Browsers are good at parsing HTML, but it still takes time and CPU cycles.
 
-*Tailwind helps you stay consistent*
+### Tailwind helps you stay consistent
 
 Unless you use one-offs. Or use different "numbers" when writing your margins and paddings.
 
-*Tailwind is better than inline styles!*
+### Tailwind is better than inline styles!
 
 Yeah, it is, but barely. That's like saying "this apple is slightly less rotten than that one." Both are rotten
 
-*The proper way to use tailwind is to make your own utility classes via @apply*
+### The proper way to use tailwind is to make your own utility classes via @apply
 
 When you're reaching for apply, why not just reach a little further and write real CSS?
 
-*Tailwind's configuration lets you define values ahead of time and then reuse them everywhere!*
+### Tailwind's configuration lets you define values ahead of time and then reuse them everywhere!
 
 I've had value tables in Sass since 2008. Juniors still come along and just do `margin: 13px`. In tailwind, they do `m-[13px]`. No difference. At least with CSS its centralized.
 
