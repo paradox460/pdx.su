@@ -4,23 +4,23 @@ date: 2023-07-26T12:40:47-06:00
 
 # Tailwind, and the death of web craftsmanship
 
-There's a worrying trend in modern web development, where developers are throwing away decades of carefully wrought for a little bit of perceived convenience. Tools such as Tailwind CSS seem to be spreading like wildfire, with very few people ever willing to acknowledge the regression they bring to our field. And I'm getting tired of it
+There's a worrying trend in modern web development, where developers are throwing away decades of carefully wrought for a bit of perceived convenience. Tools such as Tailwind CSS seem to be spreading like wildfire, with very few people ever willing to acknowledge the regression they bring to our field. And I'm getting tired of it
 
 ## History
 
-Back in the 90s and early 00s, if you built a website, you probably didn't style it very much. If you did, you used tables, some attributes on the various HTML tags you had, and a lot of images. Changing anything required you to update every single occurence of that _thing_ within the HTML. There were attempts to work around these defects; people would build templating systems in Perl and other languages, but fundamentally, you were putting colors, dimensions, and such _into_ your HTML.
+Back in the 90s and early 00s, if you built a website, you probably didn't style it very much. If you did, you used tables, some attributes on the various HTML tags you had, and a lot of images. Changing anything required you to update every single occurrence of that _thing_ within the HTML. There were attempts to work around these defects; people would build templating systems in Perl and other languages, but fundamentally, you were putting colors, dimensions, and such _into_ your HTML.
 This was awful, and when CSS came out, even as limited as CSS 1.0 was, people eagerly adopted it. CSS+tables, some image slicing in Fireworks or Photoshop, and you could build a pretty good looking website. CSS 2 came out a few years later and dramatically improved things, allowing far better layouts to be achieved.
 In the middle of the 00s, Firefox and then Apple began pushing standards forwards, introducing many new features. Border-radiuses, gradients, box shadows, enhanced fonts, flexbox, grids, and many other layout tools. It was a veritable CSS renaissance. Pre-processor languages, such as Sass and Less, sprouted up, bringing useful bits of programming to CSS, and frameworks like Compass, Bourbon, and Neat grew out of them. Tools like Autoprefixer later cropped up, reducing the overhead of cross-browser support to almost nothing. Things matured, and we entered a period where building web apps was more fun than it had ever been.
 
-### The Cracks start showing.
+### The Cracks start showing
 
-As we entered the twilight of this CSS renaissance, some of the issues CSS has begun to show up more and more frequently. Wrangling large CSS files became more and more tedious, deeply scoped selectors began causing issues, the fragility of a single global namespace pushed people towards componentization, towards building "website legos" to build with.
+As we entered the twilight of this CSS renaissance, some issues CSS has begun to show up more and more frequently. Wrangling large CSS files became more and more tedious, deeply scoped selectors began causing issues, the fragility of a single global namespace pushed people towards componentization, towards building "website legos" to build with.
 There were attempts to tame the CSS beast. BEM, OOCSS, SMACSS, and friends pitched themselves as the "one true" solution. They all basically have something in common: they tell you to get rid of various CSS features to "simplify" things.
 Out of this rose Tailwind. Instead of writing your CSS, you just used a bunch of different utility classes to style things.
 
 ### Atomic/Utility CSS
 
-Often, when maintaining a large CSS codebase, we would write one-off utility classes. `rounded` to make something have border-radius, without having to rewrite it _everywhere_. Various small classes that adjust the padding. We always did this so we could prevent changes from seeping out of the little place we needed them to everywhere else. We didn't use inline styles, because you weren't supposed to (and they make maintenance an unholy burden).
+Often, when maintaining a large CSS codebase, we would write one-off utility classes. `rounded` to make something have border-radius, without having to rewrite it _everywhere_. Various small classes that adjust the padding. We always did this, so we could prevent changes from seeping out of the little place we needed them to everywhere else. We didn't use inline styles, because you weren't supposed to (and they make maintenance an unholy burden).
 Gradually, libraries of these utility classes began to grow. There were some that were passed around as gists, some that actually grew into things you could install via npm or a similar package manager (remember bower?), and some that were generated by or included in preexisting toolchains (Bootstrap sprouted some utility classes fairly early on).
 
 ### The rise of tailwind
@@ -29,19 +29,18 @@ Tailwind started out as a particularly good set of Utility CSS classes. It was n
 Early versions of tailwind were _horrifically heavy and slow_. You'd have to ship megabytes of CSS, for a page that might have a half dozen styled "things" on it. And it was rightly lambasted for this. Utility classes were supposed to make things easier, faster, more convenient, and shipping a JPG worth of _unused_ CSS was not in line with that. Tailwind eventually fixed this, with a generator approach, which would scan your codebase, pull out tailwind classes, and only put them in the generated CSS output. This also let tailwind grow the ability to have arbitrary values, without having to update a configuration file. Now you could do `bg-[#ffccff]` for a pinkish background, without having to add it to your color scheme. Useful, but dangerous too.
 Tailwind even sprouted component libraries, built atop tailwind. The tailwind devs have one, called TailwindUI, and there's an open-source one called Daisy.
 
-
 ## The problem
 
 The problem I have with tailwind is that it reduces your HTML to a gigantic pile of near-gibberish CSS classes. What would be a few, maybe even half dozen, lines of CSS in a separate file, are now shoved into the generated code, and _repeated everywhere_. Any structure to the styling of an item is completely gone; you have hover styles and focus styles and dark styles and whatnot all mixed together in a single big space-separated string. Finding CSS one-offs is not even feasible anymore, _everything is a CSS one-off_.
 Tooling is utterly broken by tailwind, despite the claims that there is good tooling on tailwind's own UI. Look at this screenshot of a web inspector on a page using tailwind:
 
-!["an element with a few hundred css tailwind classes"](/postimages/tailwind-garbage.jpg)
+!["an element with a few hundred CSS tailwind classes"](/postimages/tailwind-garbage.jpg)
 
-Yeah, you might have auto-completion in your editor, but the browser inspector is utterly neutered. You can't use the applied styles checkbox, because you'll wind up disabling a style for _every usage of that tailwind class_. You have to manually edit the `class` attribute to remove classes to try and push your element to look how you want. Due to the tailwind compiler, which was a solution to the "shipping massive amounts of css" problem, you don't have a guarantee that the class you're trying to poke into the inspector view will actually exist.
+Yeah, you might have auto-completion in your editor, but the browser inspector is utterly neutered. You can't use the applied styles checkbox, because you'll wind up disabling a style for _every usage of that tailwind class_. You have to manually edit the `class` attribute to remove classes to try and push your element to look how you want. Due to the tailwind compiler, which was a solution to the "shipping massive amounts of CSS" problem, you don't have a guarantee that the class you're trying to poke into the inspector view will actually exist.
 
 You can't chain selectors. If you want your hover, focus, and active classes to be the same, you _have to write them all_. You can't do this:
 
-```css
+```CSS
 .foo:is(:hover, :focus, :active) {
   background: purple;
   border: 1px solid blue;
@@ -56,10 +55,10 @@ You have to do this:
 
 It gets even worse with dark mode and other variants.
 
-### Its all meaningless
+### It's all meaningless
 
-In tailwind, its common to write things like `m-3` for a margin. But _what_ margin. How big is an `m-3`? Trick question. It depends _entirely_ on your configuration. An `m-3` on my site and an `m-3` on someone else's could be entirely different. Same goes for basically every other number in tailwind. They have absolutely no meaning, and there's no consistency.
-When writing it at work, I frequently either find myself opening up our tailwind config and the default tailwind config, just to find which size I want, realizing its not there, and ultimately going with a `m-[8px]` or something similar, creating another one-off.
+In tailwind, it's common to write things like `m-3` for a margin. But _what_ margin. How big is an `m-3`? Trick question. It depends _entirely_ on your configuration. An `m-3` on my site and an `m-3` on someone else's could be entirely different. Same goes for basically every other number in tailwind. They have absolutely no meaning, and there's no consistency.
+When writing it at work, I frequently either find myself opening up our tailwind config and the default tailwind config, just to find which size I want, realizing it's not there, and ultimately going with a `m-[8px]` or something similar, creating another one-off.
 And its not just numbers. Class names themselves are inconsistent. Generally a tailwind class will loosely reflect the underlying CSS. But then you run into the mess of justify and align. There are 4 tailwind classes that all impact justification and alignment. `justify-*`, `align-*`, `items-*`, and `content-*`. There's a bit of false consistency, both `justify-*` and `align-*` map to `justify-content` and `align-content` properties. But what about `content-*` or `items-*`? What the hell do they mean? It makes sense if you use it, but it doesn't if you try to explain it.
 
 With "real" CSS, properties might not have the most explicit meaning. But that meaning is part of a standard, and you can look it up online. Tailwind has _no_ requirements to not change the meaning out from under you. You have no guarantee that they're not going to "fix" the weirdness around the content/justify/align properties tomorrow, and now you've gotta update your entire codebase.
@@ -68,21 +67,21 @@ With "real" CSS, properties might not have the most explicit meaning. But that m
 
 Tailwind, and other utility frameworks, throw out the best and most often misunderstood aspects of CSS. CSS was explicitly designed with certain features, that, while complicated, are immensely useful once you can master them. The cascade, selector chaining (see above), and specificity are all very powerful tools. If you misunderstand them, yeah you can cut yourself. Just like if you don't use a saw properly you can cut yourself.
 
-The cascade is probably the most powerful part of CSS, that gets _completely tossed_ by tailwind. In short, the cascade allows you to have multiple stylesheets, multiple styles, that apply to an item, and at render time they are reduced down to a single set of applied styles. This lets you do things like have a general purpose stylesheet, and then theme or page specific ones that change parts of this stylesheet. You might protest that you've never used that, and I'd call you a liar. The browsers provide a set of base styles, and then we, as developers, add our own on top of them. We might use a reset style, which normalizes browsers base styles (less common these days, as browsers have done a good job of normalizing their styles to each other). You can also use the cascade to easily apply dark mode, light mode, high contrast mode, or other color schemes. You just have to write your original css in a judicious manner.
+The cascade is probably the most powerful part of CSS, that gets _completely tossed_ by tailwind. In short, the cascade allows you to have multiple stylesheets, multiple styles, that apply to an item, and at render time they are reduced down to a single set of applied styles. This lets you do things like have a general purpose stylesheet, and then theme or page specific ones that change parts of this stylesheet. You might protest that you've never used that, and I'd call you a liar. The browsers provide a set of base styles, and then we, as developers, add our own on top of them. We might use a reset style, which normalizes browsers base styles (less common these days, as browsers have done a good job of normalizing their styles to each other). You can also use the cascade to easily apply dark mode, light mode, high contrast mode, or other color schemes. You just have to write your original CSS in a judicious manner.
 
-Selector chaining, particularly with the advent of new CSS selectors like `is` and `where`, allows very clean reuse of common bits of CSS. You get to separate the properties that affect how something looks from what is being affected. Its obvious, but in tailwind, _you don't get that_.
+Selector chaining, particularly with the advent of new CSS selectors like `is` and `where`, allows very clean reuse of common bits of CSS. You get to separate the properties that affect how something looks from what is being affected. It's obvious, but in tailwind, _you don't get that_.
 
-Finally, specificity is useful for how to resolve conflicts, what to do where two selector sets both match the same elements. Its complex and has bitten many developers hands over the year, but it can be a powerful tool when you need it. And 0-specificity selectors like `where` have arrived to help clean things up. And its a lie to say you don't have to worry about specificity in tailwind; tailwind has its own specificity. Classes are read left-to-right by the browser, and so if you do `b-1 bg-blue b-2`, guess what? Your element gets both `b-1` and `b-2`, and the browser will _probably_ choose `b-2` as your border, and throw away `b-1`
+Finally, specificity is useful for how to resolve conflicts, what to do where two selector sets both match the same elements. Its complex and has bitten many developers hands over the year, but it can be a powerful tool when you need it. And 0-specificity selectors like `where` have arrived to help clean things up. And it's a lie to say you don't have to worry about specificity in tailwind; tailwind has its own specificity. Classes are read left-to-right by the browser, and so if you do `b-1 bg-blue b-2`, guess what? Your element gets both `b-1` and `b-2`, and the browser will _probably_ choose `b-2` as your border, and throw away `b-1`
 
-### Its an obtuse abstraction
+### It's an obtuse abstraction
 
-For all the simple stuff, tailwind is decent. Borders, colors, font sizes, all fairly trivial, and map well to utility classes. But then you start to get into "advanced" css stuff. Grids. Psuedo-elements. Gradients. All have very limited, if any, support in Tailwind. The built-in grid support is mostly just simple repeating grids. If you want different/better grids, you either have to use one-offs, or define them ahead-of-time in your tailwind configuration. Psuedo-elements have very limited support, and suffer massive amounts of repetition. Gradients give you simple linear gradients between a few color stops, but doing more complex gradients is just simply impossible, there's not even a reasonable one-off escape hatch. Tailwind _does_ expose certain gradient values as css custom properties (css variables), so you can write your own css for gradients, but then you might as well ask "why not just write my own CSS in general"
+For all the simple stuff, tailwind is decent. Borders, colors, font sizes, all fairly trivial, and map well to utility classes. But then you start to get into "advanced" CSS stuff. Grids. Psuedo-elements. Gradients. All have very limited, if any, support in Tailwind. The built-in grid support is mostly just simple repeating grids. If you want different/better grids, you either have to use one-offs, or define them ahead-of-time in your tailwind configuration. Psuedo-elements have very limited support, and suffer massive amounts of repetition. Gradients give you simple linear gradients between a few color stops, but doing more complex gradients is just simply impossible, there's not even a reasonable one-off escape hatch. Tailwind _does_ expose certain gradient values as CSS custom properties (CSS variables), so you can write your own CSS for gradients, but then you might as well ask "why not just write my own CSS in general"
 
 ### @apply sucks
 
-One of the bits of advice Tailwind gives is to use `@apply` and extract common blobs of css into common classes. You'd use this like so:
+One of the bits of advice Tailwind gives is to use `@apply` and extract common blobs of CSS into common classes. You'd use this like so:
 
-```css
+```CSS
 .btn {
   @apply m-2 p-2 bg-blue text-white
 }
@@ -90,7 +89,7 @@ One of the bits of advice Tailwind gives is to use `@apply` and extract common b
 
 _Why?_
 
-Why bother to even use @apply? Just write the damn CSS. Extract color values and stuff to custom properties if you so desire, it makes maintainability easier, but don't do this. `@apply` is a gigantic code-smell, it goes against everything tailwind supposedly stands for, and doesn't make writing your css any easier.
+Why bother to even use @apply? Just write the damn CSS. Extract color values and stuff to custom properties if you so desire, it makes maintainability easier, but don't do this. `@apply` is a gigantic code-smell, it goes against everything tailwind supposedly stands for, and doesn't make writing your CSS any easier.
 
 ### It makes maintenanace a nightmare
 
@@ -100,12 +99,11 @@ I recently had to update a site I was working on to support both light and dark 
 
 Were this done using a more traditional CSS approach, I could just globally make the site use light mode, and then add a dark stylesheet that only affected the elements in question, or I could have updated color tables. Both are far easier than having to skulk through dozens of HTML templates, trying to find all the selectors that needed manipulation.
 
-
-## Whats the alternative?
+## What's the alternative?
 
 Scoped CSS and component based design. These are basically a magic bullet for any and all valid complaints about CSS.
 
-Scoped CSS lets you write CSS how you want, without having to worry about its impact outside of the local environment, and components help you define said local environment.
+Scoped CSS lets you write CSS how you want, without having to worry about its impact outside the local environment, and components help you define said local environment.
 
 Component driven design is wonderful; you just write the base components, and then build things using those components, using other components, and everything just slots together. React, Vue, Svelte, Surface-UI, and many other tools all espouse this paradigm, and if you haven't tried them, you really should.
 
@@ -134,7 +132,7 @@ Overrides are easy enough, you just add props to your component, that let you tw
 
 *Tailwind is faster to write!*
 
-Not in my experience, and ultimately, who cares. I've never found the bottleneck of developing code to be having to write `margin` instead of `m`, and I have emmet anyways, so I just do `m10`, hit tab, and get `margin: 10px`. You might have a wee bit of credibility in that I don't have to come up with semantic names for _everything_, but thats solved by using scoped styles and components.
+Not in my experience, and ultimately, who cares. I've never found the bottleneck of developing code to be having to write `margin` instead of `m`, and I have emmet anyway, so I just do `m10`, hit tab, and get `margin: 10px`. You might have a wee bit of credibility in that I don't have to come up with semantic names for _everything_, but that's solved by using scoped styles and components.
 
 *Tailwind isn't actually bloated, it compiles the classes you need only for prod*
 
@@ -146,7 +144,7 @@ Unless you use one-offs. Or use different "numbers" when writing your margins an
 
 *Tailwind is better than inline styles!*
 
-Yeah, it is, but barely. Thats like saying "this apple is slightly less rotten than that one." Both are rotten
+Yeah, it is, but barely. That's like saying "this apple is slightly less rotten than that one." Both are rotten
 
 *The proper way to use tailwind is to make your own utility classes via @apply*
 
@@ -164,7 +162,7 @@ I don't want to dismiss tailwind as "for juniors" or as "for backend engineers f
 
 That's not to say there aren't great minds that love tailwind. Many great developers that I have a ton of respect for use and espouse tailwind. I don't understand why, but they seem to have blinders for all of its problems, but maybe they see something I don't.
 
-Maybe Tailwind is a symptom, an inflammatory reaction to the sorry state of CSS at the time it was conceived. Browser makers have kicked the can on native scoped styles again and again, and issues arising from specificity have persisted until very recently (and only are "gone" if you know how to use `:where`). I've seen other engineers, of all levels, stuck in a mire of bad CSS, and so to them maybe Tailwind seems like a lifesaver. But CSS _is better now_. It's not perfect, but it's better than its ever been, and it's better than tailwind. Give it another try. Don't reach for big globs of libraries to paper over the issues you think it has. Start off with something small and light. Use sass and autoprefixer, but not much else. Keep things simple and small. You might find you're even having fun writing css.
+Maybe Tailwind is a symptom, an inflammatory reaction to the sorry state of CSS at the time it was conceived. Browser makers have kicked the can on native scoped styles again and again, and issues arising from specificity have persisted until very recently (and only are "gone" if you know how to use `:where`). I've seen other engineers, of all levels, stuck in a mire of bad CSS, and so to them maybe Tailwind seems like a lifesaver. But CSS _is better now_. It's not perfect, but it's better than its ever been, and it's better than tailwind. Give it another try. Don't reach for big globs of libraries to paper over the issues you think it has. Start off with something small and light. Use sass and autoprefixer, but not much else. Keep things simple and small. You might find you're even having fun writing CSS.
 
 And it's not just frontend stuff that has seen this death. I've met senior engineers who don't understand git, and don't want to understand git. You point them at git-from-the-bottom-up, and they recoil as if it was a venomous snake. I've seen people, lead and principal engineers, who refuse to learn modern JS, insisting that since it was bad in 2006 its bad today. Worse still is some of these people have used their leadership positions to prevent the use of modern JS, of component frameworks like react/vue, from being used across an organization.
 
@@ -172,6 +170,6 @@ And it's not just frontend stuff that has seen this death. I've met senior engin
 
 Everything I wrote about here is mostly a problem I noticed regarding Tailwind. But other people have noticed them too. Here's some other things, some dated, some not, that expand on some issues of Tailwind:
 
-+ [Why I Don't Like Tailwind CSS](https://www.aleksandrhovhannisyan.com/blog/why-i-dont-like-tailwind-css/)
++ [Why I Don't Like Tailwind CSS](https://www.aleksandrhovhannisyan.com/blog/why-i-dont-like-tailwind-CSS/)
 + [Why you’ll probably regret using Tailwind](https://johanronsse.be/2020/07/08/why-youll-probably-regret-using-tailwind/)
 + [Chris Coyer, of CSS-Tricks, notes the tailwind "smell"](https://twitter.com/chriscoyier/status/1331302651179495425?s=20)
