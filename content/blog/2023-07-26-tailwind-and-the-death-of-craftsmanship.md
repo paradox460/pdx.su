@@ -4,7 +4,7 @@ date: 2023-07-26T12:40:47-06:00
 
 # Tailwind, and the death of web craftsmanship
 
-There's a worrying trend in modern web development, where developers are throwing away decades of carefully wrought for a bit of perceived convenience. Tools such as Tailwind CSS seem to be spreading like wildfire, with very few people ever willing to acknowledge the regression they bring to our field. And I'm getting tired of it
+There's a worrying trend in modern web development, where developers are throwing away decades of carefully wrought systems for a bit of perceived convenience. Tools such as Tailwind CSS seem to be spreading like wildfire, with very few people ever willing to acknowledge the regression they bring to our field. And I'm getting tired of it
 
 ## History
 
@@ -57,7 +57,7 @@ It gets even worse with dark mode and other variants.
 
 ### It's all meaningless
 
-In tailwind, it's common to write things like `m-3` for a margin. But _what_ margin. How big is an `m-3`? Trick question. It depends _entirely_ on your configuration. An `m-3` on my site and an `m-3` on someone else's could be entirely different. Same goes for basically every other number in tailwind. They have absolutely no meaning, and there's no consistency.
+In tailwind, it's common to write things like `m-3` for a margin. But _what_ margin? How big is an `m-3`? Trick question. It depends _entirely_ on your configuration. An `m-3` on my site and an `m-3` on someone else's could be entirely different. Same goes for basically every other number in tailwind. They have absolutely no meaning, and there's no consistency.
 When writing it at work, I frequently either find myself opening up our tailwind config and the default tailwind config, just to find which size I want, realizing it's not there, and ultimately going with a `m-[8px]` or something similar, creating another one-off.
 And its not just numbers. Class names themselves are inconsistent. Generally a tailwind class will loosely reflect the underlying CSS. But then you run into the mess of justify and align. There are 4 tailwind classes that all impact justification and alignment. `justify-*`, `align-*`, `items-*`, and `content-*`. There's a bit of false consistency, both `justify-*` and `align-*` map to `justify-content` and `align-content` properties. But what about `content-*` or `items-*`? What the hell do they mean? It makes sense if you use it, but it doesn't if you try to explain it.
 
@@ -71,7 +71,7 @@ The cascade is probably the most powerful part of CSS, that gets _completely tos
 
 Selector chaining, particularly with the advent of new CSS selectors like `is` and `where`, allows very clean reuse of common bits of CSS. You get to separate the properties that affect how something looks from what is being affected. It's obvious, but in tailwind, _you don't get that_.
 
-Finally, specificity is useful for how to resolve conflicts, what to do where two selector sets both match the same elements. Its complex and has bitten many developers hands over the year, but it can be a powerful tool when you need it. And 0-specificity selectors like `where` have arrived to help clean things up. And it's a lie to say you don't have to worry about specificity in tailwind; tailwind has its own specificity. Classes are read left-to-right by the browser, and so if you do `b-1 bg-blue b-2`, guess what? Your element gets both `b-1` and `b-2`, and the browser will _probably_ choose `b-2` as your border, and throw away `b-1`
+Finally, specificity is useful for how to resolve conflicts, what to do where two selector sets both match the same elements. Its complex and has bitten many developers hands over the years, but it can be a powerful tool when you need it. And 0-specificity selectors like `where` have arrived to help clean things up. And it's a lie to say you don't have to worry about specificity in tailwind; tailwind has its own specificity. Classes are read left-to-right by the browser, and so if you do `b-1 bg-blue b-2`, guess what? Your element gets both `b-1` and `b-2`, and the browser will _probably_ choose `b-2` as your border, and throw away `b-1`
 
 ### It's an obtuse abstraction
 
