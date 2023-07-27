@@ -40,7 +40,7 @@ Yeah, you might have auto-completion in your editor, but the browser inspector i
 
 You can't chain selectors. If you want your hover, focus, and active classes to be the same, you _have to write them all_. You can't do this:
 
-```CSS
+```css
 .foo:is(:hover, :focus, :active) {
   background: purple;
   border: 1px solid blue;
@@ -81,7 +81,7 @@ For all the simple stuff, tailwind is decent. Borders, colors, font sizes, all f
 
 One of the bits of advice Tailwind gives is to use `@apply` and extract common blobs of CSS into common classes. You'd use this like so:
 
-```CSS
+```css
 .btn {
   @apply m-2 p-2 bg-blue text-white
 }
