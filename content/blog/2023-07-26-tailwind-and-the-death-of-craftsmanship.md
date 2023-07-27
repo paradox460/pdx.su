@@ -50,7 +50,7 @@ You can't chain selectors. If you want your hover, focus, and active classes to 
 You have to do this:
 
 ```html
-<div class="hover:bg-purple active:bg-purple focus:bg-purple hover:border-1 active:border-1 focus:border-1 hover:border-blue focus:border-blue active:border-blue"
+<div class="hover:bg-purple active:bg-purple focus:bg-purple hover:border active:border focus:border hover:border-blue focus:border-blue active:border-blue"
 ```
 
 It gets even worse with dark mode and other variants.
@@ -69,9 +69,9 @@ Tailwind, and other utility frameworks, throw out the best and most often misund
 
 The cascade is probably the most powerful part of CSS, that gets _completely tossed_ by tailwind. In short, the cascade allows you to have multiple stylesheets, multiple styles, that apply to an item, and at render time they are reduced down to a single set of applied styles. This lets you do things like have a general purpose stylesheet, and then theme or page specific ones that change parts of this stylesheet. You might protest that you've never used that, and I'd call you a liar. The browsers provide a set of base styles, and then we, as developers, add our own on top of them. We might use a reset style, which normalizes browsers base styles (less common these days, as browsers have done a good job of normalizing their styles to each other). You can also use the cascade to easily apply dark mode, light mode, high contrast mode, or other color schemes. You just have to write your original CSS in a judicious manner.
 
-Selector chaining, particularly with the advent of new CSS selectors like `is` and `where`, allows very clean reuse of common bits of CSS. You get to separate the properties that affect how something looks from what is being affected. It's obvious, but in tailwind, _you don't get that_.
+Selector chaining, particularly with the advent of new CSS selectors like [`is`](http://developer.mozilla.org/en-US/docs/Web/CSS/:is) and [`where`](http://developer.mozilla.org/en-US/docs/Web/CSS/:where), allows very clean reuse of common bits of CSS. You get to separate the properties that affect how something looks from what is being affected. It's obvious, but in tailwind, _you don't get that_.
 
-Finally, specificity is useful for how to resolve conflicts, what to do where two selector sets both match the same elements. Its complex and has bitten many developers hands over the years, but it can be a powerful tool when you need it. And 0-specificity selectors like `where` have arrived to help clean things up. And it's a lie to say you don't have to worry about specificity in tailwind; tailwind has its own specificity. Classes are read left-to-right by the browser, and so if you do `b-1 bg-blue b-2`, guess what? Your element gets both `b-1` and `b-2`, and the browser will _probably_ choose `b-2` as your border, and throw away `b-1`
+Finally, specificity is useful for how to resolve conflicts, what to do where two selector sets both match the same elements. Its complex and has bitten many developers hands over the years, but it can be a powerful tool when you need it. And 0-specificity selectors like `where` have arrived to help clean things up. And it's a lie to say you don't have to worry about specificity in tailwind; tailwind has its own specificity. Classes are read left-to-right by the browser, and so if you do `b-1 bg-blue b-2`, guess what? Your element gets both `b-1` and `b-2`, and the browser will _probably_[^class-order] choose `b-2` as your border, and throw away `b-1`
 
 ### It's an obtuse abstraction
 
@@ -79,7 +79,7 @@ For all the simple stuff, tailwind is decent. Borders, colors, font sizes, all f
 
 ### @apply sucks
 
-One of the bits of advice Tailwind gives is to use `@apply` and extract common blobs of CSS into common classes. You'd use this like so:
+One of the bits of advice Tailwind gives is to use `@apply` and extract common blobs of CSS into common classes[^except-not]. You'd use this like so:
 
 ```css
 .btn {
@@ -95,7 +95,7 @@ Why bother to even use @apply? Just write the damn CSS. Extract color values and
 
 Tailwind is rather far to the "write-only" side of the software maintenance spectrum. Once written, untangling which class in a big ball of classes causes an effect can be painful. This is never more apparent than trying to undo a decision made once in the past.
 
-I recently had to update a site I was working on to support both light and dark color schemes. Tailwind has a nice `dark:` modifier built in, that converts whatever comes after it to a `prefers-color-scheme: dark` class. Problem is, the site I was working on was written, from the get-go, with a dark color scheme. In effect, I had to add light mode. And due to how browsers handle color schemes, tailwind offers no `light` modifier (nor should they). My process of adding the light mode was thus reduced to a painful series of find all instances of a certain color, evaluate them, and if they needed, add the light color as the default and a `dark:` modifier to their expression. It wasn't as simple as a global find-and-replace, as there were some places we always wanted the dark colors to shine through.
+I recently had to update a site I was working on to support both light and dark color schemes. Tailwind has a nice `dark:` modifier built in, that converts whatever comes after it to a `prefers-color-scheme: dark` class. Problem is, the site I was working on was written, from the get-go, with a dark color scheme. In effect, I had to add light mode. And due to how browsers handle color schemes[^light-default], tailwind offers no `light` modifier (nor should they). My process of adding the light mode was thus reduced to a painful series of find all instances of a certain color, evaluate them, and if they needed, add the light color as the default and a `dark:` modifier to their expression. It wasn't as simple as a global find-and-replace, as there were some places we always wanted the dark colors to shine through.
 
 Were this done using a more traditional CSS approach, I could just globally make the site use light mode, and then add a dark stylesheet that only affected the elements in question, or I could have updated color tables. Both are far easier than having to skulk through dozens of HTML templates, trying to find all the selectors that needed manipulation.
 
@@ -130,9 +130,9 @@ Overrides are easy enough, you just add props to your component, that let you tw
 
 ## Common defenses of tailwind that I've heard
 
-### Tailwind is faster to write!
+### Tailwind is faster to write
 
-Not in my experience, and ultimately, who cares. I've never found the bottleneck of developing code to be having to write `margin` instead of `m`, and I have emmet anyway, so I just do `m10`, hit tab, and get `margin: 10px`. You might have a wee bit of credibility in that I don't have to come up with semantic names for _everything_, but that's solved by using scoped styles and components.
+Not in my experience, and ultimately, who cares? I've never found the bottleneck of developing code to be having to write `margin` instead of `m`, and I have emmet anyway, so I just do `m10`, hit tab, and get `margin: 10px`. You might have a wee bit of credibility in that I don't have to come up with semantic names for _everything_, but that's solved by using scoped styles and components.
 
 ### Tailwind isn't actually bloated, it compiles the classes you need only for prod
 
@@ -142,7 +142,7 @@ The CSS tailwind generates might not be bloated, but repeating the gigantic stri
 
 Unless you use one-offs. Or use different "numbers" when writing your margins and paddings.
 
-### Tailwind is better than inline styles!
+### Tailwind is better than inline styles
 
 Yeah, it is, but barely. That's like saying "this apple is slightly less rotten than that one." Both are rotten
 
@@ -174,3 +174,7 @@ Everything I wrote about here is mostly a problem I noticed regarding Tailwind. 
 + [Why you’ll probably regret using Tailwind](https://johanronsse.be/2020/07/08/why-youll-probably-regret-using-tailwind/)
 + [Chris Coyer, of CSS-Tricks, notes the tailwind "smell"](https://twitter.com/chriscoyier/status/1331302651179495425?s=20)
 + [TailwindUI, And Here’s The Real Failwind Scam](https://medium.com/codex/tailwindui-and-heres-the-real-failwind-scam-b74357371ca5)
+
+[^class-order]: I say probably because it's very loosely defined behavior. What happens if you document is written in an rtl language?
+[^except-not]: [Except the creator of tailwind himself regrets adding `@apply`](https://twitter.com/adamwathan/status/1559250403547652097)
+[^light-default]: Light mode is the default, as far as browsers are concerned. If no dark style is provided, they will always fall back to light mode
