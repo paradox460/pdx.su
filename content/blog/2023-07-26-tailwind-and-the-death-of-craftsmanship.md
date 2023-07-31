@@ -174,6 +174,7 @@ Everything I wrote about here is mostly a problem I noticed regarding Tailwind. 
 + [Why you’ll probably regret using Tailwind](https://johanronsse.be/2020/07/08/why-youll-probably-regret-using-tailwind/)
 + [Chris Coyer, of CSS-Tricks, notes the tailwind "smell"](https://twitter.com/chriscoyier/status/1331302651179495425?s=20)
 + [TailwindUI, And Here’s The Real Failwind Scam](https://medium.com/codex/tailwindui-and-heres-the-real-failwind-scam-b74357371ca5)
++ [OpenProps](https://open-props.style): CSS custom properties (variables) that give you tailwind-like building blocks, but not the class mess. Never used it, but it looks promising, if you need this sort of design system
 
 [^class-order]: I say probably because it's very loosely defined behavior. What happens if you document is written in an rtl language?
 [^except-not]: [Except the creator of tailwind himself regrets adding `@apply`](https://twitter.com/adamwathan/status/1559250403547652097)
