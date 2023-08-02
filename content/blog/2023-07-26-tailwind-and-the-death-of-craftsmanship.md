@@ -1,5 +1,6 @@
 ---
 date: 2023-07-26T12:40:47-06:00
+updated: 2023-08-02T13:30:16-06:00
 ---
 
 # Tailwind, and the death of web craftsmanship
@@ -32,7 +33,7 @@ Tailwind even sprouted component libraries, built atop tailwind. The tailwind de
 ## The problem
 
 The problem I have with tailwind is that it reduces your HTML to a gigantic pile of near-gibberish CSS classes. What would be a few, maybe even half dozen, lines of CSS in a separate file, are now shoved into the generated code, and _repeated everywhere_. Any structure to the styling of an item is completely gone; you have hover styles and focus styles and dark styles and whatnot all mixed together in a single big space-separated string. Finding CSS one-offs is not even feasible anymore, _everything is a CSS one-off_.
-Tooling is utterly broken by tailwind, despite the claims that there is good tooling on tailwind's own UI. Look at this screenshot of a web inspector on a page using tailwind:
+Tooling is utterly broken by tailwind, despite the claims that there is good tooling on tailwind's own UI. Look at this screenshot of a web inspector on the Netlify admin dashboard, using tailwind:
 
 !["an element with a few hundred CSS tailwind classes"](/postimages/tailwind-garbage.jpg)
 
@@ -156,7 +157,7 @@ I've had value tables in Sass since 2008. Juniors still come along and just do `
 
 ## The death of craftsmanship
 
-Tailwind is a symptom of what I feel to be a larger symptom in development. There's been a rapid deterioration in pride-of-craftsmanship in development. It's naive to believe that "back in the old day" everyone wrote everything with a perfect eye towards beautiful craftsmanship, and now we just push code out as fast as we can. I remember having to use ugly CSS hacks to get IE to render things properly, or float clears to get containers not to shrink under an inline image. But there was definitely more interest in "doing it right" rather than dismissing it as a problem that wasn't worth solving.
+Tailwind is a symptom of what I feel to be a larger problem in development. There's been a rapid deterioration in pride-of-craftsmanship in development. It's naive to believe that "back in the old day" everyone wrote everything with a perfect eye towards beautiful craftsmanship, and now we just push code out as fast as we can. I remember having to use ugly CSS hacks to get IE to render things properly, or float clears to get containers not to shrink under an inline image. But there was definitely more interest in "doing it right" rather than dismissing it as a problem that wasn't worth solving.
 
 I don't want to dismiss tailwind as "for juniors" or as "for backend engineers forced to do frontend," but there is a kernel of truth to those statements. The people I've seen who are most excited over tailwind are generally those that would view frontend as something they _have_ to do, not something they _want_ to do. Juniors are still learning, and so they're attracted to the marketing spiel of tailwind, and see "look how easy it is I have to type less!" They don't have the experience to tell pyrite apart from gold. And backend engineers have an unfortunate tendency to view frontend as "not real engineering," as something beneath them. They used to reach for Bootstrap, now they reach for Tailwind. They want to get something passable done, and go back to "real" engineering on the backend.
 
@@ -174,7 +175,11 @@ Everything I wrote about here is mostly a problem I noticed regarding Tailwind. 
 + [Why you’ll probably regret using Tailwind](https://johanronsse.be/2020/07/08/why-youll-probably-regret-using-tailwind/)
 + [Chris Coyer, of CSS-Tricks, notes the tailwind "smell"](https://twitter.com/chriscoyier/status/1331302651179495425?s=20)
 + [TailwindUI, And Here’s The Real Failwind Scam](https://medium.com/codex/tailwindui-and-heres-the-real-failwind-scam-b74357371ca5)
++ [Tailwind and the femininity of CSS](https://thoughtbot.com/blog/tailwind-and-the-femininity-of-css) - An interesting perspective on this.
 + [OpenProps](https://open-props.style): CSS custom properties (variables) that give you tailwind-like building blocks, but not the class mess. Never used it, but it looks promising, if you need this sort of design system
+
++ A counterpoint article: [Why Tailwind](https://www.swyx.io/why-tailwind)
+
 
 [^class-order]: I say probably because it's very loosely defined behavior. What happens if you document is written in an rtl language?
 [^except-not]: [Except the creator of tailwind himself regrets adding `@apply`](https://twitter.com/adamwathan/status/1559250403547652097)
