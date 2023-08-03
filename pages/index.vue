@@ -34,7 +34,7 @@ useHead({
           <NuxtLink :to="article._path" class="postlink">
             <header class="postheader">
               <h1>{{ article.title }}</h1>
-              <Timestamp :datetime="article.date" />
+              <Timestamp :t="article.date" />
             </header>
             <div class="post">{{ article.description }}</div>
           </NuxtLink>

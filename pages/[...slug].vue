@@ -6,8 +6,8 @@
         <ContentRenderer ref="nuxtContent" :value="doc" />
         <footer class="articlefooter" v-if="doc._path.match(/^\/blog/)">
           The article "{{ doc.title }}" was written on
-          <Timestamp :datetime="doc.date" />
-          <span v-if="doc.updated">, and updated on <Timestamp :datetime="doc.updated" /></span>
+          <Timestamp :t="doc.date" hover-timestamp/>
+          <span v-if="doc.updated">, and updated on <Timestamp :t="doc.updated" hover-timestamp/></span>
         </footer>
       </div>
     </template>
