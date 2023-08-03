@@ -37,7 +37,7 @@ Tooling is utterly broken by tailwind, despite the claims that there is good too
 
 !["an element with a few hundred CSS tailwind classes"](/postimages/tailwind-garbage.jpg)
 
-Yeah, you might have auto-completion in your editor, but the browser inspector is utterly neutered. You can't use the applied styles checkbox, because you'll wind up disabling a style for _every usage of that tailwind class_. You have to manually edit the `class` attribute to remove classes to try and push your element to look how you want. Due to the tailwind compiler, which was a solution to the "shipping massive amounts of CSS" problem, you don't have a guarantee that the class you're trying to poke into the inspector view will actually exist.
+Yeah, you might have auto-completion in your editor, but the browser inspector is utterly neutered. You can't use the applied styles checkbox, because you'll wind up disabling a style for _every usage of that tailwind class_. ~~You have to manually edit the `class` attribute to remove classes to try and push your element to look how you want.~~[^inspector] Due to the tailwind compiler, which was a solution to the "shipping massive amounts of CSS" problem, you don't have a guarantee that the class you're trying to poke into the inspector view will actually exist.
 
 You can't chain selectors. If you want your hover, focus, and active classes to be the same, you _have to write them all_. You can't do this:
 
@@ -181,6 +181,11 @@ Everything I wrote about here is mostly a problem I noticed regarding Tailwind. 
 + A counterpoint article: [Why Tailwind](https://www.swyx.io/why-tailwind)
 
 
+## Updates
++ **:timestamp{datetime="2023-08-02T13:30:16-06:00" hoverTimeStamp}** Fix a typo, add Counterpoint article and Tailwind and the femininity of CSS article links
++ **:timestamp{datetime="2023-08-02T19:47:23-06:00" hoverTimeStamp}** Correct section on difficulty of editing the `class` attribute to reflect the chrome web inspector's `.cls` button
+
 [^class-order]: I say probably because it's very loosely defined behavior. What happens if you document is written in an rtl language?
 [^except-not]: [Except the creator of tailwind himself regrets adding `@apply`](https://twitter.com/adamwathan/status/1559250403547652097)
 [^light-default]: Light mode is the default, as far as browsers are concerned. If no dark style is provided, they will always fall back to light mode
+[^inspector]: The Chrome inspector has apparently grown a nice little `.cls` button in the Styles tab, which lets you toggle on and off the classes applied to the selected element via checklists. Thanks to [swanson on HackerNews](https://news.ycombinator.com/item?id=36977864) for pointing that out!
