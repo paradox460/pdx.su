@@ -28,24 +28,24 @@ We can then style it like this:
 .btn {
   border: 1px solid;
   padding: 5px;
-}
 
-.btn[data-color="blue"] {
-  background: blue;
-  color: white;
-}
-.btn[data-color="red"] {
-  background: red;
-  color: white;
-}
-
-
-.btn[data-primary] {
-  font-weight: bold;
+  &[data-color="blue"] {
+    background: blue;
+    color: white;
+  }
+  &[data-color="red"] {
+    background: red;
+    color: white;
+  }
+  &[data-primary] {
+    font-weight: bold;
+  }
 }
 ```
 
-If you use sass or some other tool that allows nesting CSS, you can clean that up even further.
+::note{color=green}
+I use nested CSS here, which has [very good support across browsers](https://caniuse.com/css-nesting). If you're targeting older browsers, you'll have to use a preprocessor to flatten out the CSS.
+::
 
 Now there's a very clear separation of concerns. The class indicates _what_ this thing is supposed to be, and the data attributes affect parts of how it looks. The primary appearance is styled by classes still, but secondary aspects are given to us from data attributes.
 
