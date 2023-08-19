@@ -23,7 +23,10 @@ const customColor = computed(() => {
   }
 
   const color = props.color.match(/base0\p{Hex_Digit}/) ? props.color : colors[props.color]
-  return `background: hsl(var(--${color}-hsl) / 0.25); border-color: hsl(var(--${color}-hsl) / 0.75)`
+  return {
+    background: `color-mix(in srgb, var(--${color}) 25%, transparent)`,
+    borderColor: `color-mix(in srgb, var(--${color}) 75%, transparent)`
+  }
 })
 </script>
 
