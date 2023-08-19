@@ -57,8 +57,10 @@ article
   margin-bottom 1rem
   display: flex
   flex-direction: row
+  gap: 1rem
   align-items: baseline
   justify-content: space-between
+  flex-wrap: wrap
 
   h1
     all: unset
