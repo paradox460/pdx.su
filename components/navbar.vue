@@ -29,23 +29,24 @@ ul
   gap: 20px
   align-items: center
 
-  @media screen and (max-width: 500px)
+  @media (max-width: 500px), print
     justify-content: center
     gap: 0
 
 li
   padding: 5px 0
 
-a:not(.logo)
+a
   all: unset
   cursor: pointer
+  font-family: var(--font-header)
+a:not(.logo)
   position relative
   font-size: 1.2rem
-  font-family: var(--font-header)
   font-weight: 400;
   font-style: normal;
 
-  @media screen and (max-width: 500px)
+  @media (max-width: 500px), print
     display: none
 
   &::after
@@ -64,16 +65,13 @@ a:not(.logo)
     transform: translateX(-50%)
 
 .logo
-  all: unset
-  cursor: pointer
   border-right: 1px solid var(--base02)
   padding: 10px 15px
   font-size: 2rem
 
-  font-family: var(--font-header)
   font-weight: 700
   font-style: italic
 
-  @media screen and (max-width: 500px)
+  @media (max-width: 500px), print
     border-right: 0
 </style>

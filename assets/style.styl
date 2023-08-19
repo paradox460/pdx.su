@@ -49,7 +49,7 @@ main
   gap: var(--grid-gap)
   translate: calc(((var(--sidebar-width) + var(--grid-gap)) / 2) * -1 ) 0
 
-  @media screen and (max-width: toc-hide)
+  @media screen and (max-width: toc-hide), print
     grid-template-areas:\
       "navigation"\
       "content"\
@@ -59,13 +59,14 @@ main
     max-width: var(--content-width)
 
 
+
 #navigation
   grid-area: navigation
 
 #toc
   grid-area: sidebar
 
-  @media screen and (max-width: toc-hide)
+  @media screen and (max-width: toc-hide), print
     display: none
 
 #content
