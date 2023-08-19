@@ -6,20 +6,19 @@
   font-weight: 400;
   font-style: normal;
   font-display: swap;
-
 }
 
-root-font-size = 16px
-
-toc-hide = 1376px
+toc-hide = 86rem
 
 @require '_colors.styl'
+
 :root
   --background: var(--base00)
   --foreground: var(--base07)
 
-  --content-width: root-font-size * 50 // 50rem equivalent
-  --sidebar-width: 256px;
+  --content-width: 50rem
+  --sidebar-width: 16rem;
+  --grid-gap: 1.25rem;
   --radius: 10px
 
   --font-copy: "proxima-nova", sans-serif
@@ -31,11 +30,10 @@ toc-hide = 1376px
 
 html
   background-color: var(--background);
-  font-size: root-font-size
   color: var(--foreground)
 
 body
-  margin: 10px
+  margin: 1rem
 
 main
   font-family: var(--font-copy)
@@ -46,10 +44,10 @@ main
     "sidebar footer"
   grid-template-columns: 16rem minmax(0,1fr)
   grid-template-rows: repeat(3, min-content)
-  max-width: calc(var(--content-width) + var(--sidebar-width) + 20px)
+  max-width: calc(var(--content-width) + var(--sidebar-width) + var(--grid-gap))
   margin: 0 auto
-  gap: 20px
-  translate: calc(((var(--sidebar-width) + 20px) / 2) * -1 ) 0
+  gap: var(--grid-gap)
+  translate: calc(((var(--sidebar-width) + var(--grid-gap)) / 2) * -1 ) 0
 
   @media screen and (max-width: toc-hide)
     grid-template-areas:\
@@ -78,7 +76,7 @@ main
 #footer
   grid-area: footer
   max-width: var(--content-width)
-  font-size: 10px
+  font-size: .6rem
   font-family: var(--font-mono)
   text-align center
   margin-top 5rem
