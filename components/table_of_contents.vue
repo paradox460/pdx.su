@@ -66,7 +66,7 @@ onMounted(() => {
         }
       }
     })
-  }, { threshold: 1, rootMargin: '10px'})
+  }, { threshold: 1, rootMargin: '10px' })
 
   document.querySelectorAll(headersSelector).forEach((el) => {
     observer.value?.observe((el))
@@ -84,35 +84,43 @@ onUnmounted(() => {
   </nav>
 </template>
 
-<style lang="stylus">
-#toc
-  width: 256px
-  font-size: 0.9rem
+<style lang="scss">
+#toc {
+  width: 256px;
+  font-size: 0.9rem;
 
-  a
-    all: unset
+  a {
+    all: unset;
+  }
 
-  ul
-    list-style-type: none
-    display: block
-    margin: unset
-    padding: unset
+  ul {
+    list-style-type: none;
+    display: block;
+    margin: unset;
+    padding: unset;
 
-    ul
+    ul {
       margin-left: 2em
+    }
+  }
 
-  li
-    margin-bottom: 0.5em
-    color: var(--base04)
-    text-decoration none
-    cursor: pointer
-    transition: color 0.2s ease-in-out
+  li {
+    margin-bottom: 0.5em;
+    color: var(--base04);
+    text-decoration: none;
+    cursor: pointer;
+    transition: color 0.2s ease-in-out;
 
-    &[data-active=true] > a, a:hover
+    &[data-active=true]>a,
+    a:hover {
       color: var(--foreground)
+    }
+  }
 
-  & > ul
-    position: sticky
-    top: 2rem
+  &>ul {
+    position: sticky;
+    top: 2rem;
     margin-top: 5rem
+  }
+}
 </style>

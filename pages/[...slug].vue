@@ -6,29 +6,31 @@
         <ContentRenderer ref="nuxtContent" :value="doc" />
         <footer class="articlefooter" v-if="doc._path.match(/^\/blog/)">
           The article "{{ doc.title }}" was written on
-          <Timestamp :t="doc.date" hover-timestamp/>
-          <span v-if="doc.updated">, and updated on <Timestamp :t="doc.updated" hover-timestamp/></span>
+          <Timestamp :t="doc.date" hover-timestamp />
+          <span v-if="doc.updated">, and updated on
+            <Timestamp :t="doc.updated" hover-timestamp />
+          </span>
         </footer>
       </div>
     </template>
     <template #not-found>
       <div id="content" class="post errorpage">
         <h1>404 not found</h1>
-        <p>The content you're looking for does not exist. Check the URL, or return to the <NuxtLink to="/">homepage</NuxtLink></p>
+        <p>The content you're looking for does not exist. Check the URL, or return to the <NuxtLink to="/">homepage
+          </NuxtLink>
+        </p>
       </div>
     </template>
   </ContentDoc>
 </template>
 
-<style lang="stylus" scoped>
-.articlefooter
-  margin-top 3rem
-  text-align center
-  border: 1px solid var(--base01)
-  border-radius: 5px
-  padding: 0.5rem
+<style lang="scss" scoped>
+.articlefooter {
+  margin-top: 3rem;
+  text-align: center;
+  border: 1px solid var(--base01);
+  border-radius: 5px;
+  padding: 0.5rem;
   color: var(--base05)
+}
 </style>
-
-<script setup lang="ts">
-</script>

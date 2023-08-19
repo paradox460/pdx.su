@@ -39,14 +39,18 @@ const isIntersecting = (id: string) => {
   </ul>
 </template>
 
-<style lang="stylus">
-@keyframes flash
-  0%
+<style lang="scss">
+@keyframes flash {
+  0% {
     color: inherit
-  50%
+  }
+
+  50% {
     color: var(--base0d)
+  }
+}
 
-
-:is(h1, h2, h3, h4, h5, h6)[data-active]
+:is(h1, h2, h3, h4, h5, h6)[data-active] {
   animation: flash 0.75s 3 ease-in-out both
+}
 </style>

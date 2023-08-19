@@ -4,7 +4,7 @@ const description = "The personal blog of software engineer Jeff Sandberg. Mostl
 
 export default defineNuxtConfig({
   css: [
-    '~/assets/style.styl',
+    '~/assets/style.scss',
   ],
   app: {
     head: {

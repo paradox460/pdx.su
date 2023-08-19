@@ -44,28 +44,31 @@ useHead({
   </div>
 </template>
 
-<style lang="stylus" scoped>
-article
-  margin-bottom 1.5rem
+<style lang="scss" scoped>
+article {
+  margin-bottom: 1.5rem
+}
 
-.postlink
-  all: unset
-  color: var(--foreground)
+.postlink {
+  all: unset;
+  color: var(--foreground);
   cursor: pointer
+}
 
-.postheader
-  margin-bottom 1rem
-  display: flex
-  flex-direction: row
-  gap: 1rem
-  align-items: baseline
-  justify-content: space-between
-  flex-wrap: wrap
+.postheader {
+  margin-bottom: 1rem;
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
 
-  h1
-    all: unset
-    font-size: 2rem
-    font-weight: 700
+  h1 {
+    all: unset;
+    font-size: 2rem;
+    font-weight: 700;
     font-family: var(--font-header)
-
+  }
+}
 </style>

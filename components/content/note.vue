@@ -39,20 +39,21 @@ const customColor = computed(() => {
   </aside>
 </template>
 
-<style lang="stylus" scoped>
-.note
-  background: var(--base02)
-  border: 1px solid var(--base03)
-  border-radius: 5px
-  display: grid
-  grid-template-columns: 35px auto
-  gap: 10px
-  margin-block: 1em 0
+<style lang="scss" scoped>
+.note {
+  background: var(--base02);
+  border: 1px solid var(--base03);
+  border-radius: 5px;
+  display: grid;
+  grid-template-columns: 35px auto;
+  gap: 10px;
+  margin-block: 1em 0;
   padding: 0 10px;
+}
 
-.icon
-  justify-self: center
-  align-self: center
-  font-size: 25px
-
+.icon {
+  justify-self: center;
+  align-self: center;
+  font-size: 25px;
+}
 </style>

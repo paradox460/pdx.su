@@ -27,10 +27,12 @@ const fullTimeStamp = computed(() => {
 
 </script>
 
-<style scoped lang="stylus">
-time
-  cursor: help
+<style scoped lang="scss">
+time {
+  cursor: help;
 
-  &:hover
+  &:hover {
     text-decoration: underline wavy
+  }
+}
 </style>
