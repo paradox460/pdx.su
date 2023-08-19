@@ -45,6 +45,13 @@ code
   font-feature-settings: "calt"
   color: var(--base0d)
 
+  &::before, &::after
+    content: "`"
+
+.codeblock code
+  &::before, &::after
+    content: ""
+
 hr
   all: unset
   display: block

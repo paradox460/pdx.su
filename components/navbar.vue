@@ -40,6 +40,11 @@ a
   all: unset
   cursor: pointer
   font-family: var(--font-header)
+  transition: text-shadow 0.2s ease-in-out
+
+  &:hover
+    text-shadow: 0 0 3px var(--foreground)
+
 a:not(.logo)
   position relative
   font-size: 1.2rem
