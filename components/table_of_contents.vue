@@ -86,7 +86,7 @@ onUnmounted(() => {
 
 <style lang="scss">
 #toc {
-  width: 256px;
+  width: var(--sidebar-width);
   font-size: 0.9rem;
 
   a {
