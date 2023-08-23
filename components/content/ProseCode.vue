@@ -1,35 +1,20 @@
-<script lang="ts">
-import { defineComponent } from '#imports'
+<script setup lang="ts">
+interface Props {
+  code?: string
+  language?: string
+  filename?: string
+  highlights?: Array<number>
+  meta?: string
+}
 
-export default defineComponent({
-  props: {
-    code: {
-      type: String,
-      default: ''
-    },
-    language: {
-      type: String,
-      default: null
-    },
-    filename: {
-      type: String,
-      default: null
-    },
-    highlights: {
-      type: Array as () => number[],
-      default: () => []
-    },
-    meta: {
-      type: String,
-      default: null
-    }
-  },
-  methods: {
-    copyCode() {
-      navigator.clipboard.writeText(this.code)
-    }
-  }
+const props = withDefaults(defineProps<Props>(), {
+  code: '',
+  highlights: () => new Array<number>(),
 })
+
+function copyCode() {
+  navigator.clipboard.writeText(props.code)
+}
 </script>
 
 <template>
@@ -46,9 +31,10 @@ export default defineComponent({
 
 <style lang="scss">
 .codeblock pre {
-  padding: 1em 0.75em;
+  padding: 1.5em 2em;
   overflow-x: auto
 }
+
 pre code .line {
   display: block;
   min-height: 1.2em;
@@ -65,7 +51,7 @@ pre code .highlight {
   margin-block-start: 1rem;
   margin-block-end: 1rem;
   border: 1px solid var(--base02);
-  border-radius: var(--radius)
+  border-radius: var(--radius);
 }
 
 .copybutton {
@@ -81,8 +67,9 @@ pre code .highlight {
   cursor: pointer;
   display: none;
 }
+
 .codeblock:has(.filename) .copybutton {
-  top: calc(6px + 2rem);
+  top: 3rem
 }
 
 
@@ -97,6 +84,6 @@ pre code .highlight {
 
 .filename {
   border-bottom: 1px solid var(--base02);
-  padding: 3px 8px;
+  padding: 0.5rem 1rem;
 }
 </style>
