@@ -34,7 +34,9 @@ useHead({
           <NuxtLink :to="article._path" class="postlink">
             <header class="postheader">
               <h1>{{ article.title }}</h1>
-              <Timestamp :t="article.date" />
+              <div class="timestamp">
+                <span class="published">Published </span>
+                <Timestamp :t="article.date" /></div>
             </header>
             <div class="post">{{ article.description }}</div>
           </NuxtLink>
@@ -62,7 +64,10 @@ article {
   gap: 1rem;
   align-items: baseline;
   justify-content: space-between;
-  flex-wrap: wrap;
+
+  @media (max-width: 500px) {
+    flex-direction: column;
+  }
 
   h1 {
     all: unset;
@@ -70,5 +75,19 @@ article {
     font-weight: 700;
     font-family: var(--font-header)
   }
+
+  .timestamp {
+    font-style: italic;
+    color: color-mix(in srgb, var(--foreground) 50%, transparent);
+  }
+  .published {
+    display: none;
+
+    @media (max-width: 500px) {
+      display: inline;
+    }
+  }
 }
+
+
 </style>
