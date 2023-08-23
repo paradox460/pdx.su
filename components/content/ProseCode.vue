@@ -33,7 +33,7 @@ export default defineComponent({
 </script>
 
 <template>
-  <div class="codeblock" :class="{ hasFilename: filename }">
+  <div class="codeblock">
     <div class="filename" v-if="filename">{{ filename }}</div>
     <slot />
     <a class="copybutton" title="copy" @click="copyCode">
@@ -46,19 +46,16 @@ export default defineComponent({
 
 <style lang="scss">
 .codeblock pre {
-  border: 1px solid var(--base02);
   padding: 1em 0.75em;
-  border-radius: 5px;
   overflow-x: auto
 }
-
 pre code .line {
   display: block;
-  min-height: 1.2em
+  min-height: 1.2em;
 }
 
 pre code .highlight {
-  background: var(--base01)
+  background: var(--base01);
 }
 </style>
 
@@ -66,7 +63,9 @@ pre code .highlight {
 .codeblock {
   position: relative;
   margin-block-start: 1rem;
-  margin-block-end: 1rem
+  margin-block-end: 1rem;
+  border: 1px solid var(--base02);
+  border-radius: var(--radius)
 }
 
 .copybutton {
@@ -82,6 +81,9 @@ pre code .highlight {
   cursor: pointer;
   display: none;
 }
+.codeblock:has(.filename) .copybutton {
+  top: calc(6px + 2rem);
+}
 
 
 .icon {
@@ -94,19 +96,7 @@ pre code .highlight {
 
 
 .filename {
-  position: absolute;
-  top: calc(-2em + 2px);
-  left: 10px;
-  border: 1px solid var(--base02);
-  border-bottom: 0;
+  border-bottom: 1px solid var(--base02);
   padding: 3px 8px;
-  border-radius: var(--radius);
-  border-bottom-left-radius: 0;
-  border-bottom-right-radius: 0;
-  background: var(--background);
-}
-
-.hasFilename {
-  margin-block-start: calc(1rem + 1.2em);
 }
 </style>
