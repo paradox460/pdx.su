@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { closetag } from "sitemap/dist/lib/sitemap-stream";
-import { Ref, computed } from "vue"
+import { computed } from "vue"
 
 const props = defineProps({
   doc: { type: Object }

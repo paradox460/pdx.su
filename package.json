@@ -7,11 +7,12 @@
     "preview": "nuxt preview"
   },
   "devDependencies": {
-    "@nuxt/content": "^2.4.0",
-    "nuxt": "^3.5.3",
+    "@nuxt/content": "~2.7.0",
+    "nuxt": "^3.5.0",
     "rss": "^1.2.2",
-    "sass": "^1.66.1",
+    "sass": "^1.69.5",
     "sass-loader": "^13.3.2",
     "sitemap": "^7.1.1"
-  }
+  },
+  "packageManager": "yarn@4.0.0"
 }
