@@ -21,7 +21,7 @@ January 2010, I was in the #reddit IRC channel on freenode, and some reddit admi
 
 ![v1 of reddit mobile, as seen on a TechCrunch article](/postimages/reddit-mobile-tc.jpg)
 
-Come June 9th, [we launched it](https://web.archive.org/web/20100612133310/http://blog.reddit.com/2010/06/better-mobile-reddit-for-all.html), and got a [nice article in TechCrunch about it](crunch.com/2010/06/09/reddit-mobile).
+Come June 9th, [we launched it](https://web.archive.org/web/20100612133310/http://blog.reddit.com/2010/06/better-mobile-reddit-for-all.html), and got a [nice article in TechCrunch about it](https://techcrunch.com/2010/06/09/reddit-mobile).
 
 [I wrote an old blog post](https://web.archive.org/web/20100614000623/http://paradoxdgn.com/post/the-design-process-for-reddit-mobile); for whatever reason Archive.org didn't preserve my sites styles, but you can read and see some great images, regardless of CSS. You can see the android 2.0 style pop-overs for post and comment options in that article.
 
