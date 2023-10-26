@@ -24,7 +24,9 @@ CSS Nesting is the biggest "preprocessor" feature, with every preprocessor worth
 `color-mix` takes another bite out of the preprocessor pie. Instead of having to use sass functions like `lighten` or `darken` or `transparentize`, you can now just write them with real css. And since they're done in real css, they're color space aware, and can make use of custom properties too. Wanna make a highlight out of a primary color, which is picked and set externally? Piece of cake
 
 ```css
-background: color-mix(in srgb, var(--primary-color), white 50%)
+.selector {
+  background: color-mix(in srgb, var(--primary-color), white 50%)
+}
 ```
 
 This mixes your primary color with 50% white, in the sRGB space. You can use other, newer, better color spaces too, such as OKLCH, which is my favorite.
@@ -44,14 +46,18 @@ Colors are gaining even more superpowers, via the Relative Colors feature of the
 Want to make a transparent version of a color? Piece of cake:
 
 ```css
---primary: blue;
---transparent-blue: hsl(from var(--primary) h s l / 50%);
+:root {
+  --primary: blue;
+  --transparent-blue: hsl(from var(--primary) h s l / 50%);
+}
 ```
 
 How about making a lighter version of a color?
 
 ```css
---light-blue: oklch(from blue, calc(l + 25) c h);
+:root {
+  --light-blue: oklch(from blue, calc(l + 25) c h);
+}
 ```
 
 Instead of having to use cumbersome functions, you can just use `calc` and the same color functions as you would to define a single color.
