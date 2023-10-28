@@ -4,7 +4,7 @@ date: 2023-10-25T18:57:41-06:00
 
 # CSS is fun again
 
-CSS has been undergoing a quiet renaissance lately. Lots of big features, that previously required an external tool to use, are now native features of the language. And its growing more and more all the time. If you haven't used CSS in a long time, for whatever reason, now is the time to take a look again.
+CSS has been undergoing a quiet renaissance lately. Lots of big features which previously required an external tool to use, are now native parts of the language, and its growing more and more all the time. If you haven't used CSS in a long time, for whatever reason, now is the time to take a look again.
 
 ## Brief history, and how CSS became "not-fun"
 
