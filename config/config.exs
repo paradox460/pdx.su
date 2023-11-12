@@ -20,7 +20,8 @@ config :tableau, :config,
         superscript: true,
         table: true
       ],
-      render: [unsafe_: true]
+      render: [unsafe_: true],
+      features: [syntax_highlight_theme: "base16_tomorrow_night"]
     ]
   ]
 
