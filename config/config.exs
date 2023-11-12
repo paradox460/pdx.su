@@ -1,14 +1,30 @@
 import Config
 
+config :tableau, :reloader,
+  patterns: [
+    ~r"assets/.*\.(scss|js|ts)",
+    ~r"lib/.*\.ex",
+    ~r"(_posts|_pages)/.*.md"
+  ]
+
 config :tableau, :config,
   url: "http://localhost:4999",
   timezone: "America/Denver",
   markdown: [
     mdex: [
-      extension: [header_ids: "", strikethrough: true],
-      render: [unsafe_: true],
+      extension: [
+        autolink: true,
+        footnotes: true,
+        header_ids: "",
+        strikethrough: true,
+        superscript: true,
+        table: true
+      ],
+      render: [unsafe_: true]
     ]
   ]
+
+config :tableau, :assets, yarn: ~w[--cwd assets watch]
 
 config :temple, engine: EEx.SmartEngine, attributes: {Temple, :attributes}
 
@@ -24,7 +40,6 @@ config :tableau, Tableau.RSSExtension,
   enabled: true,
   title: "Jeff Sandberg's Blog",
   description: "The personal blog of Jeff Sandberg, software engineer"
-
 
 config :elixir, :time_zone_database, Tz.TimeZoneDatabase
 

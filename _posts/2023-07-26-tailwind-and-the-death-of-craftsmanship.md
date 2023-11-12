@@ -1,6 +1,6 @@
 ---
-date: 2023-07-26T12:40:47-06:00
-updated: 2023-08-02T13:30:16-06:00
+date: ~N[2023-07-26T12:40:47-06:00]
+updated: ~N[2023-08-02T13:30:16-06:00]
 ---
 
 # Tailwind, and the death of web craftsmanship

@@ -1,5 +1,5 @@
 ---
-date: 2023-02-13T22:18:18-07:00
+date: ~N[2023-02-13T22:18:18-07:00]
 image:
   src: "https://pdx.su/postimages/fish-theme.png"
 ---

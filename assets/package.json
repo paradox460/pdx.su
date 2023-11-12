@@ -1,0 +1,15 @@
+{
+  "name": "assets",
+  "packageManager": "yarn@4.0.1",
+  "scripts": {
+    "build": "node build.mjs",
+    "watch": "node watch.mjs"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.16",
+    "esbuild": "^0.19.5",
+    "esbuild-sass-plugin": "^2.16.0",
+    "postcss": "^8.4.31",
+    "postcss-preset-env": "^9.3.0"
+  }
+}

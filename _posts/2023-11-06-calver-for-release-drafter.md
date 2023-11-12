@@ -1,5 +1,5 @@
 ---
-date: 2023-11-06T16:21:53-07:00
+date: ~N[2023-11-06T16:21:53-07:00]
 ---
 
 # CalVer for Release Drafter

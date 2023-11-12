@@ -36,6 +36,11 @@ h6 {
     cursor: pointer;
   }
 }
+
+h1 {
+  font-size: 1.75em;
+}
+
 blockquote {
   all: unset;
   display: block;
@@ -56,11 +61,6 @@ code {
   font-family: var(--font-mono);
   font-feature-settings: "calt";
   color: var(--base0d);
-
-  &::before,
-  &::after {
-    content: "`";
-  }
 }
 .codeblock code {
   &::before,

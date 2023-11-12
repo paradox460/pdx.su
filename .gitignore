@@ -24,3 +24,6 @@ pdx-*.tar
 
 # Temporary files, for example, from tests.
 /tmp/
+
+# The generated site
+/_site/

@@ -2,7 +2,7 @@
 import type { QueryBuilderParams } from '@nuxt/content/dist/runtime/types';
 const query: QueryBuilderParams = {
   path: "/blog",
-  sort: { date: -1 }
+  sort: { date: ~N[-1 }]
 }
 
 const title = "Jeff Sandberg's Blog"

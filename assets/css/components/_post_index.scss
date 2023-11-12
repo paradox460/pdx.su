@@ -1,0 +1,29 @@
+#content.index {
+  list-style-type: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  font-size: 1.2rem;
+
+  li {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  time {
+    opacity: 0.5;
+    flex-shrink: 0;
+  }
+
+  li:hover time {
+    opacity: 0.8;
+  }
+
+  a {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+}

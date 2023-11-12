@@ -1,6 +1,9 @@
-@use "_colors.scss";
-@use "_syntax.scss";
-@use "_prose.scss";
+@use "general/colors";
+@use "general/prose";
+@use "components/navbar";
+@use "components/post_index";
+@use "components/post";
+@use "components/syntax";
 
 @font-face {
   font-family: "JetBrainsMono";
@@ -103,4 +106,12 @@ main {
 
 *::selection {
   background: var(--base02);
+}
+
+time[title] {
+  cursor: help;
+
+  &:hover {
+    text-decoration: underline wavy;
+  }
 }

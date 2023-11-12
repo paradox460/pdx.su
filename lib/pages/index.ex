@@ -7,10 +7,10 @@ defmodule Pdx.Index do
 
   def template(assigns) do
     temple do
-      ul id="content" do
+      ul class: "index", id: "content" do
         for post <- @posts do
           li do
-            a href: "post.permalink", do: post.title
+            a href: post.permalink, do: post.title
             c &Pdx.Components.Timestamp.timestamp/1, t: post.date
           end
         end

@@ -1,3 +1,7 @@
+---
+layout: Pdx.PageLayout
+permalink: "/about"
+---
 # About me
 
 Hi, I'm Jeff Sandberg. I'm a software engineer, an amateur chicken farmer, and father.

@@ -1,5 +1,5 @@
 ---
-date: 2023-04-06T10:00:00-06:00
+date: ~N[2023-04-06T10:00:00-06:00]
 ---
 
 # Rest in Peace, Reddit Compact

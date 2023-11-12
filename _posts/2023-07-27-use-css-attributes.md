@@ -1,5 +1,5 @@
 ---
-date: 2023-07-27T10:33:42-06:00
+date: ~N[2023-07-27T10:33:42-06:00]
 ---
 
 # Use CSS attributes not classes
