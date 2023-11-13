@@ -1,0 +1,38 @@
+#toc {
+  ul {
+    all: unset;
+    width: var(--sidebar-width);
+    font-size: 0.9rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+    position: sticky;
+    top: 2rem;
+    margin-top: 5rem;
+  }
+
+  li {
+    all: unset;
+  }
+
+  a {
+    all: unset;
+    display: block;
+    color: var(--base04);
+    cursor: pointer;
+    transition: color 0.2s ease-in-out;
+
+    &:hover,
+    &[data-active] {
+      color: var(--foreground);
+    }
+  }
+
+  a[data-depth="2"] {
+    padding-left: 2ch;
+  }
+
+  a[data-depth="3"] {
+    padding-left: 4ch;
+  }
+}

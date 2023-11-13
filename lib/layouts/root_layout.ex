@@ -28,12 +28,14 @@ defmodule Pdx.RootLayout do
           end
 
           link  rel: 'stylesheet', href: 'https://use.typekit.net/fln1ury.css'
-          link rel: "stylesheet", href: "/style.css"
+          link rel: "stylesheet", href: "/css/style.css"
           link  rel: 'manifest', href: '/manifest.webmanifest'
           link  rel: 'icon', href: '/favicon.ico', sizes: 'any'
           link  rel: 'icon', href: '/favicon.svg', type: 'image/svg+xml'
           link  rel: 'apple-touch-icon', href: '/apple-touch-icon.png'
           link  rel: 'alternate', type: 'application/rss+xml', href: '/rss.xml'
+
+          script src: "/js/index.js"
 
           # TODO: Meta tags from posts
         end

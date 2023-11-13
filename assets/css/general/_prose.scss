@@ -35,6 +35,10 @@ h6 {
     width: 2em;
     cursor: pointer;
   }
+
+  &:has(a:target) {
+    animation: flash 0.75s 3 ease-in-out both;
+  }
 }
 
 h1 {

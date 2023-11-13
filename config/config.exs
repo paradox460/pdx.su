@@ -35,6 +35,9 @@ config :tableau, Tableau.PostExtension,
   layout: "Pdx.PostLayout",
   permalink: "/blog/:file"
 
+config :tableau, Pdx.Toc,
+  enabled: true
+
 config :tableau, Tableau.PageExtension, enabled: true
 
 config :tableau, Tableau.RSSExtension,

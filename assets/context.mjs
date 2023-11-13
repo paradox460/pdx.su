@@ -6,7 +6,7 @@ import postcssPresetEnv from 'postcss-preset-env';
 
 
 export default await esbuild.context({
-  entryPoints: ["css/style.scss"],
+  entryPoints: ["./css/style.scss", "./js/index.ts"],
   bundle: true,
   sourcemap: true,
   outdir: "../_site",

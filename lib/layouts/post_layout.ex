@@ -4,7 +4,15 @@ defmodule Pdx.PostLayout do
 
   def template(assigns) do
     temple do
-      # TODO: TOC
+      nav id: "toc" do
+        ul do
+          for toc_link <- @toc[@page.file] || [] do
+            li do
+              a href: "##{toc_link.id}", "data-depth": toc_link.depth, do: toc_link.text
+            end
+          end
+        end
+      end
       article id: "content", class: "post" do
         render(@inner_content)
         footer class: "articlefooter" do
