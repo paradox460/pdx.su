@@ -1,9 +1,6 @@
 defmodule Pdx.Components.Timestamp do
   use Pdx.Component
 
-  # TODO: Make a Lit component pick this up and do some time magic for local users timezones
-  # Yeah we'd get a flash of the old time, but meh idgaf
-
   def timestamp(assigns) do
     temple do
       ~s[<smart-time t='#{DateTime.to_iso8601(@t)}' hover #{if assigns[:timestamp], do: "show-timestamp"}></smart-time>]
