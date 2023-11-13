@@ -183,8 +183,8 @@ Everything I wrote about here is mostly a problem I noticed regarding Tailwind. 
 
 
 ## Updates
-+ **:timestamp{t="2023-08-02T13:30:16-06:00" timestamp hover-timestamp}** Fix a typo, add Counterpoint article and Tailwind and the femininity of CSS article links
-+ **:timestamp{t="2023-08-02T19:47:23-06:00" timestamp hover-timestamp}** Correct section on difficulty of editing the `class` attribute to reflect the chrome web inspector's `.cls` button
++ Fix a typo, add Counterpoint article and Tailwind and the femininity of CSS article links
++ Correct section on difficulty of editing the `class` attribute to reflect the chrome web inspector's `.cls` button
 
 [^class-order]: I say probably because it's very loosely defined behavior. What happens if you document is written in an rtl language?
 [^except-not]: [Except the creator of tailwind himself regrets adding `@apply`](https://twitter.com/adamwathan/status/1559250403547652097)

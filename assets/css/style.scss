@@ -115,7 +115,8 @@ main {
   background: var(--base02);
 }
 
-time[title] {
+time[title],
+smart-time {
   cursor: help;
 
   &:hover {

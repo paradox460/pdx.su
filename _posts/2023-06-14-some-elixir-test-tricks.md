@@ -263,6 +263,6 @@ Remember, all that ExUnit provides is some useful tools around testing. Under th
 
 ## Updates
 
-+ **:timestamp{t="2023-06-21T02:11:28-06:00" hover-timestamp}** Post was updated to add a note about why macros were used instead of plain functions
++ Post was updated to add a note about why macros were used instead of plain functions
 
 [se1]: https://hexdocs.pm/ex_unit/ExUnit.Callbacks.html#setup/1

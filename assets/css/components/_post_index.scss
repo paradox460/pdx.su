@@ -12,12 +12,13 @@
     justify-content: space-between;
   }
 
-  time {
+  time,
+  smart-time {
     opacity: 0.5;
     flex-shrink: 0;
   }
 
-  li:hover time {
+  li:hover :where(time, smart-time) {
     opacity: 0.8;
   }
 
