@@ -44,9 +44,11 @@ Other list types exist too, such as definition lists, questions and answers, and
 
 Asciidoc also has first class support for "admonitions". Admonitions are basically a specifically formatted block of text, designed to draw the readers eye, and call out something that might be relevant to the surrounding text, but is ultimately not part of it.
 
-::note
+<md-note>
+
 This is an admonition!
-::
+
+</md-note>
 
 If you've ever read the O'Reilly programming books, you should be familiar with these little things, they're used liberally.
 
@@ -93,12 +95,6 @@ Markdown has inertia, and that's one hell of a thing. Its almost ubiquitous at t
 Markdown is (loosely) universal. You can take something written using primitive Markdown (not any specific implementation's features, but the core described by Gruber or Commonmark) and use it on a huge variety of sites and services.
 
 Markdown is fairly extensible, within reason. While the true extensibility of Markdown depends on your processing toolchain, how hard you want to work, and what you're willing to do, it is ultimately still extensible. Asciidoc extensions are more standardized and easier to reason about, but there are simply _more_ Markdown extensions and implementations out there.
-
-You can even use quasi-standards like MDC/MDX to bring Vue/React components _into_ Markdown, giving you a massive amount of power, in a very easy to use package.
-
-::note{color=cyan}
-The admonitions on this blog, for example, are an MDC component.
-::
 
 Want GitHub-style Markdown? Go for it, GitHub has even [published a standard for GFM](https://github.github.com/gfm/). Want your own? No problem, Slack and Telegram have both done it.
 

@@ -9,9 +9,11 @@ Showers are a part of my daily routine. And I've been putting up with a lousy sh
 
 Yep, that's right, I've written an entire blog post about a _showerhead_. It's a bit of a review, a bit of me having a little nerd-out over a "gadget", and hopefully an interesting article.
 
-::note{icon='🫥'}
+<md-note icon='🫥'>
+
 **tl;dr:** I bought a [high-sierra brand showerhead](https://www.highsierrashowerheads.com/shop/classic/), and I love it.
-::
+
+</md-note>
 
 ## The past
 
@@ -71,9 +73,11 @@ Additionally, I just feel impressed by the company that makes the shower heads. 
 
 ## Addendum: Don't waste hot water
 
-::note{icon='💀' color='red'}
+<md-note icon='💀' color='red'>
+
 Unfortunately these are no longer made terribly well. They have switched from metal construction to plastic construction, and are prone to breaking very quickly. All the ones I've owned, save the original metal one, have failed. As such, I can no longer recommend them. I'll leave this section here for posterity.
-::
+
+</md-note>
 
 I don't have a water recirculation pump. I want one, but it's not in the budget for the near future. So I just let the shower run for a few minutes until it gets hot.
 

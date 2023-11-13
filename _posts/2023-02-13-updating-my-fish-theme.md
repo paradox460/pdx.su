@@ -10,9 +10,11 @@ I've been using Fish Shell for nearly a decade now, and over that time I've grad
 
 ![screenshot of the theme](/postimages/fish-theme.png)
 
-::note{icon='️🖼'}
+<md-note icon='️🖼'>
+
 My theme is available at https://github.com/paradox460/paradox-theme
-::
+
+</md-note>
 
 ## The beginning
 

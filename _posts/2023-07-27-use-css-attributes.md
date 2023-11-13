@@ -43,9 +43,11 @@ We can then style it like this:
 }
 ```
 
-::note{color=green}
+<md-note color=green>
+
 I use nested CSS here, which has [very good support across browsers](https://caniuse.com/css-nesting). If you're targeting older browsers, you'll have to use a preprocessor to flatten out the CSS.
-::
+
+</md-note>
 
 Now there's a very clear separation of concerns. The class indicates _what_ this thing is supposed to be, and the data attributes affect parts of how it looks. The primary appearance is styled by classes still, but secondary aspects are given to us from data attributes.
 

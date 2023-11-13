@@ -18,9 +18,11 @@ TextMate 2 can be looked at as the beginning of the "editor revolution." Yes, th
 
 When TextMate 2 got a bit long in the tooth, and some work paradigms shifted (i.e. using a tree view baked into the editor came into vogue), I moved to SublimeText 2. ST2 did a lot of things well, and a lot of those little things were carried over from TextMate 2. But ST2 _also_ introduced its own little things. The keyboard-driven quick command menu is fundamentally no different from Vim's command mode or various Emacs chords, but in practice, the little UI that comes up when you trigger it, the typeahead nature of it, and the implicit discoverability, all tie together to make it a _better_ user interface. Atom and VSCode have also copied this pattern, and it's now emergent in pretty much every technical application out there. Even "creative" tools like Photoshop have implemented similar features.
 
-::note
+<md-note>
+
 If you're on macOS, I suggest editing your system-wide keyboard shortcuts to add a shortcut to "Open Help Menu". MacOS helpfully has a menu search system that can be used as a command palette in most applications, and hitting the keyboard shortcut puts the cursor in a search box within that help menu.
-::
+
+</md-note>
 
 Atom improved dramatically on how much power third party plugins can have, both over the text, and over various presentational aspects. Things like rich markdown preview, regex railroad graphs, embedded diagrams, and whatnot were the little things atom added that dramatically improved it over sublime text, enough that the performance hit was worth it. VSCode further improved on this by adding performance back while only limiting plugins in certain ways, and by introducing standardized ways to build support for IDE like features, without needing a big heavy IDE.
 
