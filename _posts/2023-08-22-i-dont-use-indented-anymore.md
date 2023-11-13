@@ -1,5 +1,6 @@
 ---
 date: ~N[2023-08-22T16:54:47-06:00]
+permalink: "/blog/2023-08-22-i-dont-use-indented-anymore"
 ---
 
 # Why I (generally) don't use indented syntax templates anymore

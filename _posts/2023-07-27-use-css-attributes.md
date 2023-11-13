@@ -1,5 +1,6 @@
 ---
 date: ~N[2023-07-27T10:33:42-06:00]
+permalink: "/blog/2023-07-27-use-css-attributes"
 ---
 
 # Use CSS attributes not classes

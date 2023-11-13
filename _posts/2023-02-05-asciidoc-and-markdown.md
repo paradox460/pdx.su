@@ -1,6 +1,7 @@
 ---
 date: ~N[2023-02-05T17:39:53-07:00]
 updated: ~N[2023-02-10T16:13:42-07:00]
+permalink: "/blog/:year-0:month-0:day-asciidoc-and-markdown"
 ---
 
 # I wish Asciidoc was more popular

@@ -1,5 +1,6 @@
 ---
 date: ~N[2023-11-06T16:21:53-07:00]
+permalink: "/blog/2023-11-06-:title"
 ---
 
 # CalVer for Release Drafter
