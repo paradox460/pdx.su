@@ -50,7 +50,9 @@ defmodule Pdx.RootLayout do
             c &navbar/1
             render(@inner_content)
             c &footer/1
-            c &Tableau.live_reload/1
+            if Mix.env() == :dev do
+              c &Tableau.live_reload/1
+            end
           end
         end
 
