@@ -105,6 +105,35 @@ main {
   div {
     margin-bottom: 0.5rem;
   }
+
+  #footer-navigation {
+    margin-bottom: 1rem;
+    font-size: 0.7rem;
+    ul {
+      all: unset;
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      gap: 1ch;
+
+      li {
+        all: unset;
+      }
+
+      a {
+        all: unset;
+        text-decoration: underline;
+        cursor: pointer;
+        color: var(--foreground);
+        opacity: 0.5;
+
+        &:hover {
+          color: var(--base0d);
+          opacity: 1;
+        }
+      }
+    }
+  }
 }
 
 .errorpage {

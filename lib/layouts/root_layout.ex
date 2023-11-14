@@ -69,6 +69,12 @@ defmodule Pdx.RootLayout do
   def footer(_) do
     temple do
       footer id: "footer" do
+        nav id: "footer-navigation" do
+          ul do
+            li do: a href: "/", do: "Blog"
+            li do: a href: "/about", do: "About"
+          end
+        end
         div do: "&copy; #{DateTime.now!("Etc/UTC").year} Jeff Sandberg"
         div do: "All writings are my own and do not reflect the opinion of any other party"
       end
