@@ -36,6 +36,7 @@ defmodule Pdx.RootLayout do
           link rel: "icon", href: "/favicon.svg", type: "image/svg+xml"
           link rel: "apple-touch-icon", href: "/apple-touch-icon.png"
           link rel: "alternate", type: "application/rss+xml", href: "/feed.xml"
+          link rel: "sitemap", type: "application/xml", title: "Sitemap", href: "/sitemap.xml"
 
           script src: "/js/index.js"
 

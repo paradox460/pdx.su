@@ -44,6 +44,8 @@ config :tableau, Tableau.RSSExtension,
   title: "Jeff Sandberg's Blog",
   description: "The personal blog of Jeff Sandberg, software engineer"
 
+config :tableau, Tableau.SitemapExtension, enabled: true
+
 config :elixir, :time_zone_database, Tz.TimeZoneDatabase
 
 import_config "#{Mix.env()}.exs"

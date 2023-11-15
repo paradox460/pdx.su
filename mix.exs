@@ -22,7 +22,7 @@ defmodule Pdx.MixProject do
   defp deps do
     [
       {:floki, "~> 0.35.2"},
-      {:tableau, "~> 0.11.1"},
+      {:tableau, "~> 0.12.0"},
       {:temple, "~> 0.12"},
       {:mdex, github: "paradox460/mdex", override: true},
       {:rustler, ">= 0.0.0", optional: true}
