@@ -15,7 +15,9 @@ defmodule Pdx.RootLayout do
 
           meta name: "viewport", content: "width=device-width, initial-scale=1.0"
 
-          meta name: "description", content: "The personal blog of software engineer Jeff Sandberg"
+          meta name: "description",
+               content: "The personal blog of software engineer Jeff Sandberg"
+
           meta name: "author", content: "Jeff Sandberg"
           meta property: "og:locale", content: "en_US"
           meta property: "twitter:site", content: "@paradox460"
@@ -27,13 +29,13 @@ defmodule Pdx.RootLayout do
             |> Enum.join(" ")
           end
 
-          link  rel: 'stylesheet', href: 'https://use.typekit.net/fln1ury.css'
+          link rel: "stylesheet", href: "https://use.typekit.net/fln1ury.css"
           link rel: "stylesheet", href: "/css/style.css"
-          link  rel: 'manifest', href: '/manifest.webmanifest'
-          link  rel: 'icon', href: '/favicon.ico', sizes: 'any'
-          link  rel: 'icon', href: '/favicon.svg', type: 'image/svg+xml'
-          link  rel: 'apple-touch-icon', href: '/apple-touch-icon.png'
-          link  rel: 'alternate', type: 'application/rss+xml', href: '/feed.xml'
+          link rel: "manifest", href: "/manifest.webmanifest"
+          link rel: "icon", href: "/favicon.ico", sizes: "any"
+          link rel: "icon", href: "/favicon.svg", type: "image/svg+xml"
+          link rel: "apple-touch-icon", href: "/apple-touch-icon.png"
+          link rel: "alternate", type: "application/rss+xml", href: "/feed.xml"
 
           script src: "/js/index.js"
 
@@ -45,6 +47,7 @@ defmodule Pdx.RootLayout do
             c &navbar/1
             render(@inner_content)
             c &footer/1
+
             if Mix.env() == :dev do
               c &Tableau.live_reload/1
             end
@@ -58,9 +61,9 @@ defmodule Pdx.RootLayout do
     temple do
       nav id: "navigation" do
         ul do
-          li do: a href: "/", title: "Home", class: "logo", do: "Jeff Sandberg"
-          li do: a href: "/", do: "Blog"
-          li do: a href: "/about", do: "About"
+          li do: a(href: "/", title: "Home", class: "logo", do: "Jeff Sandberg")
+          li do: a(href: "/", do: "Blog")
+          li do: a(href: "/about", do: "About")
         end
       end
     end
@@ -71,10 +74,11 @@ defmodule Pdx.RootLayout do
       footer id: "footer" do
         nav id: "footer-navigation" do
           ul do
-            li do: a href: "/", do: "Blog"
-            li do: a href: "/about", do: "About"
+            li do: a(href: "/", do: "Blog")
+            li do: a(href: "/about", do: "About")
           end
         end
+
         div do: "&copy; #{DateTime.now!("Etc/UTC").year} Jeff Sandberg"
         div do: "All writings are my own and do not reflect the opinion of any other party"
       end
