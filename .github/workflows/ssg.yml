@@ -45,6 +45,7 @@ jobs:
       - name: Install node Dependencies
         working-directory: assets/
         run: |
+          corepack enable
           yarn
       - name: "Build Tableau"
         env:
