@@ -75,20 +75,21 @@ defmodule Pdx.RootLayout do
       footer id: "footer" do
         nav id: "footer-navigation" do
           ul do
-            li do: a(href: "/", do: "Blog")
-            li do: a(href: "/about", do: "About")
+            li do: a(href: "/", do: "blog")
+            li do: a(href: "/about", do: "about")
 
             li do:
                  a(
                    href: "https://github.com/paradox460/pdx.su",
                    target: "_blank",
-                   do: "Source Code"
+                   do: "source"
                  )
           end
         end
 
         div do: "&copy; #{DateTime.now!("Etc/UTC").year} Jeff Sandberg"
-        div do: "All writings are my own and do not reflect the opinion of any other party"
+        div do: "built in utah with &hearts; and <a href='https://github.com/elixir-tools/tableau' target='_blank'>tableau</a>"
+        div do: "all writings are my own and do not reflect the opinion of any other party"
       end
     end
   end
