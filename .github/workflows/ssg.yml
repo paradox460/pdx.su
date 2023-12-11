@@ -19,7 +19,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: jdx/rtx-action@v1
+      - uses: erlef/setup-beam@v1
+        with:
+          version-file: ".tool-versions"
+          version-type: strict
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: ".tool-versions"
       - name: Elixir Deps Cache
         id: elixir-deps-cache
         uses: actions/cache@v3
@@ -28,14 +34,18 @@ jobs:
             deps
             _build
             .mix/archives/
-          key: elixir-build-${{hashFiles('.rtx.toml')}}-${{hashFiles('mix.lock')}}
-          restore-keys: elixir-build-${{hashFiles('.rtx.toml')}}-
+          key: elixir-build-${{hashFiles('.tool-versions')}}-${{hashFiles('mix.lock')}}
+          restore-keys: elixir-build-${{hashFiles('.tool-versions')}}-
 
       - name: Install Elixir Dependencies
         run: |
           mix local.hex --force --if-missing
           mix deps.get
 
+      # Setup-node doesn't play nice with yarn > 2 Because of corepack issues
+      # You can probably remove this manual cache later
+      - name: Enable corepack for new yarn
+        run: corepack enable
       - name: "Get yarn cache dir"
         id: yarn-cache-dir-path
         working-directory: assets/
@@ -46,14 +56,12 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
-          key: yarn-cache-${{hashFiles('.rtx.toml')}}-${{hashFiles('assets/yarn.lock')}}
-          restore-keys: yarn-cache-${{hashFiles('.rtx.toml')}}-
+          key: yarn-cache-${{hashFiles('.tool-versions')}}-${{hashFiles('assets/yarn.lock')}}
+          restore-keys: yarn-cache-${{hashFiles('.tool-versions')}}-
 
       - name: Install node Dependencies
         working-directory: assets/
-        run: |
-          corepack enable
-          yarn
+        run: yarn
 
       - name: "Build Tableau"
         env:
