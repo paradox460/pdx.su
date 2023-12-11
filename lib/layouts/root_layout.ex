@@ -77,7 +77,7 @@ defmodule Pdx.RootLayout do
           ul do
             li do: a(href: "/", do: "blog")
             li do: a(href: "/about", do: "about")
-
+            li do: a(href: "/feed.xml", do: "rss")
             li do:
                  a(
                    href: "https://github.com/paradox460/pdx.su",
