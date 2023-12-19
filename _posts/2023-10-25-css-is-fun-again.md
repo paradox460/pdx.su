@@ -1,5 +1,6 @@
 ---
 date: ~N[2023-10-25T18:57:41-06:00]
+updated: ~N[2023-12-19T10:30:41-07:00]
 ---
 
 # CSS is fun again
@@ -19,7 +20,13 @@ Variables, or custom properties, made a big splash, particularly because they ca
 
 But recently, the pace of new features has accelerated so much, that I envy those who are just learning CSS today, and don't have to learn all the baggage and old ways of doing things. They'll just see all the new tools at their workbenches, and get down to work.
 
-CSS Nesting is the biggest "preprocessor" feature, with every preprocessor worth its salt implementing it, and now it's done in native CSS. There's a bit of a caveat around syntax as some last minute changes landed, but it's not quite like the prefixes of yesteryear; you just have to use an `&` in more selectors than is ideal, and as browsers mature, this limitation will likely disappear. But you can now easily scope styles to a specific element or selector, and write support for the various psuedos that are common, in a neat, clean, non-repeating way. And you can finally write your media queries _inline_, where they belong, with properties inside them, rather than the previous redundancy we saw before. Not really exciting if you've already been using a preprocessor, but now you don't need that preprocessor for _this_.
+CSS Nesting is the biggest "preprocessor" feature, with every preprocessor worth its salt implementing it, and now it's done in native CSS. ~~There's a bit of a caveat around syntax as some last minute changes landed, but it's not quite like the prefixes of yesteryear; you just have to use an `&` in more selectors than is ideal, and as browsers mature, this limitation will likely disappear.~~ But you can now easily scope styles to a specific element or selector, and write support for the various psuedos that are common, in a neat, clean, non-repeating way. And you can finally write your media queries _inline_, where they belong, with properties inside them, rather than the previous redundancy we saw before. Not really exciting if you've already been using a preprocessor, but now you don't need that preprocessor for _this_.
+
+<md-note icon='🎉' color='green'>
+
+CSS Nesting with relaxed nesting is supported in the stable release of ALL major browsers in December 2023. So you can drop those extra `&` at the start of selectors!
+
+</md-note>
 
 `color-mix` takes another bite out of the preprocessor pie. Instead of having to use sass functions like `lighten` or `darken` or `transparentize`, you can now just write them with real css. And since they're done in real css, they're color space aware, and can make use of custom properties too. Wanna make a highlight out of a primary color, which is picked and set externally? Piece of cake
 
