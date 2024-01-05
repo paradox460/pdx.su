@@ -1,6 +1,6 @@
 ---
-date: ~N[2023-01-30T22:00:54-07:00]
-updated: ~N[2023-02-02T20:07:31-07:00]
+date: "2023-01-30T22:00:54-07:00"
+updated: "2023-02-02T20:07:31-07:00"
 permalink: "/blog/:year-0:month-:day-a-good-shower"
 ---
 

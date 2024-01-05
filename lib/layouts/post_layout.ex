@@ -5,12 +5,8 @@ defmodule Pdx.PostLayout do
   def template(assigns) do
     assigns =
       if assigns.page[:updated] do
-        {:ok, config} = Tableau.Config.new(Map.new(Application.get_env(:tableau, :config, %{})))
-
         assigns.page.updated
-        |> Code.eval_string()
-        |> elem(0)
-        |> then(&DateTime.from_naive!(&1, config.timezone))
+        |> DateTimeParser.parse_datetime!()
         |> then(&put_in(assigns.page.updated, &1))
       else
         assigns

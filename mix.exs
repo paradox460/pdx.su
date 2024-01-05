@@ -24,6 +24,7 @@ defmodule Pdx.MixProject do
       {:floki, "~> 0.35.2"},
       # {:tableau, "~> 0.12.0"},
       {:tableau, github: "paradox460/tableau"},
+      {:date_time_parser, "~> 1.2"},
       {:temple, "~> 0.12"},
       {:mdex, "~> 0.1.13", override: true},
       {:rustler, ">= 0.0.0", optional: true}

@@ -1,6 +1,6 @@
 ---
-date: ~N[2023-07-26T12:40:47-06:00]
-updated: ~N[2023-08-02T13:30:16-06:00]
+date: "2023-07-26T12:40:47-06:00"
+updated: "2023-08-02T13:30:16-06:00"
 permalink: "/blog/2023-07-26-tailwind-and-the-death-of-craftsmanship"
 ---
 

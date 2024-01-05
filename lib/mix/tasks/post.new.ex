@@ -45,7 +45,7 @@ defmodule Mix.Tasks.Post.New do
     front_date =
       date
       |> DateTime.to_iso8601()
-      |> then(&"~N[#{&1}]")
+      |> then(&"#{&1}")
 
     frontmatter =
       %{}

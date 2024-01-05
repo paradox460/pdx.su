@@ -1,5 +1,5 @@
 ---
-date: ~N[2023-04-06T10:00:00-06:00]
+date: "2023-04-06T10:00:00-06:00"
 permalink: "/blog/:year-0:month-0:day-rip-reddit-compact"
 ---
 

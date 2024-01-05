@@ -1,5 +1,5 @@
 ---
-date: ~N[2023-08-22T16:54:47-06:00]
+date: "2023-08-22T16:54:47-06:00"
 permalink: "/blog/2023-08-22-i-dont-use-indented-anymore"
 ---
 
