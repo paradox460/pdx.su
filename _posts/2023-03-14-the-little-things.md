@@ -1,6 +1,6 @@
 ---
 date: "2023-03-14T19:07:12-06:00"
-permalink: "/blog/:year-0:month-:day-the-little-things"
+permalink: "/blog/:year-:month-:day-the-little-things"
 ---
 
 # The little things matter

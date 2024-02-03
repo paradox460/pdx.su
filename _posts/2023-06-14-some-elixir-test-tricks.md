@@ -1,7 +1,7 @@
 ---
 date: "2023-06-14T00:00:00-06:00"
 updated: "2023-06-21T02:11:28-06:00"
-permalink: "/blog/:year-06-:day-some-elixir-test-tricks"
+permalink: "/blog/:year-:month-:day-some-elixir-test-tricks"
 ---
 
 # Some Elixir Testing Tricks
