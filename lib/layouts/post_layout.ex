@@ -13,11 +13,13 @@ defmodule Pdx.PostLayout do
       end
 
     temple do
-      nav id: "toc" do
-        ul do
-          for toc_link <- @toc[@page.file] || [] do
-            li do
-              a href: "##{toc_link.id}", "data-depth": toc_link.depth, do: toc_link.text
+      unless @page[:notoc] do
+        nav id: "toc" do
+          ul do
+            for toc_link <- @toc[@page.file] || [] do
+              li do
+                a href: "##{toc_link.id}", "data-depth": toc_link.depth, do: toc_link.text
+              end
             end
           end
         end

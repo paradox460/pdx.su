@@ -6,7 +6,7 @@ defmodule Pdx.Toc do
       {:toc_extension, make_ref()},
       fn ->
         tocs =
-          for %{body: body, file: file} <- posts, reduce: %{} do
+          for %{body: body, file: file} = post <- posts, !post[:notoc], reduce: %{} do
             acc ->
               toc =
                 Floki.parse_fragment!(body)
