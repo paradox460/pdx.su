@@ -13,6 +13,7 @@ export class MdNote extends LitElement {
       border: 1px solid var(--base03);
       border-radius: 5px;
       display: grid;
+      align-items: center;
       grid-template-columns: 35px auto;
       gap: 10px;
       padding: 0 10px;

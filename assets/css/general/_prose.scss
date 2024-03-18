@@ -71,6 +71,7 @@ pre {
   margin: 0;
   font-feature-settings: "calt";
   white-space: pre-wrap;
+  word-wrap: break-word;
 }
 code {
   font-family: var(--font-mono);
