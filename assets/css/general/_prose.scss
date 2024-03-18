@@ -12,7 +12,18 @@ a {
   &:where(:visited) {
     color: var(--base0e);
   }
+
+  &[href*="amzn.to"]:after {
+    content: "";
+    background: var(--foreground);
+    width: 1em;
+    height: 1em;
+    display: inline-block;
+    mask: url("/extra/amazon.svg");
+    vertical-align: middle;
+  }
 }
+
 h1,
 h2,
 h3,
