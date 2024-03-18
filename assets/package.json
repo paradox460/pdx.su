@@ -6,14 +6,14 @@
     "watch": "node watch.mjs"
   },
   "devDependencies": {
-    "autoprefixer": "^10.4.16",
-    "esbuild": "^0.19.7",
+    "autoprefixer": "^10.4.18",
+    "esbuild": "^0.20.2",
     "esbuild-plugin-minify-html-literals": "^1.0.6",
-    "esbuild-sass-plugin": "^2.16.0",
-    "postcss": "^8.4.31",
-    "postcss-preset-env": "^9.3.0"
+    "esbuild-sass-plugin": "^3.2.0",
+    "postcss": "^8.4.36",
+    "postcss-preset-env": "^9.5.2"
   },
   "dependencies": {
-    "lit": "^3.1.0"
+    "lit": "^3.1.2"
   }
 }
