@@ -15,7 +15,7 @@ a {
 
   &[href*="amzn.to"]:after {
     content: "";
-    background: var(--foreground);
+    background: currentColor;
     width: 1em;
     height: 1em;
     display: inline-block;
