@@ -10,10 +10,8 @@ Showers are a part of my daily routine. And I've been putting up with a lousy sh
 
 Yep, that's right, I've written an entire blog post about a _showerhead_. It's a bit of a review, a bit of me having a little nerd-out over a "gadget", and hopefully an interesting article.
 
-<md-note icon='🫥'>
-
-**tl;dr:** I bought a [high-sierra brand showerhead](https://www.highsierrashowerheads.com/shop/classic/), and I love it.
-
+<md-note icon='💸'>
+This post contains Amazon Affiliate links. As an Amazon Associate I earn from qualifying purchases.
 </md-note>
 
 ## The past
@@ -28,7 +26,7 @@ Some people would point out that you can probably find such a showerhead on Ebay
 
 ## The problem
 
-In my home, we have 5 bathrooms. The previous owner left behind a variety of showerheads, the most common being simple [Waterpik brand sprayer](https://www.waterpik.com/shower-head/products/fixed-mount/SM-621E/), with "6 spray patterns" proudly silk-screened onto the white plastic side. These are adequate, but ultimately unsatisfying.
+In my home, we have 5 bathrooms. The previous owner left behind a variety of showerheads, the most common being simple [Waterpik brand sprayer](https://www.amazon.com/Waterpik-Original-Massage-Shower-Head/dp/B07WTJW5SB?crid=1NJF2IX716797&dib=eyJ2IjoiMSJ9.665L_HC72OA-U03rg2aR6Ly-QY4ObSf8M_Y7gIb3lqTShkkmIGKwoGYHvUdzYVwbdhz3tiQ-T1B7_YPsxb3zdr3hQrHfb_jxzZW--7Z9Nj_KKamDlQ4i_HKu4Zcy453utoIRqyi1XTizCe1zpxj45w.YX96V57mpjJznHF2-1xBMjoeu3OnNAuCfsy2HIgRqco&dib_tag=se&keywords=SM-621E&qid=1711128442&sprefix=sm-621e%2Caps%2C100&sr=8-1&linkCode=ll1&tag=pdx04-20&linkId=b713ce8db1b3acb3738734f377d269ed&language=en_US&ref_=as_li_ss_tl), with "6 spray patterns" proudly silk-screened onto the white plastic side. These are adequate, but ultimately unsatisfying.
 
 In the master bathroom, I replaced it with a Moen magnetic showerhead, something we moved with us from our previous apartment. This shower works, has a wand _and_ fixed unit, and was "good enough" for me to put up with.
 
@@ -44,7 +42,7 @@ So I've now had two complaints about crappy showers. This nagged at me, and even
 
 Browsing online, I searched `wirecutter shower` to see if Wirecutter had a new review on showerheads. They'd praised the Moen and Delta showerheads I'd had before, so I wasn't really hoping for much, but lo and behold they'd updated [their review](https://www.nytimes.com/wirecutter/reviews/the-best-shower-head/). They still push the multi-head units I'd used before, but in the "also great" section, they mentioned a new brand, High Sierra.
 
-The review was generally positive, but the showerhead was critiqued for its lack of features. I've never used anything other than "spray," and so this didn't bother me. Figuring I could return it if I didn't like it, I bought one of the [2.0gpm fixed sprayers](https://www.highsierrashowerheads.com/shop/classic/).
+The review was generally positive, but the showerhead was critiqued for its lack of features. I've never used anything other than "spray," and so this didn't bother me. Figuring I could return it if I didn't like it, I bought one of the [2.0gpm fixed sprayers](https://www.amazon.com/High-Sierras-Efficiency-Showerhead-Available/dp/B07V5B2WQH?crid=7N3IFFCWB3FZ&dib=eyJ2IjoiMSJ9.Hz4AExRXiLN7h9oNVTPUktocFfUV1eG4_aLuE4cUBmNqba61dOaxj_1DvdCNS8_-9RnfWmwz_B8vds1hKrqFuCVoi8hLROfwTqSdZuweF_JZoQunYHY-UikRzAfjxaoWsiz7LetrhFXbdQUExurrCMSjeXwaoyBipbKDekyZ7gkZvKiqXYB-mZPmVAAna9dl4TWff6NEfBxe0CMsdn2vuzU6ihwK-VBpRTnGbTV0IQ7dzU7DjT8EKo50ggiIPG3ct1hATOelOwgdCQ6iknr5mlRrfJ0Pp8XdeuHz4fKKkus.cyQDcxcVIIymXK-fBpJcTnmKAUbtMsZ7VDYo7DBsZn0&dib_tag=se&keywords=high%2Bsierra%2B2.0%2Bgpm&qid=1711128480&sprefix=highsierra%2B2.0%2Bgpm%2Caps%2C128&sr=8-3&th=1&linkCode=ll1&tag=pdx04-20&linkId=9b8de13e30513a61d68c88c39c9e7dd9&language=en_US&ref_=as_li_ss_tl).
 
 ## The future
 
@@ -60,9 +58,9 @@ Stepping out, I decided to purchase these for _all_ 5 of my showers.
 
 !["master bath shower combo unit, showing two showerheads"](/postimages/shower2.jpg)
 
-For the master, I've installed a [combo unit](https://highsierrashowerheads.com/shop/combination-shower-heads/), which has two 2.0gpm units, one fixed and one on a hose. You can turn them on and off independently, so if you want you can have a 4gpm shower.
+For the master, I've installed a [combo unit](https://amzn.to/3vnuNiY), which has two 2.0gpm units, one fixed and one on a hose. You can turn them on and off independently, so if you want you can have a 4gpm shower.
 
-For the upstairs main, I ordered a [handheld unit](https://highsierrashowerheads.com/shop/handheld-shower-heads/), as it is a shower tub, and the handhelds are useful for cleaning the tub, a dirty child, and filling mop buckets.
+For the upstairs main, I ordered a [handheld unit](https://amzn.to/4aqBQq8), as it is a shower tub, and the handhelds are useful for cleaning the tub, a dirty child, and filling mop buckets.
 
 For the other two bathrooms, I've ordered more of the fixed unit that prompted me to write this article.
 
