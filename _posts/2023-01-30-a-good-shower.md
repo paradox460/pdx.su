@@ -70,24 +70,4 @@ Yup. I've always had a strong sense of "If you're going to do something, do it r
 
 Additionally, I just feel impressed by the company that makes the shower heads. They're a small company, making their showers here in the US, using metal, and not going in for heavy marketing or packaging budgets, or really anything _other than the showerhead itself_. I want to see them continue to succeed, and so I'm waxing poetic about them.
 
-## Addendum: Don't waste hot water
-
-<md-note icon='💀' color='red'>
-
-Unfortunately these are no longer made terribly well. They have switched from metal construction to plastic construction, and are prone to breaking very quickly. All the ones I've owned, save the original metal one, have failed. As such, I can no longer recommend them. I'll leave this section here for posterity.
-
-</md-note>
-
-I don't have a water recirculation pump. I want one, but it's not in the budget for the near future. So I just let the shower run for a few minutes until it gets hot.
-
-In a previous rental property, we had a very long line between the shower and the water heater, so we'd have to let the shower run for a fairly long time, typically 2-3 minutes. But if you didn't catch the shower as soon as it got hot, you wouldn't get much hot water, as it would very quickly drain the tiny heater.
-
-As a child, we had scald protectors on faucets. These simple devices have a mechanical thermostat inside, that expands and shuts off the water very quickly when the temperature exceeds a factory-determined value. Remembering these, I wanted to see if there was a similar product for showers. And there is.
-
-[ShowerStart TSV](https://www.thinkevolve.com/pages/showerstart-tsv) is the product.
-
-You install it between the wall tap and your shower head, and it will let cold water pass through freely. As soon as the water gets hot, it shuts off. You can then come and pull the cord that hangs down from it, and the internal mechanism disengages and allows the hot water to flow freely.
-
-In practice, this means you get up, turn on the shower, go brush your teeth, play with the cat, and check your phone, and when you hear the water _stop_, you know it's time to get into the shower. Assuming you didn't wait too long, you get in, pull the cord, and have an instant hot shower.
-
 [^1]: The U.S. Energy Policy Act of 1992 established this limit.
