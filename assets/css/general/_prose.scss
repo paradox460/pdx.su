@@ -13,7 +13,7 @@ a {
     color: var(--base0e);
   }
 
-  &[href*="amzn.to"]:after {
+  &[href*="amzn.to"]:after, &[href*="amazon.com"]:after {
     content: "";
     background: currentColor;
     width: 1em;
