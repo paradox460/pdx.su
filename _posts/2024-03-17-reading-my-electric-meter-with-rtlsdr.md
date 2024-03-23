@@ -1,5 +1,6 @@
 ---
 date: 2024-03-17T14:18:46.840827-06:00
+updated: 2024-03-23T00:44:26-06:00
 ---
 
 # Reading my electric meter with RTLSDR
@@ -188,9 +189,18 @@ The Trigger state block in the Set Import Tariff group outputs depending on if t
 
 </details>
 
+
 ## Closing
 
 I haven't yet got my water or gas meters integrated into this system. I plan on doing that eventually, but for now I'm happy with the electric results. The data won't be the most accurate for the remainder of this billing period, but it _should_ reflect my next billing period fairly accurately, and I plan to check it.
+
+## Updates
+
+### 2024-03-23
+Since the article was published, my system picked up some messages from my gas meter, and now has a gas meter chart. I'd misconfigured the decimal place in rtlamr, and so had to dump my old readings and set it up again. I'll eventually set out to figure out a way to track gas tariffs and get estimates in there for now.
+
+I spent some time tonight setting up the [digital-alchemy](https://docs.digital-alchemy.app) add-on for HomeAssistant. It lets you write automations using typescript, with some nice tooling for VSCode or other typescript language server compatible editors. [I ported my tariff switching logic out of NodeRED and into typescript](https://github.com/paradox460/HomeAssistantConfig/blob/739ae0618bb57620bfd7c33457e9a742d4b04e01/typescript/src/electricity-tariffs.ts), and find the end result much simpler to reason about. I'll probably wind up doing the same style script for my gas tariff tracking.
+
 
 [^1]: Seriously, have you seen some of these installs? They look like horrific rats nests!
 [^2]: I'm so ridiculously fortunate to have one of the few remaining RadioShacks nearby, so I try to get as much as I can justify from them, to help keep them afloat.
