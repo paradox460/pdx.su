@@ -4,6 +4,7 @@ updated: "2023-08-02T13:30:16-06:00"
 permalink: "/blog/:year-:month-:day-tailwind-and-the-death-of-craftsmanship"
 ---
 
+
 # Tailwind, and the death of web craftsmanship
 
 There's a worrying trend in modern web development, where developers are throwing away decades of carefully wrought systems for a bit of perceived convenience. Tools such as Tailwind CSS seem to be spreading like wildfire, with very few people ever willing to acknowledge the regression they bring to our field. And I'm getting tired of it
