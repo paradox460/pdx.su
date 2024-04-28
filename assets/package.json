@@ -8,12 +8,12 @@
   "devDependencies": {
     "autoprefixer": "^10.4.19",
     "esbuild": "^0.20.2",
-    "esbuild-plugin-minify-html-literals": "^1.0.6",
+    "esbuild-plugin-minify-html-literals": "^2.0.0",
     "esbuild-sass-plugin": "^3.2.0",
     "postcss": "^8.4.38",
-    "postcss-preset-env": "^9.5.2"
+    "postcss-preset-env": "^9.5.8"
   },
   "dependencies": {
-    "lit": "^3.1.2"
+    "lit": "^3.1.3"
   }
 }
