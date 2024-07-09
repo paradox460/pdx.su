@@ -1,3 +1,4 @@
+@use "general/sass-vars" as *;
 @use "general/colors";
 @use "general/prose";
 @use "general/animations";
@@ -19,8 +20,6 @@
   font-style: normal;
   font-display: swap;
 }
-
-$toc-hide: 86rem;
 
 :root {
   --background: var(--base00);

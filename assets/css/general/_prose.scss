@@ -1,3 +1,4 @@
+@use "./sass-vars" as *;
 a {
   color: var(--base0d);
   text-decoration: underline wavy;
@@ -120,8 +121,29 @@ p:has(img) {
 abbr {
   cursor: help;
 }
+
 .footnotes {
-  margin-top: 3rem;
-  padding-top: 1rem;
-  border-top: 1px solid var(--base02);
+  @media screen and (max-width: calc($toc-hide - 1px)) {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--base02);
+  }
+  @media screen and (min-width: $toc-hide) {
+    li {
+      position: absolute;
+      right: calc(-1 * (var(--sidebar-width) + var(--grid-gap) * 2));
+      top: calc(var(--top) - 1lh);
+      width: var(--sidebar-width);
+
+      color: var(--base05);
+
+      p:first-of-type {
+        margin-top: 0;
+      }
+    }
+  }
+
+  li[data-hover] p {
+    color: var(--base03);
+  }
 }
