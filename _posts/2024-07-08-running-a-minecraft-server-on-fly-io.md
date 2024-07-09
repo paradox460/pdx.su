@@ -44,7 +44,7 @@ Specifically, `SPIGET_RESOURCES` wants a comma-separated list of id numbers, and
 
 Finally, I wanted to make use of fly's PROXY_PROTOCOL support. PROXY_PROTOCOL allows passing of proxy information to servers and other applications, and is relevant to our usecase here because, if turned off, all incoming connections to our minecraft server won't resolve as their "real" IP, but rather a fly internal IP. But I wanted to be able to turn this off and on, and it requires configuration in a few places to do so.
 
-Aiming to solve all these problems, I wrote a [simple little deno script](https://github.com/paradox460/minecraft-dedi-server/blob/main/fly.ts). This script is fairly simple, and mostly just does some string concatenation, but it _does_ let me do things that the plain old TOML wouldn't.
+Aiming to solve all these problems, I wrote a [simple little deno script](https://github.com/paradox460/minecraft-dedi-server/blob/f8646c983d9264c16b7dfd5f9f76f72ed1015a63/fly.ts). This script is fairly simple, and mostly just does some string concatenation, but it _does_ let me do things that the plain old TOML wouldn't.
 
 I can set a single value, enableProxy, and have it set up both the fly port setup AND the envar, which is used by a patch to enable the proxy support on paper, and by docker-minecraft-server, to enable the auto-stop system to monitor our server.
 
