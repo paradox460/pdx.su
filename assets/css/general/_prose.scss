@@ -123,28 +123,61 @@ abbr {
   cursor: help;
 }
 
-.footnotes {
+// Have to do this because you can't extend across media queries
+@mixin bottom-footnotes() {
+  margin-top: 3rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--base02);
+}
+
+.footnotes:not([data-sidebar]) {
+  @include bottom-footnotes();
+}
+
+.footnotes[data-sidebar] {
   @media screen and (max-width: calc($toc-hide - 1px)) {
-    margin-top: 3rem;
-    padding-top: 1rem;
-    border-top: 1px solid var(--base02);
+    @include bottom-footnotes();
   }
   @media screen and (min-width: $toc-hide) {
     li {
       position: absolute;
-      right: calc(-1 * (var(--sidebar-width) + var(--grid-gap) * 2));
+      right: calc(-1 * (var(--sidebar-width) + var(--grid-gap)));
       top: calc(var(--top) - 1lh);
-      width: var(--sidebar-width);
-
       color: var(--base05);
+
+      display: flex;
+
+      border-radius: var(--radius);
+
+      // Have to manually redo list-items, because they're broken with flexbox
+      &::before {
+        counter-increment: list-item;
+        content: counter(list-item);
+        padding-top: 1ch;
+        padding-left: 1ch;
+        color: var(--base03);
+      }
+
+      p {
+        padding: 1ch;
+        width: calc(var(--sidebar-width) - 2ch);
+      }
 
       p:first-of-type {
         margin-top: 0;
       }
+
+      p:last-of-type {
+        margin-bottom: 0;
+      }
     }
   }
 
-  li[data-hover] p {
-    color: var(--base03);
+  li {
+    transition: linear 2000ms;
+  }
+  li[data-hover] {
+    background-color: var(--base02);
+    transition: linear 250ms;
   }
 }

@@ -1,3 +1,5 @@
+import { debounce } from 'lodash';
+
 export default class SidebarFootnotes {
 
   private footnotesElem: HTMLElement = document.querySelector('.footnotes')
@@ -5,6 +7,7 @@ export default class SidebarFootnotes {
   private matcher: MediaQueryList;
 
   constructor() {
+    this.footnotesElem.dataset.sidebar = "";
     this.matcher = window.matchMedia("screen and (min-width: 86rem)");
     this.matcher.addEventListener('change', e => this.handleResize(e));
     this.handleResize(this.matcher);
@@ -14,7 +17,6 @@ export default class SidebarFootnotes {
 
 
   private sidebarFootnotes(enabled: boolean) {
-    console.log("Sidebar footnotes");
     if (enabled) {
       this.footnotesElem.dataset.sidebar = "";
       for (let fn of (document.querySelectorAll(".footnotes li") as NodeListOf<HTMLElement>)) {
@@ -39,11 +41,19 @@ export default class SidebarFootnotes {
     for (let el of document.querySelectorAll(".footnote-ref a")) {
       const footnoteId = el.getAttribute("href");
       const footnote: HTMLElement = document.querySelector(footnoteId);
-      el.addEventListener("mouseenter", () => {
+      const debouncedEnter = debounce(() => {
         footnote.dataset.hover = "";
+      }, 100);
+      const debouncedLeave = debounce(() => {
+        delete footnote.dataset.hover;
+      }, 100);
+      el.addEventListener("mouseenter", () => {
+        debouncedLeave.cancel();
+        debouncedEnter();
       })
       el.addEventListener("mouseleave", () => {
-        delete footnote.dataset.hover;
+        debouncedEnter.cancel();
+        debouncedLeave();
       })
     }
   }
