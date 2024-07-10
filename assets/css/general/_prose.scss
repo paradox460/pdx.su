@@ -161,6 +161,7 @@ abbr {
       p {
         padding: 1ch;
         width: calc(var(--sidebar-width) - 2ch);
+        box-sizing: border-box;
       }
 
       p:first-of-type {
