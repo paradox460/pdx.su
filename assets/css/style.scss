@@ -35,8 +35,10 @@
   --font-mono: "JetBrainsMono", monospace;
 }
 
-@view-transition {
-  navigation: auto;
+@media not (prefers-reduced-motion) {
+  @view-transition {
+    navigation: auto;
+  }
 }
 
 html {

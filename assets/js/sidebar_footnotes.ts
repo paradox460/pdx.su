@@ -43,7 +43,7 @@ export default class SidebarFootnotes {
       const footnote: HTMLElement = document.querySelector(footnoteId);
       const debouncedEnter = debounce(() => {
         footnote.dataset.hover = "";
-      }, 100);
+      }, 100, { leading: true });
       const debouncedLeave = debounce(() => {
         delete footnote.dataset.hover;
       }, 100);

@@ -192,10 +192,16 @@ abbr {
   }
 
   li {
-    transition: linear 2000ms;
+    transition: background linear 2000ms;
+    @media (prefers-reduced-motion) {
+      transition-timing-function: steps(1,end);
+    }
   }
   li[data-hover] {
     background-color: var(--base02);
-    transition: linear 250ms;
+    transition: background linear 250ms;
+    @media (prefers-reduced-motion) {
+      transition-timing-function: steps(1,end);
+    }
   }
 }
