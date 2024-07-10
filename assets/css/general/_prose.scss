@@ -119,8 +119,25 @@ img {
 p:has(img) {
   text-align: center;
 }
+
+p:has(.footnote-ref a:target) {
+  animation: highlight 1.5s;
+  @media (prefers-reduced-motion) {
+    animation-timing-function: steps(1, end);
+  }
+}
 abbr {
   cursor: help;
+}
+
+.footnotes {
+  li:target {
+    animation: highlight 5s;
+    @media (prefers-reduced-motion) {
+      animation-timing-function: steps(1, end);
+      animation-duration: 2s;
+    }
+  }
 }
 
 // Have to do this because you can't extend across media queries
