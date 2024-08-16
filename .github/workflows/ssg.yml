@@ -28,7 +28,7 @@ jobs:
           node-version-file: ".tool-versions"
       - name: Elixir Deps Cache
         id: elixir-deps-cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: |
             deps
@@ -53,7 +53,7 @@ jobs:
 
       - name: Yarn Deps Cache
         id: yarn-deps-cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
           key: yarn-cache-${{hashFiles('.tool-versions')}}-${{hashFiles('assets/yarn.lock')}}
