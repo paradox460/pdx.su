@@ -15,7 +15,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build:
+  build-elixir:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -23,9 +23,6 @@ jobs:
         with:
           version-file: ".tool-versions"
           version-type: strict
-      - uses: actions/setup-node@v4
-        with:
-          node-version-file: ".tool-versions"
       - name: Elixir Deps Cache
         id: elixir-deps-cache
         uses: actions/cache@v4
@@ -42,8 +39,26 @@ jobs:
           mix local.hex --force --if-missing
           mix deps.get
 
-      # Setup-node doesn't play nice with yarn > 2 Because of corepack issues
-      # You can probably remove this manual cache later
+      - name: "Build Tableau"
+        env:
+          MIX_ENV: prod
+        run: |
+          mix tableau.build
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          path: ./_site
+          if-no-files-found: error
+          name: site-elixir
+
+  build-assets:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: ".tool-versions"
       - name: Enable corepack for new yarn
         run: corepack enable
       - name: "Get yarn cache dir"
@@ -63,12 +78,6 @@ jobs:
         working-directory: assets/
         run: yarn
 
-      - name: "Build Tableau"
-        env:
-          MIX_ENV: prod
-        run: |
-          mix tableau.build
-
       - name: "Build static assets"
         working-directory: assets/
         env:
@@ -81,10 +90,12 @@ jobs:
         with:
           path: ./_site
           if-no-files-found: error
-          name: site
+          name: site-static
 
   deploy-netlify:
-    needs: build
+    needs:
+      - build-elixir
+      - build-assets
     runs-on: ubuntu-latest
     environment:
       name: netlfiy-prod
@@ -96,15 +107,33 @@ jobs:
             package.json
             package-lock.json
             .tool-versions
+      - uses: actions/download-artifact@v4
+        with:
+          path: _site/
+          pattern: site-*
+          merge-multiple: true
       - uses: actions/setup-node@v4
         with:
           node-version-file: ".tool-versions"
+      - name: Minify cache
+        id: minify-cache
+        uses: actions/cache@v3
+        with:
+          path: |
+            ./minify
+          key: minify-0.11.1
+      - name: Download minify script
+        if: steps.minify-cache.outputs.cache-hit != 'true'
+        run: |
+          curl https://wilsonl.in/minify-html/bin/0.11.1-linux-x86_64 > minify
+          chmod +x minify
+
+      - name: Shrink HTML
+        run: |
+          shopt -s globstar
+          ./minify --minify-css --minify-js _site/**/*.html
       - name: Install Netlify CLI
         run: npm install
-      - uses: actions/download-artifact@v4
-        with:
-          name: site
-          path: _site/
       - name: Deploy to Netlify
         run: netlify deploy --dir=_site --prod -m "https://github.com/paradox460/pdx.su/commit/${{ github.sha }}"
         env:
