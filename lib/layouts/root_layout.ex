@@ -39,6 +39,7 @@ defmodule Pdx.RootLayout do
           link rel: "sitemap", type: "application/xml", title: "Sitemap", href: "/sitemap.xml"
 
           script src: "/js/index.js"
+          script defer: true, "data-domain": "pdx.su", src: "https://plausible.io/js/script.js"
 
           # TODO: Meta tags from posts
         end
