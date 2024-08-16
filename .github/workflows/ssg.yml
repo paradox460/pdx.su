@@ -76,6 +76,25 @@ jobs:
         run: |
           yarn build
 
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          path: ./_site
+          if-no-files-found: error
+          name: site
+
+  deploy-ghp:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: site
+          path: _site/
+
       - name: Minify cache
         id: minify-cache
         uses: actions/cache@v3
@@ -95,18 +114,39 @@ jobs:
           shopt -s globstar
           ./minify --minify-css --minify-js _site/**/*.html
 
-      - name: Upload artifact
+      - name: Upload pages artifact
         uses: actions/upload-pages-artifact@v1
         with:
           path: ./_site
 
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
       - name: Deploy to Github Pages
         id: deployment
         uses: actions/deploy-pages@v1
+
+  deploy-netlify:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: netlfiy-prod
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            package.json
+            package-lock.json
+            .tool-versions
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: ".tool-versions"
+      - name: Install Netlify CLI
+        run: npm install
+      - uses: actions/download-artifact@v4
+        with:
+          name: site
+          path: _site/
+      - name: Deploy to Netlify
+        run: netlify deploy --dir=_site --prod -m "https://github.com/paradox460/pdx.su/commit/${{ github.sha }}"
+        env:
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}

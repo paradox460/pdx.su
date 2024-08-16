@@ -1,3 +1,6 @@
 {
-  "packageManager": "yarn@4.0.2"
+  "packageManager": "yarn@4.0.2",
+  "devDependencies": {
+    "netlify-cli": "^17.34.1"
+  }
 }
