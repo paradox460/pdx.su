@@ -83,46 +83,6 @@ jobs:
           if-no-files-found: error
           name: site
 
-  deploy-ghp:
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - uses: actions/download-artifact@v4
-        with:
-          name: site
-          path: _site/
-
-      - name: Minify cache
-        id: minify-cache
-        uses: actions/cache@v3
-        with:
-          path: |
-            ./minify
-          key: minify-0.11.1
-
-      - name: Download minify script
-        if: steps.minify-cache.outputs.cache-hit != 'true'
-        run: |
-          curl https://wilsonl.in/minify-html/bin/0.11.1-linux-x86_64 > minify
-          chmod +x minify
-
-      - name: Shrink HTML
-        run: |
-          shopt -s globstar
-          ./minify --minify-css --minify-js _site/**/*.html
-
-      - name: Upload pages artifact
-        uses: actions/upload-pages-artifact@v1
-        with:
-          path: ./_site
-
-      - name: Deploy to Github Pages
-        id: deployment
-        uses: actions/deploy-pages@v1
-
   deploy-netlify:
     needs: build
     runs-on: ubuntu-latest
