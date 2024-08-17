@@ -39,7 +39,7 @@ defmodule Pdx.RootLayout do
           link rel: "sitemap", type: "application/xml", title: "Sitemap", href: "/sitemap.xml"
 
           script src: "/js/index.js"
-          script defer: true, "data-domain": "pdx.su", "data-api": "/pa/api/event", src: "/pa/js/script.js"
+          c &analytics/1
 
           # TODO: Meta tags from posts
         end
@@ -97,6 +97,20 @@ defmodule Pdx.RootLayout do
 
 
         div do: "all writings are my own and do not reflect the opinion of any other party"
+      end
+    end
+  end
+
+  defp analytics(_) do
+    if Mix.env() == :prod do
+      if Application.get_env(:pdx, :netlify) do
+        temple do
+          script defer: true, "data-domain": "pdx.su", "data-api": "/pa/api/event", src: "/pa/js/script.js"
+        end
+      else
+        temple do
+          script defer: true, "data-domain": "pdx.su", src: "https://plausible.io/js/script.js"
+        end
       end
     end
   end

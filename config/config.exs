@@ -33,7 +33,8 @@ config :tableau, Tableau.PostExtension,
   enabled: true,
   future: true,
   layout: "Pdx.PostLayout",
-  permalink: "/blog/:year-:month-:day-:title"
+  permalink: "/blog/:year-:month-:day-:title",
+  html_converter: "Pdx.HtmlConverter"
 
 config :tableau, Pdx.Toc, enabled: true
 
