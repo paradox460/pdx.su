@@ -35,6 +35,8 @@ config :tableau, Tableau.PostExtension,
   layout: "Pdx.PostLayout",
   permalink: "/blog/:year-:month-:day-:title"
 
+config :tableau, Pdx.ImageOpts, enabled: true
+
 config :tableau, Pdx.Toc, enabled: true
 
 config :tableau, Tableau.PageExtension, enabled: true
