@@ -117,7 +117,7 @@ jobs:
           node-version-file: ".tool-versions"
       - name: Minify cache
         id: minify-cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: |
             ./minify
