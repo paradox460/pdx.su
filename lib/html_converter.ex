@@ -9,27 +9,16 @@ defmodule Pdx.HtmlConverter do
     do_netlify_images(html, cdn)
   end
 
+  # This is an ugly hack to rewrite the urls in images to use netlify.
+  # I have to do it because a nicer system, i.e. one using Floki to parse and
+  # reoutput the document, unfortunately clobbers all the spacing in the HTML,
+  # which wrecks havock on my code blocks
+  #
+  # An alternative solution would be make a rustler package or whatever that
+  # implements lol-html's rewriter, as that doesn't seem to mangle HTML quite so
+  # much. Maybe I'll do that later
   defp do_netlify_images(html, true) do
-    html
-    |> Floki.parse_fragment!()
-    |> Floki.traverse_and_update(fn
-      {"img", attrs, children} ->
-        attrs =
-          attrs
-          |> Enum.map(fn
-            {"src", src} ->
-              {"src", "/.netlify/images?url=" <> src}
-
-            other ->
-              other
-          end)
-
-        {"img", attrs, children}
-
-      other ->
-        other
-    end)
-    |> Floki.raw_html()
+    String.replace(html, ~r[src="(/postimages/.*?)"], ~s[src="/.netlify/images?url=\\1"])
   end
 
   defp do_netlify_images(html, _false), do: html

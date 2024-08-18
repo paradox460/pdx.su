@@ -21,13 +21,13 @@ defmodule Pdx.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:floki, "~> 0.35.2"},
+      {:floki, "~> 0.36.2"},
       # {:tableau, "~> 0.17.1"},
       {:tableau, github: "paradox460/tableau"},
       {:date_time_parser, "~> 1.2"},
       {:temple, "~> 0.12"},
       {:mdex, "~> 0.1.18", override: true},
-      {:rustler, ">= 0.0.0", optional: true}
+      {:rustler, ">= 0.0.0", optional: true},
       # {:dep_from_hexpm, "~> 0.3.0"},
       # {:dep_from_git, git: "https://github.com/elixir-lang/my_dep.git", tag: "0.1.0"}
     ]
