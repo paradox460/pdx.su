@@ -1,13 +1,10 @@
 ---
 date: 2024-03-17T14:18:46.840827-06:00
 updated: 2024-03-23T00:44:26-06:00
+amazon: true
 ---
 
 # Reading my electric meter with RTLSDR
-
-<md-note icon='💸'>
-This post contains Amazon Affiliate links. As an Amazon Associate I earn from qualifying purchases.
-</md-note>
 
 As I dive deeper into HomeAssistant automations, one thing has been nagging at me: my energy usage statistics. I have a solar array, battery, and associated systems installed on my house, and they integrate somewhat well with HomeAssistant. However, due to the way my house was wired, the solar/backup system is only aware of power usage for roughly half the house; the air conditioner and some other heavy appliances are on a separate circuit, that I chose not to have backed up due to their heavy loads. As such, any statistics in HomeAssistant related to power were only partially true; they were missing an entire chunk of my annual power consumption, leading to the values reported in HA differing from the values reported on my bill. I wasn't terribly happy with this, and so over time I've been investigating solutions.
 

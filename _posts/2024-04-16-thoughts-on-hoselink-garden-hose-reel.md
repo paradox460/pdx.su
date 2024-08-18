@@ -1,12 +1,9 @@
 ---
 date: 2024-04-16T16:55:14.394054-06:00
+amazon: true
 ---
 
 # Thoughts on Hoselink Garden Hose Reel
-
-<md-note icon='💸'>
-This post contains Amazon Affiliate links. As an Amazon Associate I earn from qualifying purchases.
-</md-note>
 
 I recently needed a new garden hose reel for the front yard, and wanted something a bit more convenient than what I had before. I've had a hose cart I bought from Home Depot years ago, and its worked reasonably well, but its ugly as sin. I've had rather good luck with an [Eley hose reel](https://www.eleyhosereels.com) in the back, where I need 200 feet of hose, but don't want something that large and cumbersome for my smaller front yard. Enter the [Hoselink](https://www.hoselink.com) hose reel.
 

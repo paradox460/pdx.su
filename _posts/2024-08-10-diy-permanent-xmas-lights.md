@@ -1,16 +1,11 @@
 ---
 date: 2024-08-10T21:43:16.214534-06:00
+amazon: true
 ---
 
 # DIY Permanent Xmas lights
 
-
-
 ![My house with Red White and Blue lights for the fourth of july](/postimages/permanent_leds/houselights.jpg)
-
-<md-note icon='💸'>
-This post contains Amazon Affiliate links. As an Amazon Associate I earn from qualifying purchases.
-</md-note>
 
 Here in Utah, an increasingly common sight is houses with permanent "Christmas" lights. These are usually installed using aluminum channels, along the roofline, and make use of color-changing LEDs. Several of my neighbors have had them installed professionally, and I've always wanted something similar. However, the prices, and limitations, that come with professional installations, are often prohibitive.
 

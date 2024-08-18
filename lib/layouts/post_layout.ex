@@ -42,6 +42,14 @@ defmodule Pdx.PostLayout do
               c(&Pdx.Components.Timestamp.timestamp/1, t: @page.updated)
             end
           end
+
+          if @page[:amazon] do
+            div class: "affiliate-banner" do
+              "This post contains Amazon Affiliate links, marked with an "
+              span class: "amazon-icon", do: nil
+              "icon. As an Amazon Associate I earn from qualifying purchases."
+            end
+          end
         end
       end
     end

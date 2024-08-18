@@ -7,4 +7,19 @@
     padding: 0.5rem;
     color: var(--base05);
   }
+
+  .affiliate-banner {
+    font-size: small;
+    margin-top: 1em;
+
+    .amazon-icon {
+      background: currentColor;
+      width: 1em;
+      height: 1em;
+      display: inline-block;
+      mask: url("/extra/amazon.svg");
+      mask-size: 100%;
+      vertical-align: middle;
+    }
+  }
 }
