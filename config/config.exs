@@ -21,7 +21,7 @@ config :tableau, :config,
         table: true
       ],
       render: [unsafe_: true],
-      features: [syntax_highlight_theme: "base16_tomorrow_night"]
+      features: [syntax_highlight_theme: "base16_tomorrow_night", syntax_highlight_inline_style: false]
     ]
   ]
 
