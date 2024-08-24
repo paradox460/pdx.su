@@ -1,3 +1,4 @@
+@use "general/sass-vars" as *;
 @use "general/colors";
 @use "general/prose";
 @use "general/animations";
@@ -20,8 +21,6 @@
   font-display: swap;
 }
 
-$toc-hide: 86rem;
-
 :root {
   --background: var(--base00);
   --foreground: var(--base07);
@@ -34,6 +33,12 @@ $toc-hide: 86rem;
   --font-copy: "proxima-nova", sans-serif;
   --font-header: "ff-cocon-pro", sans-serif;
   --font-mono: "JetBrainsMono", monospace;
+}
+
+@media not (prefers-reduced-motion) {
+  @view-transition {
+    navigation: auto;
+  }
 }
 
 html {

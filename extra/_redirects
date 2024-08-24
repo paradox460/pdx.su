@@ -1,0 +1,4 @@
+/pa/js/* https://plausible.io/js/:splat 200
+/pa/api/event https://plausible.io/api/event 200
+
+/* /404 404

@@ -2,6 +2,7 @@
 date: "2023-01-30T22:00:54-07:00"
 updated: "2023-02-02T20:07:31-07:00"
 permalink: "/blog/:year-:month-:day-a-good-shower"
+amazon: true
 ---
 
 # Finally, a good shower
@@ -9,10 +10,6 @@ permalink: "/blog/:year-:month-:day-a-good-shower"
 Showers are a part of my daily routine. And I've been putting up with a lousy shower head for too long. But I've finally found a new one, one that I like.
 
 Yep, that's right, I've written an entire blog post about a _showerhead_. It's a bit of a review, a bit of me having a little nerd-out over a "gadget", and hopefully an interesting article.
-
-<md-note icon='💸'>
-This post contains Amazon Affiliate links. As an Amazon Associate I earn from qualifying purchases.
-</md-note>
 
 ## The past
 

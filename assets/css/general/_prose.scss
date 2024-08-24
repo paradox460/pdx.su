@@ -1,3 +1,4 @@
+@use "./sass-vars" as *;
 a {
   color: var(--base0d);
   text-decoration: underline wavy;
@@ -13,7 +14,8 @@ a {
     color: var(--base0e);
   }
 
-  &[href*="amzn.to"]:after, &[href*="amazon.com"]:after {
+  &[href*="amzn.to"]:after,
+  &[href*="amazon.com"]:after {
     content: "";
     background: currentColor;
     width: 1em;
@@ -117,11 +119,89 @@ img {
 p:has(img) {
   text-align: center;
 }
+
+p:has(.footnote-ref a:target) {
+  animation: highlight 1.5s;
+  @media (prefers-reduced-motion) {
+    animation-timing-function: steps(1, end);
+  }
+}
 abbr {
   cursor: help;
 }
+
 .footnotes {
+  li:target {
+    animation: highlight 5s;
+    @media (prefers-reduced-motion) {
+      animation-timing-function: steps(1, end);
+      animation-duration: 2s;
+    }
+  }
+}
+
+// Have to do this because you can't extend across media queries
+@mixin bottom-footnotes() {
   margin-top: 3rem;
   padding-top: 1rem;
   border-top: 1px solid var(--base02);
+}
+
+.footnotes:not([data-sidebar]) {
+  @include bottom-footnotes();
+}
+
+.footnotes[data-sidebar] {
+  @media screen and (max-width: calc($toc-hide - 1px)) {
+    @include bottom-footnotes();
+  }
+  @media screen and (min-width: $toc-hide) {
+    li {
+      position: absolute;
+      right: calc(-1 * (var(--sidebar-width) + var(--grid-gap)));
+      top: calc(var(--top) - 1lh);
+      color: var(--base05);
+
+      display: flex;
+
+      border-radius: var(--radius);
+
+      // Have to manually redo list-items, because they're broken with flexbox
+      &::before {
+        counter-increment: list-item;
+        content: counter(list-item);
+        padding-top: 1ch;
+        padding-left: 1ch;
+        color: var(--base03);
+      }
+
+      p {
+        padding: 1ch;
+        width: calc(var(--sidebar-width) - 2ch);
+        box-sizing: border-box;
+      }
+
+      p:first-of-type {
+        margin-top: 0;
+      }
+
+      p:last-of-type {
+        margin-bottom: 0;
+      }
+    }
+  }
+
+  li {
+    transition: background linear 2000ms;
+    @media (prefers-reduced-motion) {
+      transition-timing-function: steps(1,end);
+    }
+  }
+  li[data-hover] {
+    background-color: var(--base02);
+    transition: background linear 250ms;
+    @media (prefers-reduced-motion) {
+      transition-timing-function: steps(1,end);
+    }
+  }
 }

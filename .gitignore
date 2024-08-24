@@ -28,3 +28,6 @@ pdx-*.tar
 # The generated site
 /_site/
 minify
+
+# Local Netlify folder
+.netlify

@@ -21,7 +21,7 @@ config :tableau, :config,
         table: true
       ],
       render: [unsafe_: true],
-      features: [syntax_highlight_theme: "base16_tomorrow_night"]
+      features: [syntax_highlight_theme: "base16_tomorrow_night", syntax_highlight_inline_style: false]
     ]
   ]
 
@@ -33,7 +33,8 @@ config :tableau, Tableau.PostExtension,
   enabled: true,
   future: true,
   layout: "Pdx.PostLayout",
-  permalink: "/blog/:year-:month-:day-:title"
+  permalink: "/blog/:year-:month-:day-:title",
+  html_converter: "Pdx.HtmlConverter"
 
 config :tableau, Pdx.Toc, enabled: true
 

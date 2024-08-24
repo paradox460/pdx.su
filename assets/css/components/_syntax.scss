@@ -1,7 +1,140 @@
-.autumn.highlight {
+pre.autumn-hl {
   padding: 1.5em 2em;
   position: relative;
   margin: 1rem -1px;
   border: 1px solid var(--base02);
   border-radius: var(--radius);
+  background-color: transparent;
+  color: var(--base05);
+}
+
+.ahl-attributes {
+  color: var(--base09);
+}
+
+.ahl-comment {
+  font-style: italic;
+  color: var(--base03);
+}
+
+.ahl-constant {
+  color: var(--base09);
+}
+
+.ahl-constant.ahl-character.ahl-escape {
+  color: var(--base0c);
+}
+
+.ahl-constant.ahl-numeric {
+  color: var(--base09);
+}
+
+.ahl-constructor {
+  color: var(--base0d);
+}
+
+.ahl-debug {
+  color: var(--base03);
+}
+
+.ahl-diff.ahl-delta {
+  color: var(--base09);
+}
+
+.ahl-diff.ahl-minus {
+  color: var(--base08);
+}
+
+.ahl-diff.ahl-plus {
+  color: var(--base0b);
+}
+
+.ahl-error {
+  color: var(--base08);
+}
+
+.ahl-function {
+  color: var(--base0d);
+}
+
+.ahl-hint {
+  color: var(--base03);
+}
+
+.ahl-info {
+  color: var(--base0d);
+}
+
+.ahl-keyword {
+  color: var(--base0e);
+}
+
+.ahl-label {
+  color: var(--base0e);
+}
+
+.ahl-markup.ahl-bold {
+  font-weight: bold;
+  color: var(--base0a);
+}
+
+.ahl-markup.ahl-heading {
+  color: var(--base0d);
+}
+
+.ahl-markup.ahl-italic {
+  font-style: italic;
+  color: var(--base0e);
+}
+
+.ahl-markup.ahl-link.ahl-text {
+  color: var(--base08);
+}
+
+.ahl-markup.ahl-link.ahl-url {
+  color: var(--base09);
+}
+
+.ahl-markup.ahl-list {
+  color: var(--base08);
+}
+
+.ahl-markup.ahl-quote {
+  color: var(--base0c);
+}
+
+.ahl-markup.ahl-raw {
+  color: var(--base0b);
+}
+
+.ahl-namespace {
+  color: var(--base0e);
+}
+
+.ahl-operator {
+  color: var(--base05);
+}
+
+.ahl-special {
+  color: var(--base0d);
+}
+
+.ahl-string {
+  color: var(--base0b);
+}
+
+.ahl-type {
+  color: var(--base0a);
+}
+
+.ahl-variable {
+  color: var(--base08);
+}
+
+.ahl-variable.ahl-other.ahl-member {
+  color: var(--base0b);
+}
+
+.ahl-warning {
+  color: var(--base09);
 }

@@ -39,6 +39,7 @@ defmodule Pdx.RootLayout do
           link rel: "sitemap", type: "application/xml", title: "Sitemap", href: "/sitemap.xml"
 
           script src: "/js/index.js"
+          c &analytics/1
 
           # TODO: Meta tags from posts
         end
@@ -78,6 +79,7 @@ defmodule Pdx.RootLayout do
             li do: a(href: "/", do: "blog")
             li do: a(href: "/about", do: "about")
             li do: a(href: "/feed.xml", do: "rss")
+            li do: a(href: "https://plausible.io/pdx.su/", target: "_BLANK", do: "stats")
 
             li do:
                  a(
@@ -94,6 +96,27 @@ defmodule Pdx.RootLayout do
               "built in utah with &hearts; and <a href='https://github.com/elixir-tools/tableau' target='_blank'>tableau</a>"
 
         div do: "all writings are my own and do not reflect the opinion of any other party"
+      end
+    end
+  end
+
+  defp analytics_file, do: "script.outbound-links.js"
+
+  defp analytics(_) do
+    if Mix.env() == :prod do
+      if Application.get_env(:pdx, :netlify) do
+        temple do
+          script defer: true,
+                 "data-domain": "pdx.su",
+                 "data-api": "/pa/api/event",
+                 src: "/pa/js/#{analytics_file()}"
+        end
+      else
+        temple do
+          script defer: true,
+                 "data-domain": "pdx.su",
+                 src: "https://plausible.io/js/#{analytics_file()}"
+        end
       end
     end
   end
