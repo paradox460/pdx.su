@@ -47,6 +47,8 @@ config :tableau, Tableau.RSSExtension,
 
 config :tableau, Tableau.SitemapExtension, enabled: true
 
+config :tableau, Pdx.Metadata, enabled: true
+
 config :elixir, :time_zone_database, Tz.TimeZoneDatabase
 
 import_config "#{Mix.env()}.exs"

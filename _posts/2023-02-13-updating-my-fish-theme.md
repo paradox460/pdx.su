@@ -1,8 +1,6 @@
 ---
 date: "2023-02-13T22:18:18-07:00"
 permalink: "/blog/:year-:month-:day-updating-my-fish-theme"
-image:
-  src: "https://pdx.su/postimages/fish-theme.png"
 ---
 
 # Updating my Fish Shell prompt and Theme

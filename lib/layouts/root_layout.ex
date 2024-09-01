@@ -3,6 +3,8 @@ defmodule Pdx.RootLayout do
   use Tableau.Layout
 
   def template(assigns) do
+    assigns = maybe_metadata(assigns)
+
     temple do
       "<!DOCTYPE html>"
 
@@ -15,19 +17,31 @@ defmodule Pdx.RootLayout do
 
           meta name: "viewport", content: "width=device-width, initial-scale=1.0"
 
-          meta name: "description",
-               content: "The personal blog of software engineer Jeff Sandberg"
-
-          meta name: "author", content: "Jeff Sandberg"
-          meta property: "og:locale", content: "en_US"
-          meta property: "twitter:site", content: "@paradox460"
-
-          title do
+          title_string =
             [@page[:title], "pdx.su"]
             |> Enum.filter(& &1)
             |> Enum.intersperse("•")
             |> Enum.join(" ")
+
+          title do
+            title_string
           end
+
+          meta property: "og:title", content: title_string
+          meta property: "og:type", content: "article"
+
+          meta property: "og:description",
+               content:
+                 @meta[:description] || "The personal blog of software engineer Jeff Sandberg"
+
+          meta property: "og:image", content: @meta[:image]
+          meta name: "author", content: "Jeff Sandberg"
+          meta property: "og:locale", content: "en_US"
+          meta property: "twitter:site", content: "@paradox460"
+          meta property: "og:site_name", content: "pdx.su"
+          meta property: "og:url", content: Pdx.full_url(@page[:permalink])
+
+          meta name: "twitter:card", content: "summary_large_image"
 
           link rel: "stylesheet", href: "https://use.typekit.net/fln1ury.css"
           link rel: "stylesheet", href: "/css/style.css"
@@ -40,8 +54,6 @@ defmodule Pdx.RootLayout do
 
           script src: "/js/index.js"
           c &analytics/1
-
-          # TODO: Meta tags from posts
         end
 
         body do
@@ -119,5 +131,13 @@ defmodule Pdx.RootLayout do
         end
       end
     end
+  end
+
+  defp maybe_metadata(%{page: %{file: file}, metadata: metadata} = assigns) when is_map(metadata) do
+    meta = Map.get(metadata, file, %{})
+    Map.put(assigns, :meta, meta)
+  end
+  defp maybe_metadata(assigns) do
+    Map.put(assigns, :meta, %{})
   end
 end
