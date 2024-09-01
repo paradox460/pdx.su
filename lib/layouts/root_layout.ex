@@ -34,7 +34,7 @@ defmodule Pdx.RootLayout do
                content:
                  @meta[:description] || "The personal blog of software engineer Jeff Sandberg"
 
-          meta property: "og:image", content: @meta[:image]
+          if @meta[:image], do: meta property: "og:image", content: @meta[:image]
           meta name: "author", content: "Jeff Sandberg"
           meta property: "og:locale", content: "en_US"
           meta property: "twitter:site", content: "@paradox460"
