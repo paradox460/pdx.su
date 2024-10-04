@@ -102,7 +102,9 @@ Finally, when all the LEDs were tested, I moved everything into an enclosure, an
 
 ![Enclosure with PSU and Brain Board](/postimages/permanent_leds/box.jpg)
 
-A period after taking this picture, I actually wired in a small plug _inside_ the box, to plug a USB module into, so as to minimize the amount of wires going in and out of the box.
+A period after taking this picture, I actually wired in a small plug _inside_ the box[^mini-psu], to plug a USB module into, so as to minimize the amount of wires going in and out of the box.
+
+[^mini-psu]: Since building this box, I've built a couple more, for other projects, and have figured out better ways to power things. I've largely switched to using [these](https://amzn.to/3Ya8Kb3) little tiny power supplies for the 5vdc the ESP32 requires. They're extremely small, and fairly reliable.
 
 Finally, it was time to start the installation
 
