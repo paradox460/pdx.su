@@ -1,5 +1,6 @@
 ---
 date: 2024-08-10T21:43:16.214534-06:00
+updated: 2024-12-25T20:00:18-07:00
 amazon: true
 ---
 
@@ -69,7 +70,7 @@ Fortunately, I hadn't bought much more than a single strip of LEDs and the two p
 
 So, with these changes, my new parts list wound up looking like this:
 
-- 55m of [LED pucks](https://www.aliexpress.us/item/3256806430933093.html)
+- 55m of [LED pucks](https://www.aliexpress.us/item/3256807344866216.html)
 - 55m of [aluminum channels](https://www.aliexpress.us/item/3256804734568668.html)
 - [1 12v power supply](https://amzn.to/3Am4PyD)
 - 1 [Dig-Octa] brain board and power board
@@ -135,6 +136,10 @@ And at night, they look amazing in both color (the first image in this post) and
 This was an amazingly rewarding project, and I cannot state how good they look at night. Some of my neighbors, who previously balked at the prices commercial operations have charged, are now interested in DIY. Ultimately I paid just shy of $2000 for this project, which includes all the components AND bringing out a contractor to help with some of the upper roof segments (I'm not comfortable on that tall of a ladder). Since _everything_ about the control side of this is open-source, I have it wired up into HomeAssistant, and already have some automations set up, such as automatically turning them off _around_ midnight, the ability to turn them on automatically around sunset/sunrise, and voice control ("Hey google, turn on the roof trim"). I plan to set up even more automations, such as turning them on in various team colors should they win a game in their associated sports, as well as a calendar integration, so I can schedule them to turn on at arbitrary dates, without worrying about doing it manually.
 
 And I've already had to deal with a single puck failing, which caused all the subsequent ones to start behaving erratically. Fixing this one failed puck was rather simple; I just detached the segment with the faulty puck, took it inside, cut the bad puck out, spliced a new one in, and was up and running again in under an hour. Had I gone with strips, I couldn't have brought it inside to do that, and would have had to sit there splicing with a headlamp as my sole illumination, atop a ladder.
+
+## Updates:
+
++ Linkrot ate the original link to the pixels I used, so I've updated it. The new link is https://www.aliexpress.us/item/3256807344866216.html
 
 [xLights]: https://xlights.org/
 [WLED]: https://kno.wled.ge/
