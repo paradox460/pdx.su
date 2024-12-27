@@ -7,12 +7,14 @@ export default class SidebarFootnotes {
   private matcher: MediaQueryList;
 
   constructor() {
-    this.footnotesElem.dataset.sidebar = "";
-    this.matcher = window.matchMedia("screen and (min-width: 86rem)");
-    this.matcher.addEventListener('change', e => this.handleResize(e));
-    this.handleResize(this.matcher);
+    if (this.footnotesElem) {
+      this.footnotesElem.dataset.sidebar = "";
+      this.matcher = window.matchMedia("screen and (min-width: 86rem)");
+      this.matcher.addEventListener('change', e => this.handleResize(e));
+      this.handleResize(this.matcher);
 
-    this.hoverHighlight();
+      this.hoverHighlight();
+    }
   }
 
 
