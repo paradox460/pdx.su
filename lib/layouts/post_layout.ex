@@ -1,5 +1,5 @@
 defmodule Pdx.PostLayout do
-  use Pdx.Component
+  use Phoenix.Component
   use Tableau.Layout, layout: Pdx.RootLayout
 
   def template(assigns) do
@@ -12,46 +12,31 @@ defmodule Pdx.PostLayout do
         assigns
       end
 
-    temple do
-      unless @page[:notoc] do
-        nav id: "toc" do
-          ul do
-            for toc_link <- @toc[@page.file] || [] do
-              li do
-                a href: "##{toc_link.id}", "data-depth": toc_link.depth, do: toc_link.text
-              end
-            end
-          end
-        end
-      end
+    ~H"""
+    <nav :if={!@page[:notoc]} id="toc">
+      <ul>
+        <li :for={toc_link <- @toc[@page.file] || []}>
+          <a href={"##{toc_link.id}"} data-depth={toc_link.depth}>{toc_link.text}</a>
+        </li>
+      </ul>
+    </nav>
 
-      article id: "content", class: "post" do
-        render(@inner_content)
+    <article id="content" class="post">
+      {{:safe, render(@inner_content)}}
 
-        footer class: "articlefooter" do
-          "The article &ldquo;#{@page.title}&rdquo; was written on "
+      <footer class="articlefooter">
+        The article &ldquo;{@page.title}&rdquo; was written on
+        <Pdx.Components.Timestamp.timestamp t={@page.date} />
+        <%= if @page[:updated] do %>
+          and last updated on <Pdx.Components.Timestamp.timestamp t={@page.updated} />
+        <% end %>
 
-          span do
-            c(&Pdx.Components.Timestamp.timestamp/1, t: @page.date)
-          end
-
-          if @page[:updated] do
-            "and last updated on "
-
-            span do
-              c(&Pdx.Components.Timestamp.timestamp/1, t: @page.updated)
-            end
-          end
-
-          if @page[:amazon] do
-            div class: "affiliate-banner" do
-              "This post contains Amazon Affiliate links, marked with an "
-              span class: "amazon-icon", do: nil
-              "icon. As an Amazon Associate I earn from qualifying purchases."
-            end
-          end
-        end
-      end
-    end
+        <div :if={@page[:amazon]} class="affiliate-banner">
+          This post contains Amazon Affiliate links, marked with an <span class="amazon-icon"></span>
+          icon. As an Amazon Associate I earn from qualifying purchases.
+        </div>
+      </footer>
+    </article>
+    """
   end
 end

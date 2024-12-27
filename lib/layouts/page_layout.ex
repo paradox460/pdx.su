@@ -1,12 +1,12 @@
 defmodule Pdx.PageLayout do
-  use Pdx.Component
+  use Phoenix.Component
   use Tableau.Layout, layout: Pdx.RootLayout
 
   def template(assigns) do
-    temple do
-      article id: "content", class: "page" do
-        render(@inner_content)
-      end
-    end
+    ~H"""
+    <article id="content" class="page">
+      {{:safe, render(@inner_content)}}
+    </article>
+    """
   end
 end

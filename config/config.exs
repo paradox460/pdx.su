@@ -21,13 +21,14 @@ config :tableau, :config,
         table: true
       ],
       render: [unsafe_: true],
-      features: [syntax_highlight_theme: "base16_tomorrow_night", syntax_highlight_inline_style: false]
+      features: [
+        syntax_highlight_theme: "base16_tomorrow_night",
+        syntax_highlight_inline_style: false
+      ]
     ]
   ]
 
 config :tableau, :assets, yarn: ~w[--cwd assets watch]
-
-config :temple, engine: EEx.SmartEngine, attributes: {Temple, :attributes}
 
 config :tableau, Tableau.PostExtension,
   enabled: true,

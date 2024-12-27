@@ -1,20 +1,18 @@
 defmodule Pdx.Index do
-  use Pdx.Component
+  use Phoenix.Component
 
   use Tableau.Page,
     layout: Pdx.RootLayout,
     permalink: "/"
 
   def template(assigns) do
-    temple do
-      ul class: "index", id: "content" do
-        for post <- @posts do
-          li do
-            a href: post.permalink, do: post.title
-            c &Pdx.Components.Timestamp.timestamp/1, t: post.date
-          end
-        end
-      end
-    end
+    ~H"""
+    <ul class="index" id="content">
+      <li :for={post <- @posts}>
+        <a href={post.permalink}>{post.title}</a>
+        <Pdx.Components.Timestamp.timestamp t={post.date} />
+      </li>
+    </ul>
+    """
   end
 end

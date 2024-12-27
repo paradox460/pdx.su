@@ -1,143 +1,132 @@
 defmodule Pdx.RootLayout do
-  use Pdx.Component
+  use Phoenix.Component
   use Tableau.Layout
 
   def template(assigns) do
-    assigns = maybe_metadata(assigns)
+    assigns =
+      assigns
+      |> maybe_metadata()
+      |> title()
 
-    temple do
-      "<!DOCTYPE html>"
+    ~H"""
+    <!DOCTYPE html>
+    <html lang="en">
+      <head>
+        <meta charset="utf-8" />
+        <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff" />
+        <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#1d1f21" />
 
-      html lang: "en" do
-        head do
-          meta charset: "utf-8"
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-          meta name: "theme-color", media: "(prefers-color-scheme: light)", content: "#ffffff"
-          meta name: "theme-color", media: "(prefers-color-scheme: dark)", content: "#1d1f21"
+        <title>{@title}</title>
 
-          meta name: "viewport", content: "width=device-width, initial-scale=1.0"
+        <meta property="og:title" content={@title} />
+        <meta property="og:type" content="article" />
+        <meta
+          property="og:description"
+          content={@meta[:description] || "The personal blog of software engineer Jeff Sandberg"}
+        />
+        <meta :if={@meta[:image]} property="og:image" content={@meta[:image]} />
+        <meta name="author" content="Jeff Sandberg" />
+        <meta property="og:locale" content="en_US" />
+        <meta property="twitter:site" content="@paradox460" />
+        <meta property="og:site_name" content="pdx.su" />
+        <meta property="og:url" content={Pdx.full_url(@page[:permalink])} />
+        <meta name="twitter:card" content="summary_large_image" />
 
-          title_string =
-            [@page[:title], "pdx.su"]
-            |> Enum.filter(& &1)
-            |> Enum.intersperse("•")
-            |> Enum.join(" ")
+        <link rel="stylesheet" href="https://use.typekit.net/fln1ury.css" />
+        <link rel="stylesheet" href="/css/style.css" />
+        <link rel="manifest" href="/manifest.webmanifest" />
+        <link rel="icon" href="/favicon.ico" sizes="any" />
+        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+        <link rel="alternate" type="application/rss+xml" href="/feed.xml" />
+        <link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml" />
 
-          title do
-            title_string
-          end
-
-          meta property: "og:title", content: title_string
-          meta property: "og:type", content: "article"
-
-          meta property: "og:description",
-               content:
-                 @meta[:description] || "The personal blog of software engineer Jeff Sandberg"
-
-          if @meta[:image], do: meta property: "og:image", content: @meta[:image]
-          meta name: "author", content: "Jeff Sandberg"
-          meta property: "og:locale", content: "en_US"
-          meta property: "twitter:site", content: "@paradox460"
-          meta property: "og:site_name", content: "pdx.su"
-          meta property: "og:url", content: Pdx.full_url(@page[:permalink])
-
-          meta name: "twitter:card", content: "summary_large_image"
-
-          link rel: "stylesheet", href: "https://use.typekit.net/fln1ury.css"
-          link rel: "stylesheet", href: "/css/style.css"
-          link rel: "manifest", href: "/manifest.webmanifest"
-          link rel: "icon", href: "/favicon.ico", sizes: "any"
-          link rel: "icon", href: "/favicon.svg", type: "image/svg+xml"
-          link rel: "apple-touch-icon", href: "/apple-touch-icon.png"
-          link rel: "alternate", type: "application/rss+xml", href: "/feed.xml"
-          link rel: "sitemap", type: "application/xml", title: "Sitemap", href: "/sitemap.xml"
-
-          script src: "/js/index.js"
-          c &analytics/1
-        end
-
-        body do
-          main do
-            c &navbar/1
-            render(@inner_content)
-            c &footer/1
-
-            if Mix.env() == :dev do
-              c &Tableau.live_reload/1
-            end
-          end
-        end
-      end
-    end
+        <script src="/js/index.js">
+        </script>
+        <.analytics />
+      </head>
+      <body>
+        <main>
+          <.navbar />
+          {render(@inner_content)}
+          <.footer />
+          <%= if Mix.env() == :dev do %>
+            {Phoenix.HTML.raw(Tableau.live_reload(assigns))}
+          <% end %>
+        </main>
+      </body>
+    </html>
+    """
+    |> Phoenix.HTML.Safe.to_iodata()
   end
 
-  def navbar(_) do
-    temple do
-      nav id: "navigation" do
-        ul do
-          li do: a(href: "/", title: "Home", class: "logo", do: "Jeff Sandberg")
-          li do: a(href: "/", do: "Blog")
-          li do: a(href: "/about", do: "About")
-        end
-      end
-    end
+  def navbar(assigns) do
+    ~H"""
+    <nav id="navigation">
+      <ul>
+        <li><a href="/" title="Home" class="logo">Jeff Sandberg</a></li>
+        <li><a href="/">Blog</a></li>
+        <li><a href="/about">About</a></li>
+      </ul>
+    </nav>
+    """
   end
 
-  def footer(_) do
-    temple do
-      footer id: "footer" do
-        nav id: "footer-navigation" do
-          ul do
-            li do: a(href: "/", do: "blog")
-            li do: a(href: "/about", do: "about")
-            li do: a(href: "/feed.xml", do: "rss")
-            li do: a(href: "https://plausible.io/pdx.su/", target: "_BLANK", do: "stats")
-
-            li do:
-                 a(
-                   href: "https://github.com/paradox460/pdx.su",
-                   target: "_blank",
-                   do: "source"
-                 )
-          end
-        end
-
-        div do: "&copy; #{DateTime.now!("Etc/UTC").year} Jeff Sandberg"
-
-        div do:
-              "built in utah with &hearts; and <a href='https://github.com/elixir-tools/tableau' target='_blank'>tableau</a>"
-
-        div do: "all writings are my own and do not reflect the opinion of any other party"
-      end
-    end
+  def footer(assigns) do
+    ~H"""
+    <footer id="footer">
+      <nav id="footer-navigation">
+        <ul>
+          <li><a href="/">blog</a></li>
+          <li><a href="/about">about</a></li>
+          <li><a href="/feed.xml">rss</a></li>
+          <li><a href="https://plausible.io/pdx.su/" target="_BLANK">stats</a></li>
+          <li><a href="https://github.com/paradox460/pdx.su" target="_blank">source</a></li>
+        </ul>
+      </nav>
+      <div>&copy; #{DateTime.now!("Etc/UTC").year} Jeff Sandberg</div>
+      <div>
+        built in utah with &hearts; and
+        <a href="https://github.com/elixir-tools/tableau" target="_blank">tableau</a>
+      </div>
+      <div>all writings are my own and do not reflect the opinion of any other party</div>
+    </footer>
+    """
   end
 
   defp analytics_file, do: "script.outbound-links.js"
 
-  defp analytics(_) do
-    if Mix.env() == :prod do
-      if Application.get_env(:pdx, :netlify) do
-        temple do
-          script defer: true,
-                 "data-domain": "pdx.su",
-                 "data-api": "/pa/api/event",
-                 src: "/pa/js/#{analytics_file()}"
-        end
-      else
-        temple do
-          script defer: true,
-                 "data-domain": "pdx.su",
-                 src: "https://plausible.io/js/#{analytics_file()}"
-        end
-      end
-    end
+  defp analytics(assigns) do
+    ~H"""
+    <%= if Mix.env() == :prod do %>
+      <%= if Application.get_env(:pdx, :netlify) do %>
+        <script defer data-domain="pdx.su" data-api="/pa/api/event" src={"/pa/js/#{analytics_file()}"}>
+        </script>
+      <% else %>
+        <script defer data-domain="pdx.su" src={"https://plausible.io/js/#{analytics_file()}"}>
+        </script>
+      <% end %>
+    <% end %>
+    """
   end
 
-  defp maybe_metadata(%{page: %{file: file}, metadata: metadata} = assigns) when is_map(metadata) do
+  defp maybe_metadata(%{page: %{file: file}, metadata: metadata} = assigns)
+       when is_map(metadata) do
     meta = Map.get(metadata, file, %{})
     Map.put(assigns, :meta, meta)
   end
+
   defp maybe_metadata(assigns) do
     Map.put(assigns, :meta, %{})
+  end
+
+  defp title(%{page: page} = assigns) do
+    [page[:title], "pdx.su"]
+    |> Enum.filter(& &1)
+    |> Enum.intersperse("•")
+    |> Enum.join(" ")
+    |> then(&Map.put(assigns, :title, &1))
   end
 end
