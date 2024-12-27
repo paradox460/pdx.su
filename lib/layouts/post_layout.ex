@@ -36,6 +36,27 @@ defmodule Pdx.PostLayout do
           icon. As an Amazon Associate I earn from qualifying purchases.
         </div>
       </footer>
+      <%= if !@page[:nocomments] do %>
+        <a id="comments"></a>
+        <script
+          src="https://giscus.app/client.js"
+          data-repo="paradox460/pdx.su"
+          data-repo-id="MDEwOlJlcG9zaXRvcnkxNjc4NTg5NzQ="
+          data-category="Comments"
+          data-category-id="DIC_kwDOCgFTHs4CljL1"
+          data-mapping="pathname"
+          data-strict="1"
+          data-reactions-enabled="1"
+          data-emit-metadata="0"
+          data-input-position="top"
+          data-theme="transparent_dark"
+          data-lang="en"
+          data-loading="lazy"
+          crossorigin="anonymous"
+          async
+        >
+        </script>
+      <% end %>
     </article>
     """
   end
