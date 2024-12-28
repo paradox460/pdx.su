@@ -16,4 +16,4 @@ This site is my personal blog. It will mostly be technical articles, but the occ
 
 Occasionally I'll link out with an Amazon affiliate link, these are disclosed by an Amazon icon at the end of the link, and the affiliate disclaimer message will appear at the bottom of every blogpost that has any such links in them. When you click through these links, and make a purchase on Amazon.com, I may earn a small commission.
 
-If you would like to contact me, you can email me at <jeff@pdx.su>. I won't promise a response, but I will, _eventually_, read your message.
+If you would like to contact me, you can email me at <jeff@pdx.su>. I won't promise a response, but I will, _eventually_, read your message. If you want the discussion to be public, feel free to open a [discussion on github](https://github.com/paradox460/pdx.su/discussions/new?category=general)
