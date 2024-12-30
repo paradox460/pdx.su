@@ -21,12 +21,20 @@ export default class SidebarFootnotes {
   private sidebarFootnotes(enabled: boolean) {
     if (enabled) {
       this.footnotesElem.dataset.sidebar = "";
+      let previousBottom = 0;
       for (let fn of (document.querySelectorAll(".footnotes li") as NodeListOf<HTMLElement>)) {
         const inlineNote = document.querySelector(`a[href='#${fn.id}']`)
 
-        const top = window.scrollY + inlineNote.getBoundingClientRect().top;
+        let top = window.scrollY + inlineNote.getBoundingClientRect().top;
+
+        let { height } = fn.getBoundingClientRect();
+        if (previousBottom > top) {
+          top = previousBottom + 10;
+        }
 
         fn.style.setProperty("--top", `${top}px`);
+
+        previousBottom = top + height;
       }
 
       return;
