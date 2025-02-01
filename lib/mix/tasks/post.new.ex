@@ -47,9 +47,10 @@ defmodule Mix.Tasks.Post.New do
       |> DateTime.to_iso8601()
       |> then(&"#{&1}")
 
+    title = Enum.join(args, " ")
+
     frontmatter =
-      %{}
-      |> Map.put(:date, front_date)
+      %{date: front_date, title: title}
       |> maybe_put_permalink(parsed)
       |> Enum.map_join("\n", fn {key, value} ->
         "#{key}: #{value}"
