@@ -1,6 +1,6 @@
 {
   "packageManager": "yarn@4.0.2",
   "devDependencies": {
-    "netlify-cli": "^17.34.1"
+    "netlify-cli": "^18.0.3"
   }
 }

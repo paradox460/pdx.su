@@ -135,9 +135,9 @@ jobs:
           shopt -s globstar
           ./minify --minify-css --minify-js _site/**/*.html
       - name: Install Netlify CLI
-        run: npm install
+        run: npm install --save-dev
       - name: Deploy to Netlify
-        run: netlify deploy --dir=_site --prod -m "https://github.com/paradox460/pdx.su/commit/${{ github.sha }}"
+        run: npx netlify deploy --dir=_site --prod -m "https://github.com/paradox460/pdx.su/commit/${{ github.sha }}"
         env:
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
