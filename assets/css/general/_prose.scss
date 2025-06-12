@@ -118,6 +118,7 @@ img {
 }
 p:has(img) {
   text-align: center;
+  font-style: italic;
 }
 
 p:has(.footnote-ref a:target) {
