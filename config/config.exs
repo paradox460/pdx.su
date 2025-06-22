@@ -13,17 +13,23 @@ config :tableau, :config,
   markdown: [
     mdex: [
       extension: [
+        alerts: true,
         autolink: true,
+        description_lists: true,
         footnotes: true,
         header_ids: "",
+        math_dollars: true,
+        multiline_block_quotes: true,
         strikethrough: true,
+        subscript: true,
         superscript: true,
-        table: true
+        table: true,
+        tasklist: true,
+        underline: true
       ],
-      render: [unsafe_: true],
-      features: [
-        syntax_highlight_theme: "base16_tomorrow_night",
-        syntax_highlight_inline_style: false
+      render: [unsafe: true],
+      syntax_highlight: [
+        formatter: :html_linked
       ]
     ]
   ]
@@ -34,8 +40,8 @@ config :tableau, Tableau.PostExtension,
   enabled: true,
   future: true,
   layout: "Pdx.PostLayout",
-  permalink: "/blog/:year-:month-:day-:title",
   html_converter: "Pdx.HtmlConverter"
+  permalink: "/blog/:year-:month-:day-:title"
 
 config :tableau, Pdx.Toc, enabled: true
 
