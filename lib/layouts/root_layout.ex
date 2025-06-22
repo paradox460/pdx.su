@@ -86,7 +86,7 @@ defmodule Pdx.RootLayout do
           <li><a href="https://github.com/paradox460/pdx.su" target="_blank">source</a></li>
         </ul>
       </nav>
-      <div>&copy; #{DateTime.now!("Etc/UTC").year} Jeff Sandberg</div>
+      <div>&copy; {DateTime.now!("Etc/UTC").year} Jeff Sandberg</div>
       <div>
         built in utah with &hearts; and
         <a href="https://github.com/elixir-tools/tableau" target="_blank">tableau</a>
