@@ -46,11 +46,8 @@ Other list types exist too, such as definition lists, questions and answers, and
 
 Asciidoc also has first class support for "admonitions". Admonitions are basically a specifically formatted block of text, designed to draw the readers eye, and call out something that might be relevant to the surrounding text, but is ultimately not part of it.
 
-<md-note>
-
-This is an admonition!
-
-</md-note>
+> [!NOTE]
+>This is an admonition!
 
 If you've ever read the O'Reilly programming books, you should be familiar with these little things, they're used liberally.
 

@@ -202,7 +202,7 @@ text_sensor:
 
 Finally, the interface for controlling this is just a simple card on my dashboard, making use of a pop-up for the more involved settings. You can open, close, toggle auto-open, and view all the information in one place. And its already proven its worth. As I was writing this article up, I got a message from the lawn-care company stating they'll be out tomorrow to spray, and so I turned off the auto-open, which will keep the door shut tomorrow until I remotely trigger the opening.
 
-![The main dashboard controls](</postimages/2025-06-11-how-a-simple-chicken-coop-door-opener-became-a-huge-project/CleanShot 2025-06-11 at 20.02.31@2x.png>)
+****![The main dashboard controls](</postimages/2025-06-11-how-a-simple-chicken-coop-door-opener-became-a-huge-project/CleanShot 2025-06-11 at 20.02.31@2x.png>)
 Controls on my main dashboard. A toggle for auto-open, then Open, Stop, and Close controls
 
 

@@ -145,13 +145,10 @@ And use it like this:
 assert_html html, ".bar"
 ```
 
-<md-note icon='️💡'>
-
-You don't have to use macros for these, they can be quite easily written as functions. However, if you write them as functions, you _must_ import the appropriate "things" into the module they are defined in.
-
-By using macros, you can step around this, because the macros generate code that lives at the call-site, which already has access to the appropriate "things"
-
-</md-note>
+> [!NOTE]
+> You don't have to use macros for these, they can be quite easily written as functions. However, if you write them as functions, you _must_ import the appropriate "things" into the module they are defined in.
+>
+> By using macros, you can step around this, because the macros generate code that lives at the call-site, which already has access to the appropriate "things"
 
 ### Handling Event Boilerplate
 
