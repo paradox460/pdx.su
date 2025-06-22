@@ -10,6 +10,9 @@ config :tableau, :reloader,
 config :tableau, :config,
   url: "http://localhost:4999",
   timezone: "America/Denver",
+  converters: [
+    md: Pdx.Converters.MDExConverter
+  ],
   markdown: [
     mdex: [
       extension: [
@@ -40,7 +43,6 @@ config :tableau, Tableau.PostExtension,
   enabled: true,
   future: true,
   layout: "Pdx.PostLayout",
-  html_converter: "Pdx.HtmlConverter"
   permalink: "/blog/:year-:month-:day-:title"
 
 config :tableau, Pdx.Toc, enabled: true
