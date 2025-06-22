@@ -7,9 +7,7 @@ defmodule Pdx.Extensions.Metadata do
 
   @impl Tableau.Extension
   def pre_build(%{posts: posts} = token) do
-    for post <- posts do
-      doc = Pdx.Converters.MDExConverter.to_ast(post.body)
-
+    for %{mdex_document: doc} = post <- posts do
       Map.put(post, :metadata, %{
         description: description(post, doc),
         image: image(post, doc)

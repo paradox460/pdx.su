@@ -7,9 +7,7 @@ defmodule Pdx.Extensions.Toc do
   @impl Tableau.Extension
   # TODO: add prebuild that skips notoc pages
   def pre_build(%{posts: posts} = token) do
-    for post <- posts do
-      doc = Pdx.Converters.MDExConverter.to_ast(post.body)
-
+    for %{mdex_document: doc} = post <- posts do
       selector = fn
         %MDEx.Heading{level: level} when level in 2..4 -> true
         _ -> false
