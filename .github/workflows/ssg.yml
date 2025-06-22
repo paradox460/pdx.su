@@ -56,34 +56,25 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version-file: ".tool-versions"
-      - name: Enable corepack for new yarn
-        run: corepack enable
-      - name: "Get yarn cache dir"
-        id: yarn-cache-dir-path
-        working-directory: assets/
-        run: echo "dir=$(yarn config get cacheFolder)" >> $GITHUB_OUTPUT
-
-      - name: Yarn Deps Cache
-        id: yarn-deps-cache
+      - uses: jdx/mise-action@v2
+      - name: Bun Deps Cache
+        id: bun-deps-cache
         uses: actions/cache@v4
         with:
-          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
-          key: yarn-cache-${{hashFiles('.tool-versions')}}-${{hashFiles('assets/yarn.lock')}}
-          restore-keys: yarn-cache-${{hashFiles('.tool-versions')}}-
+          path: ~/.bun/install/cache
+          key: bun-cache-${{hashFiles('.tool-versions')}}-${{hashFiles('assets/bun.lock')}}
+          restore-keys: bun-cache-${{hashFiles('.tool-versions')}}-
 
       - name: Install node Dependencies
         working-directory: assets/
-        run: yarn
+        run: bun install --frozen-lockfile
 
       - name: "Build static assets"
         working-directory: assets/
         env:
           NODE_ENV: "production"
         run: |
-          yarn build
+          bun run build
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
