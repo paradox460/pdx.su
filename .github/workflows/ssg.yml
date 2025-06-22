@@ -20,6 +20,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: jdx/mise-action@v2
+        with:
+          mise_toml: |
+            [settings]
+            disable_tools = ["bun"]
+            erlang.compile = false
       - name: Elixir Deps Cache
         id: elixir-deps-cache
         uses: actions/cache@v4
@@ -54,6 +59,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: jdx/mise-action@v2
+        with:
+          mise_toml: |
+            [settings]
+            disable_tools = ["elixir", "erlang"]
       - name: Bun Deps Cache
         id: bun-deps-cache
         uses: actions/cache@v4
