@@ -1,4 +1,4 @@
-pre.autumn-hl {
+pre.athl {
   padding: 1.5em 2em;
   position: relative;
   margin: 1rem -1px;
@@ -6,135 +6,152 @@ pre.autumn-hl {
   border-radius: var(--radius);
   background-color: transparent;
   color: var(--base05);
-}
 
-.ahl-attributes {
-  color: var(--base09);
-}
 
-.ahl-comment {
-  font-style: italic;
-  color: var(--base03);
-}
+  .attribute {
+    color: var(--base09);
+  }
 
-.ahl-constant {
-  color: var(--base09);
-}
+  .comment {
+    font-style: italic;
+    color: var(--base03);
+  }
 
-.ahl-constant.ahl-character.ahl-escape {
-  color: var(--base0c);
-}
+  .constant {
+    color: var(--base09);
+  }
 
-.ahl-constant.ahl-numeric {
-  color: var(--base09);
-}
+  .constant.character.escape {
+    color: var(--base0c);
+  }
 
-.ahl-constructor {
-  color: var(--base0d);
-}
+  .constant.numeric {
+    color: var(--base09);
+  }
 
-.ahl-debug {
-  color: var(--base03);
-}
+  .constructor {
+    color: var(--base0d);
+  }
 
-.ahl-diff.ahl-delta {
-  color: var(--base09);
-}
+  .debug {
+    color: var(--base03);
+  }
 
-.ahl-diff.ahl-minus {
-  color: var(--base08);
-}
+  .diff.delta {
+    color: var(--base09);
+  }
 
-.ahl-diff.ahl-plus {
-  color: var(--base0b);
-}
+  .diff.minus {
+    color: var(--base08);
+  }
 
-.ahl-error {
-  color: var(--base08);
-}
+  .diff.plus {
+    color: var(--base0b);
+  }
 
-.ahl-function {
-  color: var(--base0d);
-}
+  .error {
+    color: var(--base08);
+  }
 
-.ahl-hint {
-  color: var(--base03);
-}
+  .function, .function-call {
+    color: var(--base0d);
+  }
 
-.ahl-info {
-  color: var(--base0d);
-}
+  .hint {
+    color: var(--base03);
+  }
 
-.ahl-keyword {
-  color: var(--base0e);
-}
+  .info {
+    color: var(--base0d);
+  }
 
-.ahl-label {
-  color: var(--base0e);
-}
+  .keyword {
+    color: var(--base0e);
+  }
 
-.ahl-markup.ahl-bold {
-  font-weight: bold;
-  color: var(--base0a);
-}
+  .label {
+    color: var(--base0e);
+  }
 
-.ahl-markup.ahl-heading {
-  color: var(--base0d);
-}
+  .markup.bold {
+    font-weight: bold;
+    color: var(--base0a);
+  }
 
-.ahl-markup.ahl-italic {
-  font-style: italic;
-  color: var(--base0e);
-}
+  .markup.heading {
+    color: var(--base0d);
+  }
 
-.ahl-markup.ahl-link.ahl-text {
-  color: var(--base08);
-}
+  .markup.italic {
+    font-style: italic;
+    color: var(--base0e);
+  }
 
-.ahl-markup.ahl-link.ahl-url {
-  color: var(--base09);
-}
+  .markup.link.text {
+    color: var(--base08);
+  }
 
-.ahl-markup.ahl-list {
-  color: var(--base08);
-}
+  .markup.link.url {
+    color: var(--base09);
+  }
 
-.ahl-markup.ahl-quote {
-  color: var(--base0c);
-}
+  .markup.list {
+    color: var(--base08);
+  }
 
-.ahl-markup.ahl-raw {
-  color: var(--base0b);
-}
+  .markup.quote {
+    color: var(--base0c);
+  }
 
-.ahl-namespace {
-  color: var(--base0e);
-}
+  .markup.raw {
+    color: var(--base0b);
+  }
 
-.ahl-operator {
-  color: var(--base05);
-}
+  .namespace {
+    color: var(--base0e);
+  }
 
-.ahl-special {
-  color: var(--base0d);
-}
+  .operator {
+    color: var(--base05);
+  }
 
-.ahl-string {
-  color: var(--base0b);
-}
+  .special {
+    color: var(--base0d);
+  }
 
-.ahl-type {
-  color: var(--base0a);
-}
+  .string {
+    color: var(--base0b);
+  }
 
-.ahl-variable {
-  color: var(--base08);
-}
+  .type {
+    color: var(--base0a);
+  }
 
-.ahl-variable.ahl-other.ahl-member {
-  color: var(--base0b);
-}
+  .variable {
+    color: var(--base08);
+  }
 
-.ahl-warning {
-  color: var(--base09);
+  .variable.other.member {
+    color: var(--base0b);
+  }
+
+  .variable-parameter {
+    color: var(--base0c);
+  }
+
+  .property {
+    color: var(--base0e);
+  }
+
+  .warning {
+    color: var(--base09);
+  }
+
+  .tag {
+    color: var(--base0e);
+  }
+
+  .tag-attribute {
+    color: var(--base08);
+  }
 }
