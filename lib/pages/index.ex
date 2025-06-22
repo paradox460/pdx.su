@@ -6,13 +6,28 @@ defmodule Pdx.Index do
     permalink: "/"
 
   def template(assigns) do
+    assigns = group_posts_by_year(assigns)
     ~H"""
     <ul class="index" id="content">
-      <li :for={post <- @posts}>
+    <%= for {{year, posts}, index} <- @posts |> Enum.with_index() do %>
+      <li class="year" :if={index > 0}>
+        <hr class="year-divider" />
+        <div class="year-label"><%= year %></div>
+      </li>
+      <li :for={post <- posts}>
         <a href={post.permalink}>{post.title}</a>
         <Pdx.Components.Timestamp.timestamp t={post.date} />
       </li>
+      <% end %>
     </ul>
     """
+  end
+
+  defp group_posts_by_year(%{posts: posts} = assigns) do
+    posts
+    |> Enum.group_by(& &1.date.year)
+    |> Enum.into([])
+    |> Enum.sort_by(fn {year, _posts} -> year end, :desc)
+    |> then(&Map.put(assigns, :posts, &1))
   end
 end

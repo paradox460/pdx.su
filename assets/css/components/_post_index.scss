@@ -27,4 +27,29 @@
     white-space: nowrap;
     text-overflow: ellipsis;
   }
+
+  .year {
+    display: block;
+    font-style: italic;
+    margin-top: 1em;
+    margin-bottom: 0.5em;
+    position: relative;
+
+    .year-label {
+      background: var(--background);
+      display: inline-block;
+      position: relative;
+      padding-right: 1ch
+    }
+
+    .year-divider {
+      all: unset;
+      border-bottom: 1px solid color-mix(in oklch, var(--foreground), transparent 80%);;
+      width: 100%;
+      position: absolute;
+      top: 50%;
+      left: 0;
+      right: 0;
+    }
+  }
 }
