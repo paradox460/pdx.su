@@ -30,8 +30,8 @@ export default await esbuild.context({
   sourcemap: dev,
   legalComments: "linked",
   footer: {
-    js: "/*! Copyright 2023 Jeff Sandberg */",
-    css: "/* Copyright 2023 Jeff Sandberg */"
+    js: "/*! Copyright 2025 Jeff Sandberg */",
+    css: "/* Copyright 2025 Jeff Sandberg */"
   },
   outdir: "../_site",
   plugins: [minifyHTMLLiteralsPlugin(), urlFixPlugin, sassPlugin({
