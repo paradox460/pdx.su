@@ -1,5 +1,6 @@
 ---
 date: 2025-06-11T18:27:38.842670-06:00
+updated: 2025-06-22T11:36:33.0000-06:00
 title: How a simple chicken coop door opener became a huge project
 amazon: true
 ---
@@ -212,3 +213,11 @@ I've thought about adding some more "smarts" on the HomeAssistant side, like dis
 
 ![The chickens](/postimages/2025-06-11-how-a-simple-chicken-coop-door-opener-became-a-huge-project/PXL_20230901_164421732.jpg)
 The chickens themselves.
+
+## Updates
+
+### 2025-06-22
+
+I was having a few issues with brown-outs, even after upgrading the power supply (as mentioned earlier). They were fewer and further between, but for an appliance like this, we don't want _any_ issues. It had yet to leave the door _open_ at night, but there were a few mornings when I'd look outside and not see any hens running about. From what I can gather online, the H-Bridges I use, the ones with the built-in 12V-5V converter, occasionally have issues where the converter will output less than 5V intermittently. It seems to be hit or miss if you get one that has this problem, so I'll continue to recommend them, but if you do get one that has these issues, then you can get a [simple little buck converter](https://amzn.to/4kSS5BK), wire it in series with the H-Bridge unit, and connect your ESP32 to the output of the buck converter instead.
+
+I've been running this setup for a few days now, some of the hottest we've had this year, and it's yet to give me any trouble.
