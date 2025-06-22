@@ -1,6 +1,7 @@
 ---
 date: 2024-04-16T16:55:14.394054-06:00
 amazon: true
+title: Thoughts on Hoselink Garden Hose Reel
 ---
 
 # Thoughts on Hoselink Garden Hose Reel

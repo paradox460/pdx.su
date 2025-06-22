@@ -1,6 +1,7 @@
 ---
 date: "2023-10-25T18:57:41-06:00"
 updated: "2023-12-19T10:30:41-07:00"
+title: CSS is fun again
 ---
 
 # CSS is fun again

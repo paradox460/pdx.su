@@ -1,6 +1,7 @@
 ---
 date: 2024-07-08T13:37:07.147923-06:00
 permalink: "/blog/:year-:month-:day-running-a-minecraft-server-on-fly-io"
+title: Running a minecraft server on fly.io
 ---
 
 # Running a minecraft server on fly.io

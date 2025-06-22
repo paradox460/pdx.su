@@ -2,6 +2,7 @@
 date: 2024-08-10T21:43:16.214534-06:00
 updated: 2024-12-25T20:00:18-07:00
 amazon: true
+title: DIY Permanent Xmas lights
 ---
 
 # DIY Permanent Xmas lights

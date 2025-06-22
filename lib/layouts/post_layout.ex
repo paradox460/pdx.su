@@ -15,7 +15,7 @@ defmodule Pdx.PostLayout do
     ~H"""
     <nav :if={!@page[:notoc]} id="toc">
       <ul>
-        <li :for={toc_link <- @toc[@page.file] || []}>
+        <li :for={toc_link <- @page[:toc] || []}>
           <a href={"##{toc_link.id}"} data-depth={toc_link.depth}>{toc_link.text}</a>
         </li>
       </ul>

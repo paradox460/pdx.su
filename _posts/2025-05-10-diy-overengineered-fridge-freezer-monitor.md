@@ -1,6 +1,7 @@
 ---
 date: 2025-05-10T10:39:06.282963-06:00
 title: DIY overengineered fridge/freezer monitor
+permalink: /blog/2025-05-10-diy-overengineered-fridge/freezer-monitor
 amazon: true
 ---
 

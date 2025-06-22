@@ -1,5 +1,6 @@
 ---
 date: 2024-08-18T12:36:19.631911-06:00
+title: Moving from GitHub Pages to Netlify, and adding some statistics
 ---
 
 # Moving from GitHub Pages to Netlify, and adding some statistics

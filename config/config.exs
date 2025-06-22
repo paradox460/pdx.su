@@ -10,20 +10,29 @@ config :tableau, :reloader,
 config :tableau, :config,
   url: "http://localhost:4999",
   timezone: "America/Denver",
+  converters: [
+    md: Pdx.Converters.MDExConverter
+  ],
   markdown: [
     mdex: [
       extension: [
+        alerts: true,
         autolink: true,
+        description_lists: true,
         footnotes: true,
         header_ids: "",
+        math_dollars: true,
+        multiline_block_quotes: true,
         strikethrough: true,
+        subscript: true,
         superscript: true,
-        table: true
+        table: true,
+        tasklist: true,
+        underline: true
       ],
-      render: [unsafe_: true],
-      features: [
-        syntax_highlight_theme: "base16_tomorrow_night",
-        syntax_highlight_inline_style: false
+      render: [unsafe: true],
+      syntax_highlight: [
+        formatter: :html_linked
       ]
     ]
   ]
@@ -34,10 +43,9 @@ config :tableau, Tableau.PostExtension,
   enabled: true,
   future: true,
   layout: "Pdx.PostLayout",
-  permalink: "/blog/:year-:month-:day-:title",
-  html_converter: "Pdx.HtmlConverter"
+  permalink: "/blog/:year-:month-:day-:title"
 
-config :tableau, Pdx.Toc, enabled: true
+config :tableau, Pdx.Extensions.Toc, enabled: true
 
 config :tableau, Tableau.PageExtension, enabled: true
 
@@ -48,7 +56,7 @@ config :tableau, Tableau.RSSExtension,
 
 config :tableau, Tableau.SitemapExtension, enabled: true
 
-config :tableau, Pdx.Metadata, enabled: true
+config :tableau, Pdx.Extensions.Metadata, enabled: true
 
 config :elixir, :time_zone_database, Tz.TimeZoneDatabase
 

@@ -1,6 +1,7 @@
 ---
 date: "2023-02-13T22:18:18-07:00"
 permalink: "/blog/:year-:month-:day-updating-my-fish-theme"
+title: Updating my Fish Shell prompt and Theme
 ---
 
 # Updating my Fish Shell prompt and Theme

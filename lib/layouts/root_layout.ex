@@ -5,7 +5,7 @@ defmodule Pdx.RootLayout do
   def template(assigns) do
     assigns =
       assigns
-      |> maybe_metadata()
+      |> remap_metadata()
       |> title()
 
     ~H"""
@@ -86,7 +86,7 @@ defmodule Pdx.RootLayout do
           <li><a href="https://github.com/paradox460/pdx.su" target="_blank">source</a></li>
         </ul>
       </nav>
-      <div>&copy; #{DateTime.now!("Etc/UTC").year} Jeff Sandberg</div>
+      <div>&copy; {DateTime.now!("Etc/UTC").year} Jeff Sandberg</div>
       <div>
         built in utah with &hearts; and
         <a href="https://github.com/elixir-tools/tableau" target="_blank">tableau</a>
@@ -112,14 +112,8 @@ defmodule Pdx.RootLayout do
     """
   end
 
-  defp maybe_metadata(%{page: %{file: file}, metadata: metadata} = assigns)
-       when is_map(metadata) do
-    meta = Map.get(metadata, file, %{})
-    Map.put(assigns, :meta, meta)
-  end
-
-  defp maybe_metadata(assigns) do
-    Map.put(assigns, :meta, %{})
+  defp remap_metadata(%{page: page} = assigns) do
+    Map.put(assigns, :meta, Map.get(page, :metadata, %{}))
   end
 
   defp title(%{page: page} = assigns) do
