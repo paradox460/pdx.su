@@ -56,7 +56,7 @@ On Each state, we encode some _actions_ in the `entry`. Entry lets you say "Any 
 
 The final State Machine code looks like this:
 
-```js
+```ts
 const machine = setup({
   types: {
     context: {} as {},
@@ -110,7 +110,7 @@ const machine = setup({
 
 In the `actions` block, we make a few calls to some functions we created for handling notifications, as well as setting some properties on DigitalAlchemy proxies. To tie our state machine into our actual monitor, we just need a bit of glue code, that takes state changes from HomeAssistant and uses them to trigger events on our state machine, which will trigger transitions.
 
-```js
+```ts
 const topDoorAction = ({ state: newState }) => {
   if (newState == "on") {
     mailboxActor.send({ type: "Top Door Opened" });
