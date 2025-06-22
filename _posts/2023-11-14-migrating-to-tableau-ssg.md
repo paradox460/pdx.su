@@ -1,5 +1,6 @@
 ---
 date: "2023-11-14T19:05:04.013200-07:00"
+title: Migrating to Tableau SSG
 ---
 
 # Migrating to Tableau SSG

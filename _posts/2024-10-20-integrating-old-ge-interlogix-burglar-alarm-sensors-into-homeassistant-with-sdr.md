@@ -1,6 +1,7 @@
 ---
 date: 2024-10-20T13:03:12.162467-06:00
 amazon: true
+title: Integrating old GE Interlogix Burglar Alarm sensors into HomeAssistant with SDR
 ---
 
 # Integrating old GE Interlogix Burglar Alarm sensors into HomeAssistant with SDR

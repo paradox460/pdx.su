@@ -3,6 +3,7 @@ date: 2024-01-19T18:28:48.118494-07:00
 updated: "2024-02-03T01:19:00-07:00"
 permalink: "/blog/:year-:month-:day-fixing-a-broken-smart-cat-feeder-with-esp32"
 notoc: true
+title: Fixing a broken smart cat feeder with ESP8266
 ---
 
 # Fixing a broken smart cat feeder with ESP8266

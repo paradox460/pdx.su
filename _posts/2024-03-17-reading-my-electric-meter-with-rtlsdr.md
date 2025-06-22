@@ -2,6 +2,7 @@
 date: 2024-03-17T14:18:46.840827-06:00
 updated: 2024-03-23T00:44:26-06:00
 amazon: true
+title: Reading my electric meter with RTLSDR
 ---
 
 # Reading my electric meter with RTLSDR

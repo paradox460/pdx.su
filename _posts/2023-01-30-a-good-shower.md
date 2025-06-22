@@ -3,6 +3,7 @@ date: "2023-01-30T22:00:54-07:00"
 updated: "2023-02-02T20:07:31-07:00"
 permalink: "/blog/:year-:month-:day-a-good-shower"
 amazon: true
+title: Finally, a good shower(head)
 ---
 
 # Finally, a good shower

@@ -1,5 +1,6 @@
 ---
 date: 2024-06-09T21:24:13.0-06:00
+title: Migrating my HomeAssistant automations from NodeRED to Digital Alchemy
 ---
 
 # Migrating my HomeAssistant automations from NodeRED to Digital-Alchemy

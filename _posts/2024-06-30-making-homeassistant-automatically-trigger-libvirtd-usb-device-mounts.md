@@ -1,5 +1,6 @@
 ---
 date: 2024-06-30T00:53:25.648031-06:00
+title: Making HomeAssistant automatically trigger libvirtd USB device mounts
 ---
 
 # Making HomeAssistant automatically trigger libvirtd USB device mounts

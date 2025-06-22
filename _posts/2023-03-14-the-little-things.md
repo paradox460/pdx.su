@@ -1,6 +1,7 @@
 ---
 date: "2023-03-14T19:07:12-06:00"
 permalink: "/blog/:year-:month-:day-the-little-things"
+title: The little things matter
 ---
 
 # The little things matter

@@ -1,6 +1,7 @@
 ---
 date: "2023-04-06T10:00:00-06:00"
 permalink: "/blog/:year-:month-:day-rip-reddit-compact"
+title: Rest in Peace, Reddit Compact
 ---
 
 # Rest in Peace, Reddit Compact
