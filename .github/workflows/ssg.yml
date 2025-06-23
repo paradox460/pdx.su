@@ -19,12 +19,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: jdx/mise-action@v2
+      - uses: erlef/setup-beam@v1
         with:
-          mise_toml: |
-            [settings]
-            disable_tools = ["bun"]
-            erlang.compile = false
+          version-file: ".tool-versions"
+          version-type: strict
       - name: Elixir Deps Cache
         id: elixir-deps-cache
         uses: actions/cache@v4
