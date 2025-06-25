@@ -37,7 +37,7 @@ config :tableau, :config,
     ]
   ]
 
-config :tableau, :assets, yarn: ~w[--cwd assets watch]
+config :tableau, :assets, bun: ~w[--cwd assets watch]
 
 config :tableau, Tableau.PostExtension,
   enabled: true,
