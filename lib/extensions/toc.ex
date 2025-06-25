@@ -17,12 +17,12 @@ defmodule Pdx.Extensions.Toc do
         %{toc_ids: toc_ids, toc: toc} = acc ->
           with [text | _] <- heading[:text],
                text when not is_nil(text) <- text.literal,
-               {id, toc_id_count} <- make_id(text, toc_ids),
+               {id, toc_id_cat, toc_id_count} <- make_id(text, toc_ids),
                level <- heading.level do
             %{
               acc
               | toc: [%{text: text, id: id, depth: level} | toc],
-                toc_ids: Map.put(toc_ids, id, toc_id_count)
+                toc_ids: Map.put(toc_ids, toc_id_cat, toc_id_count)
             }
           else
             _ -> acc
@@ -42,14 +42,12 @@ defmodule Pdx.Extensions.Toc do
 
   defp make_id(text, toc_ids) do
     text
-    |> String.replace(~r/[^ |\-|\p{Mc}|\p{Me}|\p{Mn}|\p{Pc}|[[:alnum:]]/u, "")
-    |> String.downcase()
-    |> String.replace(~r/ /, "-")
+    |> MDEx.anchorize()
     |> then(fn
       id ->
         case Map.get(toc_ids, id, 0) do
-          0 -> {id, 1}
-          count -> {"#{id}-#{count}", count + 1}
+          0 -> {id, id, 1}
+          count -> {"#{id}-#{count}", id, count + 1}
         end
     end)
   end

@@ -23,7 +23,6 @@ defmodule Pdx.MixProject do
     [
       {:fe, "~> 0.1.5"},
       {:floki, "~> 0.38"},
-      # {:tableau, "~> 0.17.1"},
       {:tableau, "~> 0.25"},
       {:date_time_parser, "~> 1.2"},
       {:mdex, "~> 0.7", override: true},
