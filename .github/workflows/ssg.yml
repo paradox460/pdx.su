@@ -26,8 +26,6 @@ jobs:
           mise_toml: |
             [settings]
             disable_tools = ["bun"]
-            erlang.compile = false
-            verbose = true
       - name: Elixir Deps Cache
         id: elixir-deps-cache
         uses: actions/cache@v4
