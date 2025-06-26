@@ -16,12 +16,12 @@ concurrency:
 
 jobs:
   build-elixir:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
-      - run: env
-
       - uses: actions/checkout@v4
       - uses: jdx/mise-action@v2
+        env:
+          ImageOS: "ubuntu-24.04"
         with:
           mise_toml: |
             [settings]
