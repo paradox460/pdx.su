@@ -46,7 +46,6 @@ config :tableau, Tableau.PostExtension,
   layout: "Pdx.PostLayout",
   permalink: "/blog/:year-:month-:day-:title"
 
-
 config :tableau, Tableau.PageExtension, enabled: true
 
 config :tableau, Tableau.RSSExtension,
@@ -55,7 +54,6 @@ config :tableau, Tableau.RSSExtension,
   description: "The personal blog of Jeff Sandberg, software engineer"
 
 config :tableau, Tableau.SitemapExtension, enabled: true
-
 
 config :elixir, :time_zone_database, Tz.TimeZoneDatabase
 

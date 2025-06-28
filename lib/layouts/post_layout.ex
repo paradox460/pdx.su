@@ -32,7 +32,7 @@ defmodule Pdx.PostLayout do
           and last updated on <Pdx.Components.Timestamp.timestamp t={@page.updated} />
         <% end %>
 
-        <br/>
+        <br />
 
         <a href={@page.source_url} target="_blank">You can view its source here.</a>
 
@@ -67,6 +67,10 @@ defmodule Pdx.PostLayout do
   end
 
   defp put_source_url(%{page: %{file: file}} = assigns) do
-    put_in(assigns, [:page, :source_url], "https://github.com/paradox460/pdx.su/tree/main/#{file}")
+    put_in(
+      assigns,
+      [:page, :source_url],
+      "https://github.com/paradox460/pdx.su/tree/main/#{file}"
+    )
   end
 end
