@@ -2,7 +2,7 @@ import { debounce } from 'lodash';
 
 export default class SidebarFootnotes {
 
-  private footnotesElem: HTMLElement = document.querySelector('.footnotes')
+  private footnotesElem: HTMLElement = document.querySelector('.footnotes, section[role="doc-endnotes"]');
 
   private matcher: MediaQueryList;
 
@@ -18,11 +18,11 @@ export default class SidebarFootnotes {
   }
 
 
-  private sidebarFootnotes(enabled: boolean) {
+  private handleResize({matches: enabled}) {
     if (enabled) {
       this.footnotesElem.dataset.sidebar = "";
       let previousBottom = 0;
-      for (let fn of (document.querySelectorAll(".footnotes li") as NodeListOf<HTMLElement>)) {
+      for (let fn of (this.footnotesElem.querySelectorAll("li") as NodeListOf<HTMLElement>)) {
         const inlineNote = document.querySelector(`a[href='#${fn.id}']`)
 
         let top = window.scrollY + inlineNote.getBoundingClientRect().top;
@@ -42,13 +42,9 @@ export default class SidebarFootnotes {
     delete this.footnotesElem.dataset.sidebar;
   }
 
-  private handleResize({ matches }) {
-    this.sidebarFootnotes(matches);
-  }
-
 
   private hoverHighlight() {
-    for (let el of document.querySelectorAll(".footnote-ref a")) {
+    for (let el of document.querySelectorAll(".footnote-ref a, a[id^='fnref'")) {
       const footnoteId = el.getAttribute("href");
       const footnote: HTMLElement = document.querySelector(footnoteId);
       const debouncedEnter = debounce(() => {

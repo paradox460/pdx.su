@@ -122,8 +122,8 @@ p:has(img) {
   font-style: italic;
 }
 
-p:has(.footnote-ref a:target) {
-  animation: highlight 1.5s;
+p:has(.footnote-ref a:target, a:target[id^='fnref']) {
+  animation: highlight 2s;
   @media (prefers-reduced-motion) {
     animation-timing-function: steps(1, end);
   }
@@ -149,15 +149,25 @@ abbr {
   border-top: 1px solid var(--base02);
 }
 
-.footnotes:not([data-sidebar]) {
+section[role='doc-endnotes'] hr {
+  margin-top: 3rem;;
+  padding-bottom: 1rem;
+
+}
+
+:is(.footnotes):not([data-sidebar]) {
   @include bottom-footnotes();
 }
 
-.footnotes[data-sidebar] {
+:is(section[role='doc-endnotes'], .footnotes)[data-sidebar] {
   @media screen and (max-width: calc($toc-hide - 1px)) {
     @include bottom-footnotes();
   }
   @media screen and (min-width: $toc-hide) {
+    hr {
+      display: none;
+    }
+
     li {
       position: absolute;
       right: calc(-1 * (var(--sidebar-width) + var(--grid-gap)));
