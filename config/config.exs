@@ -45,7 +45,6 @@ config :tableau, Tableau.PostExtension,
   layout: "Pdx.PostLayout",
   permalink: "/blog/:year-:month-:day-:title"
 
-config :tableau, Pdx.Extensions.Toc, enabled: true
 
 config :tableau, Tableau.PageExtension, enabled: true
 
@@ -56,7 +55,6 @@ config :tableau, Tableau.RSSExtension,
 
 config :tableau, Tableau.SitemapExtension, enabled: true
 
-config :tableau, Pdx.Extensions.Metadata, enabled: true
 
 config :elixir, :time_zone_database, Tz.TimeZoneDatabase
 
