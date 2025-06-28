@@ -58,6 +58,10 @@ h6 {
   }
 }
 
+section:target >:is(h1, h2, h3, h4, h5, h6) {
+  animation: flash 0.75s 3 ease-in-out both;
+}
+
 h1 {
   font-size: 1.75em;
 }
