@@ -23,11 +23,11 @@ defmodule Pdx.MixProject do
     [
       {:fe, "~> 0.1.5"},
       {:floki, "~> 0.38"},
-      {:tableau, "~> 0.25"},
       {:date_time_parser, "~> 1.2"},
       {:mdex, "~> 0.7", override: true},
+      {:phoenix_live_view, "~> 1.0"},
       {:rustler, ">= 0.0.0", optional: true},
-      {:phoenix_live_view, "~> 1.0"}
+      {:tableau, "~> 0.25"}
       # {:dep_from_hexpm, "~> 0.3.0"},
       # {:dep_from_git, git: "https://github.com/elixir-lang/my_dep.git", tag: "0.1.0"}
     ]
