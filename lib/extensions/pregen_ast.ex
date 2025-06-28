@@ -10,16 +10,18 @@ defmodule Pdx.Extensions.PregenAST do
     for post <- posts do
       case Path.extname(post.file) do
         ".md" ->
-        doc = Pdx.Converters.MDExConverter.to_ast(post.body)
+          doc = Pdx.Converters.MDExConverter.to_ast(post.body)
 
-        Map.put(post, :mdex_document, doc)
+          Map.put(post, :mdex_document, doc)
+
         ".dj" ->
           doc = Pdx.Converters.DjotConverter.to_ast(post.body)
 
           Map.put(post, :djot_document, doc)
+
         _ ->
           post
-        end
+      end
     end
     |> then(&Map.put(token, :posts, &1))
     |> FE.Result.ok()

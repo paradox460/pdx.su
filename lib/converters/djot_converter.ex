@@ -26,13 +26,13 @@ defmodule Pdx.Converters.DjotConverter do
       {"pre", _attrs, [{"code", attrs, children}]} ->
         language =
           Enum.find_value(attrs, fn
-            {"class", <<"language-" <>language>>} -> language
+            {"class", <<"language-" <> language>>} -> language
             _ -> false
           end)
 
         formatter =
           Application.get_env(:tableau, :config)[:markdown][:mdex][:syntax_highlight][:formatter] ||
-          :html_inline
+            :html_inline
 
         children
         |> Floki.text()
