@@ -4,13 +4,14 @@ config :tableau, :reloader,
   patterns: [
     ~r"assets/.*\.(scss|js|ts)",
     ~r"lib/.*\.ex",
-    ~r"(_posts|_pages)/.*.md"
+    ~r"(_posts|_pages)/.*.(md|dj)"
   ]
 
 config :tableau, :config,
   url: "http://localhost:4999",
   timezone: "America/Denver",
   converters: [
+    dj: Pdx.Converters.DjotConverter,
     md: Pdx.Converters.MDExConverter
   ],
   markdown: [
@@ -59,5 +60,7 @@ config :tableau, Tableau.SitemapExtension, enabled: true
 config :tableau, Pdx.Extensions.Metadata, enabled: true
 
 config :elixir, :time_zone_database, Tz.TimeZoneDatabase
+
+config :floki, :html_parser, Floki.HTMLParser.Html5ever
 
 import_config "#{Mix.env()}.exs"
