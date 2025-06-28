@@ -1,0 +1,85 @@
+---
+date: 2025-06-28T17:33:54.866768-06:00
+title: Writing in Djot
+---
+
+# Writing in Djot
+
+I've completed an effort to get Djot support implemented into [Tableau][], the Elixir powered static site generator I use to run this blog, and have started writing posts in it[^1]. So far I'm pretty happy with it, although there are a few oddities that I've had to work around, and some changes that will take getting used to. Still, if you're looking for something a bit more stringent than Markdown, Djot might be a good candidate for you.
+
+[^1]: Well, writing _this_ post, but future ones will be in Djot as well, unless I have good reason to use Markdown.
+
+## History
+
+This is more of the history as it pertains to this blog. Djot itself has its own interesting history, starting with John MacFarlane's [beyond markdown](https://johnmacfarlane.net/beyond-markdown.html) blogpost, and moving into a proper [set of rationales](https://github.com/jgm/djot#rationale) and then a [full specification](https://djot.net).
+
+A few years ago, I [wrote a piece on AsciiDoc and Djot](blog/2023-02-05-asciidoc-and-markdown/#djot), as alternatives to markdown. I mentioned at the time that I'd looked into using AsciiDoc to write _this_ blog, but deemed that it would be untenable, due to the dearth of converters and simple tools at the time. With regards to AsciiDoc, not much has changed in 2.5 years, so its more or less still a curiosity more than a useful tool.
+
+Djot, on the other hand, has seen a bit more success in adoption. While nowhere near the success of markdown, Djot has parsers available in a number of languages, some blessed officially, others just working nicely and quietly. It reminds me of the state of Markdown in the early 2010s, where people were ready to move beyond markdown.pl, but the field wasn't saturated yet. Unlike that era however, Djot started off with rigorous standards, and so implementing support has a lot fewer unknowns.
+
+## Djot in Elixir
+
+When I first started thinking about writing posts in Djot, I explored the field, to judge feasibility. At the time, there were no native Elixir, Erlang, or any other BEAM language based Djot parsers. There was, of course, the official JavaScript/TypeScript implementation, a few implementations in other languages, and [Pandoc][] support, so there were options.
+
+At first, I explored writing a parser. I looked at using Packrat grammars, which are used to write the [slime](https://github.com/slime-lang/slime) elixir parser, but ran into some issues with how Djot would be parsed. I'm sure if I'd kept at this path, a proper grammar could have been written, quite easily. But this was still at the toy project stage, and I didn't want to spend hours thinking about grammars. This also knocks writing a parser using tools like NimbleParsec out of the running, as thats just trading one parsing technique for another.
+
+I toyed with the idea of writing a simple Port around [Pandoc][], since it has very good support. But ports are always tricky beasts. You have to figure out how to manage their version with the systems you'd install them on, in this case getting it running neatly in a Github Actions workflow, as thats what I use to build this site. Finally, I'd have to choose an output format from Pandoc that [Tableau][] could use. Would I output markdown and have Tableau then parse+render it? Would I directly output HTML and transform it? Or should I use some intermediary format, an AST of some kind.
+
+Using a port ultimately seemed like more complexity than it was worth, and this also disqualified a number of other options, like a shim to run the JavaScript based implementation. So all that really left was either writing it entirely in Elixir, which I discussed above, or using an existing implementation in another language that could be brought into elixir via a NIF.
+
+I've done a bit of work with NIFs before, both in closed source codebases as well as minor contributions to tools like [MDEx][], the markdown engine used by this blog, so I'm a little comfortable with them. I still have a lot I don't know about them, but I knew enough to get started.
+
+### Djot in Rust gives us Djot in Elixir
+
+There is a very good, and stable, Djot implementation in rust, called [jotdown][]. Getting it to output high quality HTML is very easy, and should you want to do more, its got a nice event-based API for handling parsing, letting you write renderers in any output format you choose.
+
+Since it already has a good HTML renderer built in, I felt like the hard part was mostly done. I started reading up on [rustler][], a nice library for getting Rust NIFs working in Elixir. More or less stepping through the readme, I got version v0.1.0 of my [Djot NIF][djot-ex] working. Shortly thereafter, I added a sigil for rendering Djot from markdown directly. And then it just sat there for a year, thereabouts.
+
+## Djot in Tableau
+
+Around October 2024, I had succesfully moved my site from NuxtJS to Tableau, and was writing in Markdown. I messaged the author of Tableau, the excellent [mhanberg][], asking about feasibility of getting other markup parsing formats working in Tableau. He was open to the idea and started implementing it, but there were a few minor issues with my elixir djot package at the time. I'd specified it with a rather strict version for Rustler, which prevented it from compiling neatly with Tableau, which uses a Rustler based package for markdown parsing ([mdex][]).
+
+The easiest way to get them both working well together was just to relax the version number, which is what was done for Djot v0.1.2. But that still means that, to compile the application, you have to have a _full_ rust install alongside your elixir install.
+
+### Rustler Precompiled
+
+[MDEx][], and a number of other Rustler based packages for Elixir, use a trick to install precompiled rust binaries for the their NIFs to use. The advantage of this is that wherever you're actually running the Elixir code _only has to be elixir_.
+
+Setting up [Rustler Precompiled](https://github.com/philss/rustler_precompiled) is a bit complex, mostly because you have to figure out how to make your CI of choice build the version matrices for as many systems as you want to support. Github Actions aren't that difficult to make work across different arch+os combos, but its still tedium that has to be done. Once I'd got it working, I was of the opinion that I was ready to get things working in Tableau.
+
+### More Tableau Changes
+
+My initial attempt to get everything working required me to update Tableau. Updates are always tricky, and the Tableau API had changed since I moved this site over to it. A particular sticking point was that extensions couldn't easily access the rendered page output anymore. I use this feature to add the Table of Contents you see (on desktop) on the left side of the page, and to handle things like metadata for social sharing. Mitch had some life get in the way, so things stagnated for a while, but recently he made some changes to the API that have enabled me to not only upgrade this site, but make some important improvements to how I was handling things like the ToC.
+
+For generating the ToC before these changes, I parsed the resulting HTML from the markdown document, encoded it, and stored that in a separate map on the internal state of the Tableau generation. Then at render time I fetched the ToC from that map, keyed off of the post's filename, and used it to render the ToC.
+
+With the updates to both Tableau and MDEx, I didn't have to parse HTML anymore. MDEx has an _excellent_ API for the AST it can generate from markdown, which enables all sorts of useful things, including [netlify URL rewriting](https://github.com/paradox460/pdx.su/blob/f92fe5d53fa2722c9331634402fa10e1a16cbb25/lib/converters/mdex_converter.ex#L35-L44). This API is [Access](https://hexdocs.pm/elixir/Access.html) based, which means you can use some fairly clean tricks to traverse the AST and extract nodes.
+
+### Adding Djot to the mix
+
+Getting the initial parsing of Djot and output of HTML working in Tableau was probably the easiest part. I just updated the configs, added a new converter, and I was off. However, _all_ my extensions stopped working because they were built around the MDEx APIs, and my Djot library doesn't have anything quite that powerful.
+
+Since I was working with HTML output directly, and Djot's HTML output differs from MDEx's HTML output in some significant ways, I basically had to write separate pathways for each document to be parsed by, for each extension. For Djot documents I went back to HTML parsing. Not great, but since its a static site it only has to do that once for each update, not every request.
+
+The final part of backend work was getting syntax highlighting working. MDEx has a syntax highlighter built in, but its also available as a [separate library][autumnus]. Since I've already got a css-based theme working with this, it was the obvious choice. Plumbing it into the Djot converter wasn't too hard, just a bit of HTML traverse and update logic, and now code blocks work just as well in Djot as they do in Markdown
+
+Frontend wise, most of my JS and CSS worked nearly perfectly. I had to [tune the frontend side of the Table of Contents](https://github.com/paradox460/pdx.su/commit/286318b72fedd1076657ca7ac463f13b7d779873) to work with both Markdown and Djot HTML, but that was ultimately a rather minor change. CSS was even smaller, with only a bit of reset styling around how browsers handle `section h1` elements.
+
+And then I was done. As testified by this post being written in Djot.
+
+## Plans for the future of Djot in Elixir
+
+Working with the MDEx API has been a joy, and working with the HTML output from Djot has been a bit of a pain. Since [jotdown][] has an event based system under the hood, I think a project I might explore over the next few months is to implement a Djot AST, similar to MDEx's AST. It wouldn't be 1:1, as Djot and Markdown have different structural components, but it would be similar enough to have the same good ergonomics. In particular I am a _massive_ fan of how it implements Access, which leads to one of the most ergonomic parsing experiences I've ever had in any language.
+
+I'm also interested in moving Autumn based syntax highlighting over to the Rust side of things, so that it can occur with some native speed, without the serialization and HTML parsing costs. For Djot to be something usable in a dynamic setting, thats a bit more of a requirement.
+
+
+
+[Pandoc]: https://pandoc.org/
+[Tableau]: https://github.com/elixir-tools/tableau
+[MDEx]: https://github.com/leandrocp/mdex
+[rustler]: https://docs.rs/rustler/latest/rustler/
+[djot-ex]: https://github.com/paradox460/djot
+[mhanberg]: https://www.mitchellhanberg.com
+[autumn]: https://github.com/leandrocp/autumn
+[autumnus]: https://github.com/leandrocp/autumnus
