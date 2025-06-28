@@ -11,6 +11,7 @@ defmodule Pdx.PostLayout do
       else
         assigns
       end
+      |> put_source_url()
 
     ~H"""
     <nav :if={!@page[:notoc]} id="toc">
@@ -30,6 +31,10 @@ defmodule Pdx.PostLayout do
         <%= if @page[:updated] do %>
           and last updated on <Pdx.Components.Timestamp.timestamp t={@page.updated} />
         <% end %>
+
+        <br/>
+
+        <a href={@page.source_url} target="_blank">You can view its source here.</a>
 
         <div :if={@page[:amazon]} class="affiliate-banner">
           This post contains Amazon Affiliate links, marked with an <span class="amazon-icon"></span>
@@ -59,5 +64,9 @@ defmodule Pdx.PostLayout do
       <% end %>
     </article>
     """
+  end
+
+  defp put_source_url(%{page: %{file: file}} = assigns) do
+    put_in(assigns, [:page, :source_url], "https://github.com/paradox460/pdx.su/tree/main/#{file}")
   end
 end
