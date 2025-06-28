@@ -1,6 +1,8 @@
 export default class Toc {
 
-  static headersSelector = '#content :is(h2, h3, h4):has(a[id])';
+  static djHeadersSelector = '#content section[id] >:is(h2, h3, h4)';
+  static mdHeadersSelector = '#content :is(h2, h3, h4):has(a[id])';
+  static headersSelector = `${Toc.djHeadersSelector}, ${Toc.mdHeadersSelector}`;
 
   private observer: IntersectionObserver;
   private activeToc = new Set<string>();
@@ -8,7 +10,12 @@ export default class Toc {
   constructor() {
     this.observer = new IntersectionObserver(entries => {
       entries.forEach(entry => {
-        const id = entry.target.querySelector('a[id]')?.getAttribute('id');
+        let id: string;
+        if (entry.target.matches(Toc.djHeadersSelector)) {
+          id = entry.target.closest('section[id]')?.getAttribute('id');
+        } else {
+          id = entry.target.querySelector('a[id]')?.getAttribute('id');
+        }
         if (!id) return;
         const { isIntersecting, intersectionRatio } = entry;
         if (isIntersecting && intersectionRatio >= 1) {
@@ -18,13 +25,20 @@ export default class Toc {
 
           for (const oldId of this.activeToc) {
             if (!this.isVisible(oldId)) {
+
               this.activeToc.delete(oldId);
             }
           }
 
           if (this.activeToc.size === 0) {
-            const closest = this.findClosestOffscreenHeader()?.querySelector('a[id]')?.id;
-            if (closest) { this.activeToc.add(closest); }
+            const closest_header = this.findClosestOffscreenHeader();
+            let closest_id: string;
+            if (closest_header.matches(Toc.djHeadersSelector)) {
+              closest_id = closest_header.closest("section[id]")?.getAttribute('id');
+            } else {
+              closest_id = closest_header.querySelector('a[id]')?.getAttribute('id');
+            }
+            if (closest_id) { this.activeToc.add(closest_id); }
           }
         }
 
