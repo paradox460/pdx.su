@@ -2,7 +2,7 @@ import { debounce } from 'lodash';
 
 export default class SidebarFootnotes {
 
-  private footnotesElem: HTMLElement = document.querySelector('.footnotes')
+  private footnotesElem: HTMLElement = document.querySelector('.footnotes, section[role="doc-endnotes"]');
 
   private matcher: MediaQueryList;
 
@@ -22,7 +22,7 @@ export default class SidebarFootnotes {
     if (enabled) {
       this.footnotesElem.dataset.sidebar = "";
       let previousBottom = 0;
-      for (let fn of (document.querySelectorAll(".footnotes li") as NodeListOf<HTMLElement>)) {
+      for (let fn of (this.footnotesElem.querySelectorAll("li") as NodeListOf<HTMLElement>)) {
         const inlineNote = document.querySelector(`a[href='#${fn.id}']`)
 
         let top = window.scrollY + inlineNote.getBoundingClientRect().top;
