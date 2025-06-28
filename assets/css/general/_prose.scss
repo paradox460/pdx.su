@@ -26,6 +26,10 @@ a {
   }
 }
 
+section h1 {
+  margin: .83em 0;
+}
+
 h1,
 h2,
 h3,
@@ -41,17 +45,14 @@ h6 {
     all: unset;
   }
 
-  a:hover::before {
-    content: "§";
-    position: absolute;
-    left: -1em;
-    width: 2em;
-    cursor: pointer;
-  }
 
   &:has(a:target) {
     animation: flash 0.75s 3 ease-in-out both;
   }
+}
+
+section:target >:is(h1, h2, h3, h4, h5, h6) {
+  animation: flash 0.75s 3 ease-in-out both;
 }
 
 h1 {

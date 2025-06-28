@@ -21,12 +21,16 @@ defmodule Pdx.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
+      {:autumn, "~> 0.4"},
       {:fe, "~> 0.1.5"},
       {:floki, "~> 0.38"},
+      {:html5ever, "~> 0.16"},
       {:date_time_parser, "~> 1.2"},
+      {:djot, "~> 0.1"},
       {:mdex, "~> 0.7", override: true},
       {:phoenix_live_view, "~> 1.0"},
       {:rustler, ">= 0.0.0", optional: true},
+      {:rustler_precompiled, "0.8.2", override: true},
       {:tableau, "~> 0.25"}
       # {:dep_from_hexpm, "~> 0.3.0"},
       # {:dep_from_git, git: "https://github.com/elixir-lang/my_dep.git", tag: "0.1.0"}
