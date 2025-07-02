@@ -20,12 +20,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: jdx/mise-action@v2
-        env:
-          ImageOS: "ubuntu-24.04"
         with:
           mise_toml: |
             [settings]
-            disable_tools = ["bun"]
+            enable_tools = ["elixir", "erlang"]
       - name: Elixir Deps Cache
         id: elixir-deps-cache
         uses: actions/cache@v4
@@ -63,7 +61,7 @@ jobs:
         with:
           mise_toml: |
             [settings]
-            disable_tools = ["elixir", "erlang"]
+            enable_tools = ["bun"]
       - name: Bun Deps Cache
         id: bun-deps-cache
         uses: actions/cache@v4
@@ -98,28 +96,28 @@ jobs:
     environment:
       name: netlfiy-prod
     steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            .mise.toml
+          sparse-checkout-cone-mode: false
       - uses: actions/download-artifact@v4
         with:
           path: _site/
           pattern: site-*
           merge-multiple: true
-      - name: Minify cache
-        id: minify-cache
-        uses: actions/cache@v4
+      - uses: jdx/mise-action@v2
         with:
-          path: |
-            ./minify
-          key: minify-0.15.0
-      - name: Download minify script
-        if: steps.minify-cache.outputs.cache-hit != 'true'
-        run: |
-          curl https://github.com/wilsonzlin/minify-html/releases/download/v0.15.0/minhtml-0.15.0-x86_64-unknown-linux-gnu > minify
-          chmod +x minify
-
+          mise_toml: |
+            [settings]
+            enable_tools = ["ubi:wilsonzlin/minify-html"]
       - name: Shrink HTML
         run: |
           shopt -s globstar
-          ./minify --minify-css --minify-js _site/**/*.html
+          minify-html --minify-css --minify-js _site/**/*.html
+
+      # Netlify's CLI _can_ be installed against bun, but it also needs python and a bunch of other crap
+      # So we just use the docker container action instead
       - name: Deploy to Netlify
         uses: netlify/actions/cli@master
         with:

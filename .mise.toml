@@ -1,1 +1,7 @@
-min_version = "2025.6.8"
+min_version = "2025.7.0"
+
+[tools]
+bun = "1.2.17"
+elixir = "1.18.2-otp-27"
+erlang = "27.3.4.1"
+"ubi:wilsonzlin/minify-html" = "0.16.4"
