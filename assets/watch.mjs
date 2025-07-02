@@ -1,3 +1,3 @@
 import ctx from "./context.mjs";
 
-await ctx.watch()
+await ctx.watch();

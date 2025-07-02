@@ -1,8 +1,8 @@
-import { LitElement, html, css } from 'lit';
-import { customElement, property } from 'lit/decorators.js';
-import { styleMap } from 'lit/directives/style-map.js';
+import { LitElement, html, css } from "lit";
+import { customElement, property } from "lit/decorators.js";
+import { styleMap } from "lit/directives/style-map.js";
 
-@customElement('md-note')
+@customElement("md-note")
 export class MdNote extends LitElement {
   static styles = css`
     :host {
@@ -25,7 +25,7 @@ export class MdNote extends LitElement {
     }
   `;
   @property()
-  icon?: string = '💡';
+  icon?: string = "💡";
 
   @property()
   color?: string;
@@ -36,23 +36,23 @@ export class MdNote extends LitElement {
     }
 
     const colors: Record<string, string> = {
-      "red": "base08",
-      "orange": "base09",
-      "yellow": "base0a",
-      "green": "base0b",
-      "cyan": "base0c",
-      "blue": "base0d",
-      "purple": "base0e",
-      "brown": "base0f"
-    }
+      red: "base08",
+      orange: "base09",
+      yellow: "base0a",
+      green: "base0b",
+      cyan: "base0c",
+      blue: "base0d",
+      purple: "base0e",
+      brown: "base0f",
+    };
 
     let color = this.color.toLowerCase();
-    color = color.match(/base0\p{Hex_Digit}/) ? color : colors[color]
+    color = color.match(/base0\p{Hex_Digit}/) ? color : colors[color];
 
     return {
       background: `color-mix(in srgb, var(--${color}) 25%, transparent)`,
-      borderColor: `color-mix(in srgb, var(--${color}) 75%, transparent)`
-    }
+      borderColor: `color-mix(in srgb, var(--${color}) 75%, transparent)`,
+    };
   }
 
   render() {

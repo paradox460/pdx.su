@@ -1,9 +1,9 @@
-import * as esbuild from 'esbuild';
-import { sassPlugin } from 'esbuild-sass-plugin';
-import postcss from 'postcss';
-import autoprefixer from 'autoprefixer';
-import postcssPresetEnv from 'postcss-preset-env';
-import { minifyHTMLLiteralsPlugin } from 'esbuild-plugin-minify-html-literals';
+import * as esbuild from "esbuild";
+import { sassPlugin } from "esbuild-sass-plugin";
+import postcss from "postcss";
+import autoprefixer from "autoprefixer";
+import postcssPresetEnv from "postcss-preset-env";
+import { minifyHTMLLiteralsPlugin } from "esbuild-plugin-minify-html-literals";
 
 const dev = process.env.NODE_ENV !== "production";
 
@@ -12,16 +12,15 @@ const dev = process.env.NODE_ENV !== "production";
 let urlFixPlugin = {
   name: "url-fix",
   setup(build) {
-    build.onResolve({ filter: /^\/extra\// }, args => {
+    build.onResolve({ filter: /^\/extra\// }, (args) => {
       const fixedPath = args.path.replace(/^\/extra\//, "/");
       return {
         path: fixedPath,
-        external: true
-      }
-    })
-  }
-}
-
+        external: true,
+      };
+    });
+  },
+};
 
 export default await esbuild.context({
   entryPoints: ["./css/style.scss", "./js/index.ts"],
@@ -31,13 +30,20 @@ export default await esbuild.context({
   legalComments: "linked",
   footer: {
     js: "/*! Copyright 2025 Jeff Sandberg */",
-    css: "/* Copyright 2025 Jeff Sandberg */"
+    css: "/* Copyright 2025 Jeff Sandberg */",
   },
   outdir: "../_site",
-  plugins: [minifyHTMLLiteralsPlugin(), urlFixPlugin, sassPlugin({
-    async transform(source, _resolveDir, filePath) {
-      const { css } = await postcss([autoprefixer, postcssPresetEnv({ stage: 0 })]).process(source, { from: filePath, to: "/css/style.css" });
-      return css;
-    }
-  })]
+  plugins: [
+    minifyHTMLLiteralsPlugin(),
+    urlFixPlugin,
+    sassPlugin({
+      async transform(source, _resolveDir, filePath) {
+        const { css } = await postcss([
+          autoprefixer,
+          postcssPresetEnv({ stage: 0 }),
+        ]).process(source, { from: filePath, to: "/css/style.css" });
+        return css;
+      },
+    }),
+  ],
 });
