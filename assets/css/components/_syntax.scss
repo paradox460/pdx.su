@@ -7,7 +7,6 @@ pre.athl {
   background-color: transparent;
   color: var(--base05);
 
-
   .attribute {
     color: var(--base09);
   }
@@ -53,7 +52,8 @@ pre.athl {
     color: var(--base08);
   }
 
-  .function, .function-call {
+  .function,
+  .function-call {
     color: var(--base0d);
   }
 
