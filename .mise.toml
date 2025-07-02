@@ -4,7 +4,9 @@ min_version = "2025.7.0"
 bun = "latest"
 elixir = "1.18"
 erlang = "27"
+hk = "latest"
 "npm:prettier" = "latest"
+pkl = "latest"
 "ubi:wilsonzlin/minify-html" = "latest"
 
 [settings]

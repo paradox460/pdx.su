@@ -1,0 +1,38 @@
+amends "package://github.com/jdx/hk/releases/download/v1.0.0/hk@1.0.0#/Config.pkl"
+import "package://github.com/jdx/hk/releases/download/v1.0.0/hk@1.0.0#/Builtins.pkl"
+
+local elixir_files = List("*.ex", "*.exs")
+
+local linters = new Mapping<String, Step> {
+  ["prettier"] = (Builtins.prettier) {
+    batch = false
+  }
+  ["mix format"] {
+    glob = elixir_files
+    exclude = List("deps/**/*")
+    stage = elixir_files
+    check = "mix format --check-formatted {{files}}"
+    fix = "mix format {{files}}"
+
+  }
+  ["pkl"] {
+    glob = "*.pkl"
+    check = "pkl eval {{files}} >/dev/null"
+  }
+}
+
+hooks {
+  ["pre-commit"] {
+    fix = true
+    stash = "patch-file"
+    steps = linters
+  }
+  ["fix"] {
+    fix = true
+    stash = "patch-file"
+    steps = linters
+  }
+  ["check"] {
+    steps = linters
+  }
+}
