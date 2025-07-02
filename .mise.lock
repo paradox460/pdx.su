@@ -1,0 +1,19 @@
+[tools.bun]
+version = "1.2.17"
+backend = "core:bun"
+
+[tools.elixir]
+version = "1.18.2-otp-27"
+backend = "core:elixir"
+
+[tools.erlang]
+version = "27.3.4.1"
+backend = "core:erlang"
+
+[tools."npm:prettier"]
+version = "3.6.2"
+backend = "npm:prettier"
+
+[tools."ubi:wilsonzlin/minify-html"]
+version = "0.16.4"
+backend = "ubi:wilsonzlin/minify-html"

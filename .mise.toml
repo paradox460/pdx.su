@@ -1,13 +1,15 @@
 min_version = "2025.7.0"
 
 [tools]
-bun = "1.2.17"
-elixir = "1.18.2-otp-27"
-erlang = "27.3.4.1"
-"npm:prettier" = "3"
-"ubi:wilsonzlin/minify-html" = "0.16.4"
+bun = "latest"
+elixir = "1.18"
+erlang = "27"
+"npm:prettier" = "latest"
+"ubi:wilsonzlin/minify-html" = "latest"
 
 [settings]
+experimental = true
+lockfile = true
 
 [settings.npm]
 bun = true
