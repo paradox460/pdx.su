@@ -115,6 +115,7 @@ ul {
 }
 img {
   max-width: 100%;
+  border-radius: var(--radius);
 }
 p:has(img) {
   text-align: center;
