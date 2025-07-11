@@ -7,6 +7,11 @@ pre.athl {
   background-color: transparent;
   color: var(--base05);
 
+  &[data-code-block] {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
   .attribute {
     color: var(--base09);
   }
