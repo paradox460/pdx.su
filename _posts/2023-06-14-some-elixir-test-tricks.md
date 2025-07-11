@@ -15,7 +15,7 @@ You're testing something in your codebase, and you have to set up a user, maybe 
 
 But now you have another test file, and it's got similar, but slightly different, setup steps. You copy the setup block, change it slightly, and proceed with things. Repeat that over the next several other test files, and now you're in an unfortunate situation. You've got a bunch of _similar_, but not identical setup steps. Some tests need users of different permission levels, some need different content, others need their own special things.
 
-### Extracting Universal steps to a `__using__` macro
+### Extracting Universal steps to a macro
 
 A common approach is to put the most universal setup steps into a custom `__using__` macro, and then using it via `use`. If you're using Phoenix, you already have a macro generated for you, in your `test/support/conn_case.ex` file, and similar ones for database access and channels. You can just add a `setup` block to these macros, and it will effectively be included in every test that needs it.
 

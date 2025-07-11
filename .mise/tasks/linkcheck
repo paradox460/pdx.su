@@ -1,0 +1,5 @@
+#!/usr/bin/env fish
+#MISE description="Checks links in the site"
+#MISE tools=["elixir", "erlang"]
+
+docker run --rm tennox/linkcheck host.docker.internal:4999 $argv

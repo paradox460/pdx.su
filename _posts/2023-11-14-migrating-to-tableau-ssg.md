@@ -9,7 +9,7 @@ Recently I moved this site off of the older Nuxt/Nuxt-content based static site 
 
 ## Previously, on pdx.su…
 
-Previously, I was using [Nuxt](nuxt.com/) and [Nuxt-Content](https://content.nuxt.com). This was a fairly enjoyable stack, for the most part. I could write posts in Markdown, add my own custom components to be used within Markdown documents, and publishing was relatively straightforwards.
+Previously, I was using [Nuxt](https://nuxt.com/) and [Nuxt-Content](https://content.nuxt.com). This was a fairly enjoyable stack, for the most part. I could write posts in Markdown, add my own custom components to be used within Markdown documents, and publishing was relatively straightforwards.
 
 But it was often a black box. I could tweak some things about it, most of its layout and even the way some components in its output rendered, but things such as some head tags, and particular aspects of inline code, were always off-limits. Nuxt was very nice for quickly getting a site up and running, but I never really felt that I was in complete control over how it built itself. Its output was nice and fast, and the site rendered rather quickly, but given I was using no server-side rendering, and only using pre-generated HTML output, the server-side JS features ultimately proved more of a headache than a utility.
 
