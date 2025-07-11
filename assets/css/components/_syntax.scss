@@ -13,6 +13,11 @@ pre.athl {
     padding: 0;
   }
 
+  code {
+    text-wrap: nowrap;
+    overflow-inline: auto;
+  }
+
   .attribute {
     color: var(--base09);
   }
