@@ -1,0 +1,141 @@
+---
+date: 2025-07-10T20:11:57.034285-06:00
+title: Make your repo ergonomic
+---
+
+# Make your repo ergonomic
+
+Throughout my entire career as a software engineer, I've had to clone and set up many projects. They have each done different things, and have been in a variety of different languages, built around a variety of different systems. Some are open source and public, others are proprietary and available only through the terms of my employ. One commonality nearly all of them share is that they _suck_ to get set up on a new machine.
+
+Proprietary codebases are typically slightly worse than open source ones, for the simple reason that open source ones treat their ease of contributions as a marketing device, while proprietary codebases, with privileged and limited access, typically gated behind an employment contract of some kind, don't have to care about that. While its nice that open source projects respect the time of potential contributors more, it seems foolish that private repositories don't seem to care as much, given they're typically _paying_ for the "privilege" of having a developer work on it.
+
+I'm going to write most of this article from the perspective of someone using Github, as thats generally the most prevalent, but the ideas I discuss are portable across whatever you use for your source control, be it patches emailed around or some proprietary behemoth.
+
+## How it is
+
+### Your readme sucks
+
+The first thing most of us will encounter when starting with a repository is the README. Github displays this prominently, and most developers seem to have a feel that the README should be of some minor utility to future developers. Typically you'll find a section on some dependencies needed for the project, how to get things running, some discussion of architecture, and, if you're really lucky, some documentation about particular warts of the project, or at least links to such.
+
+But the README is almost always full of false promises. You'll see things like "Getting started is easy, just clone the repo and run these 5 commands". But when you do, you'll find that Homebrew or whatever no longer packages up one particular dependency, or that it doesn't run on M-series Macs, or some other crap. If you're at work, you'll probably go ask in Slack, maybe ask a coworker assigned to help onboard you, and get a snippet that tells you how to get around it. You'll run the snippet, it will work, and you'll move on to the next undocumented problem.
+
+Maybe one of your dependencies is getting a copy of the database to run locally. So you'll have to go find that through some proprietary internal service, download a massive (hopefully anonymized) dump, try to import it, find that your version of PostgreSQL and the one that the company is running are incompatible, try and get the right one installed, you get the picture.
+
+Once you finally get everything working, you'll be so exhausted from the gauntlet that you won't have the mental capacity to do any more work. But luckily, your first day is probably finished, so time to go home and forget all the pain. Tomorrow you'll come in fresh, and actually start working on tickets. But what about the next guy? They're going to go through the same crap, deal with the same random bullshit, and have to dig out the same answers you did.
+
+All this stems from the fact that the README is text. It's not code. It's typically written early in a projects lifetime, and then more or less left alone. Maybe someone will come and update it from time to time, but there's no guarantee that it will be kept up to date. Developers used to the project won't reference the README, they'll either use their shell history or snippets passed around in Slack. The README becomes a snapshot of the project at a particular time in the past.
+
+
+### Your dependency management sucks
+
+Most repos will have dependency management. Typically its going to be confined to the language(s) the repo uses, and managed with a tool specific to the language(s). Thats fine and all, and usually works pretty well. But that only handles libraries and such _for that language_. What about all the auxiliary crap you need to run your project? Some tools, like Docker, can be assumed to be installed, and generally are pretty stable across versions, and have carve-outs for each developer to choose how to run it (Colima, Orbstack, etc). Other tools are incredibly repo specific, and most of them are left up to the developer to manage their install of. And then you get issues that go something like this:
+
+> My froblar isn't working anymore
+>
+> > We upgraded froblar versions last week
+>
+> Oh ok I'll run `brew update` and get the newer version
+
+Yeah, its not a big deal to get around, but every time you have to do it, its a waste of time. And it adds up.
+
+I've seen some devs try to get around this by using tools _in_ the language. This is likely the cause of a proliferation of things like `rake`, `just`, and other build tools. You _have_ to have the language the repo uses installed, so getting tools in it seems like a simple way to manage the dependencies of these tools. It works, but always has felt like a kludge to me. Why am I managing the version of my tools in the exact same place I'm managing the versions of my application dependencies?
+
+There are better ways to manage dependencies.
+
+### Starting your app and its dependencies shouldn't require memorization
+
+Finally, for some modern systems, particularly those heavy with microservice architecture gobbledygook, you'll have to have 5 or 6 things running at once, just to develop your app. The ideal solution to this is just have most everything running in Docker or similar containers, so you can shove the apps you don't care about into the background, and work on the one you do care about presently.
+
+But thats rarely the case. More often than not, you'll be working on your local codebase, and tying it into some remote system. If your IT department is kind, you'll have something like Tailscale managing all the VPN stuff for you, so you can just connect to remote systems as if they were just another URL. But if they're more of the average IT department, you'll run into the classic problem of having to set up half a dozen port forwards just to talk to the various remote services you don't want to spend weeks getting running locally.
+
+You'll find the readme saying things like:
+
+> - Ensure Docker with redis is running
+> - In one terminal, run `kubectl --context "honk-staging" --namespace "honk-core" port-forward honk-instance-0 50001:50000
+> - In another terminal, run `kubectl --context "blarg-staging" --namespace "blarg-core" port-forward blarg-instance-0 50002:50000`
+> - In a third, run `bin/graphql-router`
+> - In a fourth, run the application `iex -S mix phx.server
+
+Every time you want to get enough of the application running locally to develop your code, you'll have to open at least 4 terminals, run 4 separate commands, and hope nothing has broken since the last time you, or the person who wrote them into the readme, ran them.
+
+Maybe you use a tool like [Atuin](https://atuin.sh) to manage your shell history, so you have some portability across machines, and getting a new one doesn't mean losing years worth of "snippets." But that does no good for new engineers.
+
+## How to fix it
+
+### Fixing your README
+
+Fixing the README requires a bit of a cultural change. The README should be treated as a living document. As changes to the application happen, there should be a conscious effort to make sure the readme reflects the current state of things. If a PR changes how something starts, in a way that requires developers to do something different, it should update the README to reflect that. If it doesn't, people on your team (maybe even you!) should request changes, to have an updated README.
+
+But we can make sure the README doesn't have to be updated all the time, by taking common processes, like all the code snippets on how to set things up and how to start the app, and pulling them out into scripts or tasks, that can be run via a single command. Then the readme doesn't have to be updated every time the invocation of the script changes, just the script needs to be updated. If the script is something all your developers use every time they start the app, it will stay updated. More on how to do these scripts in a moment.
+
+For your "set up this app" step, you should first strive to minimize all that the developer has to do. Move slow, unchanging things into scripts or Docker containers. Write a docker compose file, that can be started with just a single `docker compose up`. You can dramatically improve your dependency management, which will alleviate a massive category of setup pains.
+
+### Dependency management
+
+Most teams already use a tool to manage the _version_ of their application's language. Node, Ruby, and Python all have a bunch of dedicated tools for this, and there are general purpose tools like [asdf](https://asdf-vm.com) and [mise](https://mise.jdx.dev) that aim to manage many different languages at once. Other teams may use a tool like `Nix`, which can do everything else I'm going to elaborate on in this section, and more.
+
+If you're already using a tool like `asdf`, you're in a decent enough place. If you're already using `mise`, you're already halfway through the suggestions I'm gonna make. If you're on `asdf`, you should move to `mise`. It's more or less a drop-in replacement for `asdf`, and does oh so much more. The rest of this section will be about some `mise` tricks that I've found useful.
+
+Once you've got mise running (and I'd add a link to the mise installer to your README), I'd recommend setting the following settings
+
+```sh
+mise settings set experimental true
+mise settings set lockfile true
+mise touch mise.lock
+```
+
+In short, these settings enable experimental features, which lets you install more tools than the base does, and sets up lockfiles, so you can use looser version specifiers for languages and tools, while still maintaining the same "version" across machines.
+
+Now, there are probably a few tools that you've just told devs to install. Tools like `rover` or `docker`. You can probably get away with leaving these as system tools, particularly if they're stable, like Docker, but for more ephemeral tools, or tools that don't really fit your application architecture but are useful (think prettier for your CSS, markdownlint, etc), you can add them to mise, and they'll be versioned.
+
+Mise has a ton of support for various tools, so check with `mise search <toolname>` first. If there isn't a tool listed there, you can install nearly anything that can be grabbed off the internet in an architecture agnostic way via mise's support for the [universal binary installer](https://github.com/houseabsolute/ubi). You just add these to your mise config via `mise use ubi:user/repo@version`, and you're off to the races. If that doesn't work for you, the [mise documentation on this feature](https://mise.jdx.dev/dev-tools/backends/ubi.html), which might solve your use case.
+
+For the tools that are more general purpose tools, like docker, I'd still recommend adding a `brewfile` to your repo. This lets new devs install global dependencies they may not have by simply running `brew bundle`. This has some overlap with mise, particularly for tool management, but Homebrew in general doesn't keep around older versions of tools (barring things like `postgres@14`), so its only good if the version of each tools is largely irrelevant. Use your best judgement
+
+### Make your scripts into tasks
+
+Mise also has a very robust [tasks system](https://mise.jdx.dev/tasks/). You can define tasks either in your `mise.toml`, or as scripts in `.mise/tasks`. I generally prefer the latter, as they're a bit easier to write, port older scripts into, and if you're in a circumstance where you don't have mise, depending on how you write your tasks, you can still run them same as any other shell script.
+
+These tasks are very useful for doing things like setting up your application, linting, compiling, releasing, etc. Look at commands you have to run all the time, and try and port them into a task. If you need options parsing, [mise has you covered](https://mise.jdx.dev/tasks/file-tasks.html#arguments), no need to use `getopts`.
+
+You can even specify task dependencies, so you can make a release task depend on a build task.
+
+For our "start these 4 programs across multiple shells" step, I'd recommend using a task, coupled with `tmux`, to start up all the programs you need, in a single command. Here's a simple example of this:
+
+```sh
+#!/usr/bin/env bash
+#MISE description="Runs everything locally, in a Tmux session named MyApp. To kill a running session, run this command again"
+#USAGE flag "-w --window" help="Attempts to use iTerm2's tmux integration, opening in real windows instead just a tmux pane" default="false"
+
+set -Eeuo pipefail
+
+# Check if we're already running the tmux session, if so, kill it
+tmux has-session -t MyApp &>/dev/null && tmux kill-session -t MyApp && exit 0
+
+tmux_config=$(
+  cat <<HERE
+new -s MyApp -n "DB Port Forward" mise run port_forward_db
+neww -n "Search Port Foward" mise run port_forward_search
+neww -n Apollo mise run apollo
+neww -n Phoenix
+send-keys -t Phoenix "iex -S mix phx.server" Enter
+HERE
+)
+
+if [[ "$usage_window" == "true" ]] && [[ $TERM_PROGRAM == "iTerm.app" ]]; then
+  tmux_options="-CC"
+else
+  tmux_options=""
+fi
+
+tmux $tmux_options -f <(echo "${tmux_config}") attach
+
+```
+
+This script will start a new tmux session, with 4 windows, each named after their respective service. Each service's invocation is a separate mise task, to keep the code simple, and allows for you to start each one independently, as you may need to. The last window we open runs our application server, and we invoke it using `send-keys`, instead of just running it, so we may kill and restart the application server without losing our window. The last convenience item is that, if tmux is already running a session of this, we kill it instead of starting a new one. This acts as a soft mutex, preventing duplicate sessions from running, and lets you "exit" the session from within by running `mise run start` again, which should be fairly close in the shell history of the application server window.
+
+## Conclusion and Alternatives
+
+While none of these are an immediate panacea, they have improved ergonomics on many of the projects I work on. Bundling your random scripts up into tasks, bringing some of your dependency management closer to your application code, and ensuring that the README is a more resilient document should eliminate a lot of pain points.
+
+If you're not interested in using mise, another solution is to use Devcontainers. These are essentially docker containers with some conventions around them. Editors like VSCode can connect _directly_ to a devcontainer, allowing you to edit your code within the container, without too much fussing with volumes and mounts. They manage to solve some of the pain points with docker, but I have less experience with them, so I can do little more than point out their existence.
