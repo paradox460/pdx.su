@@ -5,6 +5,7 @@ defmodule Mix.Tasks.Post.New do
   `mix post.new [opts] title`
 
   ## Options
+  - `m`, `markdown` -- Use markdown instead of djot.
   - `f`, `filename` -- File name to save post to. Defaults to `yyyy-mm-dd-[transformed title]`. No extension is required
   - `d`, `date` -- Date for post. If absent, defaults to "now"
   - `p`, `permalink` -- Permalink for post frontmatter. If absent, will be up to application configuration
@@ -25,8 +26,8 @@ defmodule Mix.Tasks.Post.New do
   def run(argv) do
     {parsed, args} =
       OptionParser.parse!(argv,
-        strict: [filename: :string, date: :string, permalink: :string],
-        aliases: [f: :filename, d: :date, p: :permalink]
+        strict: [filename: :string, date: :string, permalink: :string, markdown: :boolean],
+        aliases: [f: :filename, d: :date, p: :permalink, m: :markdown]
       )
 
     {:ok, config} = Tableau.Config.new(Map.new(Application.get_env(:tableau, :config, %{})))
@@ -67,7 +68,7 @@ defmodule Mix.Tasks.Post.New do
 
     filename =
       parsed[:filename] ||
-        gen_filename(date, title)
+        gen_filename(date, title, !!parsed[:markdown])
         |> then(&Path.join("_posts/", &1))
 
     post_template(frontmatter: frontmatter, title: title)
@@ -80,7 +81,7 @@ defmodule Mix.Tasks.Post.New do
 
   defp maybe_put_permalink(frontmatter, _), do: frontmatter
 
-  defp gen_filename(date, title) do
+  defp gen_filename(date, title, markdown) do
     filename =
       title
       |> String.replace(~r/[^[:alnum:]]+/i, "-")
@@ -88,6 +89,8 @@ defmodule Mix.Tasks.Post.New do
 
     output_date = Calendar.strftime(date, "%Y-%m-%d")
 
-    "#{output_date}-#{filename}.md"
+    extension = if markdown, do: "md", else: "dj"
+
+    "#{output_date}-#{filename}.#{extension}"
   end
 end
