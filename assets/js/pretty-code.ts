@@ -74,8 +74,16 @@ export class PrettyCode extends LitElement {
     .copy-button {
       display: none;
       position: absolute;
-      inset: 20px 20px auto auto;
+      inset: var(--padding-y) var(--padding-x) auto auto;
       cursor: pointer;
+      padding: 5px;
+      border: 1px solid var(--base01);
+      border-radius: 5px;
+      background-color: var(--background);
+      box-shadow: 0px 3px 3px 2px hsl(0 0 0 / 0.2);
+    }
+
+    .copy-button-icon {
       width: 20px;
       height: 20px;
       background-color: var(--base03);
@@ -83,7 +91,7 @@ export class PrettyCode extends LitElement {
       transition: background-color 0.1s linear;
     }
 
-    .copy-button:hover {
+    .copy-button:hover .copy-button-icon {
       background-color: var(--base05);
     }
 
@@ -91,7 +99,7 @@ export class PrettyCode extends LitElement {
       display: block;
     }
 
-    .copy-button:active {
+    .copy-button:active .copy-button-icon {
       background-color: var(--base02);
     }
   `;
@@ -111,12 +119,14 @@ export class PrettyCode extends LitElement {
       <div class="line-numbers">${lineNumbers}</div>
       <slot @slotchange="${this._onSlotChange}"></slot>
       <div
-        @click="${this.copyCode}"
         class="copy-button"
+        @click="${this.copyCode}"
         role="button"
         aria-label="Copy"
         title="Copy"
-      ></div>
+      >
+        <div class="copy-button-icon"></div>
+      </div>
     `;
   }
 }
