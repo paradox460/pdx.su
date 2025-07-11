@@ -1,5 +1,7 @@
 pre.athl {
-  padding: 1.5em 2em;
+  --padding-x: 1em;
+  --padding-y: 0.5em;
+  padding: var(--padding-y) var(--padding-x);
   position: relative;
   margin: 1rem -1px;
   border: 1px solid var(--base01);
@@ -8,8 +10,7 @@ pre.athl {
   color: var(--base05);
 
   &[data-code-block] {
-    padding-left: 0;
-    padding-right: 0;
+    padding: 0;
   }
 
   .attribute {

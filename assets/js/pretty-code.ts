@@ -26,9 +26,16 @@ export class PrettyCode extends LitElement {
   codeElems!: Array<HTMLElement>;
 
   _onSlotChange(e) {
+    // Annoyingly complex calculation of line heights, due to subpixel heights
     for (const line of e.target.assignedNodes()[0].querySelectorAll(".line")) {
-      const lineHeight = line.getBoundingClientRect().height;
-      this.lineHeights.push(`${lineHeight}px`);
+      const boxHeight = line.getBoundingClientRect().height;
+      const lineHeight = getComputedStyle(line).lineHeight;
+      const lineHeightNum = parseFloat(lineHeight);
+      let outHeight: string = lineHeight;
+      if (boxHeight > lineHeightNum) {
+        outHeight = `${Math.round(boxHeight / lineHeightNum) * lineHeightNum}px`;
+      }
+      this.lineHeights.push(outHeight);
     }
     this.requestUpdate();
   }
@@ -44,18 +51,24 @@ export class PrettyCode extends LitElement {
   static styles = css`
     :host {
       display: flex;
-      padding-right: 2em;
+      padding: var(--padding-y) var(--padding-x);
+      padding-left: 0;
     }
 
     .line-numbers {
-      margin: 0 1em;
+      margin: calc(-1 * var(--padding-y)) 1em;
       text-align: right;
       color: var(--base02);
       user-select: none;
+      border-right: 1px solid var(--base01);
+      padding-block: var(--padding-y);
+      padding-inline: 0 0.5em;
     }
 
     .line-number {
       height: var(--height, 1em);
+      background: var(--background);
+      overflow: hidden;
     }
 
     .copy-button {
