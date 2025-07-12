@@ -93,8 +93,9 @@ export class PrettyCode extends LitElement {
       padding: 5px;
       border: 1px solid var(--base01);
       border-radius: 5px;
-      background-color: var(--background);
+      background-color: oklch(from var(--background) l c h / 0.5);
       box-shadow: 0px 3px 3px 2px hsl(0 0 0 / 0.2);
+      backdrop-filter: blur(10px);
     }
 
     .copy-button-icon {
