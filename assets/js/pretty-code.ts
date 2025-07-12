@@ -1,5 +1,7 @@
 import { LitElement, html, css } from "lit";
 import { customElement, queryAssignedElements, state } from "lit/decorators.js";
+import { classMap } from "lit/directives/class-map.js";
+import { styleMap } from "lit/directives/style-map.js";
 
 /**
  * Enhances code blocks by wrapping them with a custom "pretty-code" LitElement.
@@ -17,10 +19,15 @@ export function enhanceCodeBlocks() {
   }
 }
 
+interface LineInfo {
+  height: string;
+  highlight: boolean;
+}
+
 @customElement("pretty-code")
 export class PrettyCode extends LitElement {
   @state()
-  protected lineHeights: string[] = [];
+  protected lineHeights: LineInfo[] = [];
 
   @queryAssignedElements()
   codeElems!: Array<HTMLElement>;
@@ -35,7 +42,10 @@ export class PrettyCode extends LitElement {
       if (boxHeight > lineHeightNum) {
         outHeight = `${Math.round(boxHeight / lineHeightNum) * lineHeightNum}px`;
       }
-      this.lineHeights.push(outHeight);
+      this.lineHeights.push({
+        height: outHeight,
+        highlight: line.classList.contains("cursorline"),
+      });
     }
     this.requestUpdate();
   }
@@ -69,6 +79,10 @@ export class PrettyCode extends LitElement {
       height: var(--height, 1em);
       background: var(--background);
       overflow: hidden;
+    }
+
+    .line-number.highlight {
+      color: var(--base05);
     }
 
     .copy-button {
@@ -107,9 +121,15 @@ export class PrettyCode extends LitElement {
   render() {
     const lineNumbers = [];
 
-    for (const [i, lineHeight] of this.lineHeights.entries()) {
+    for (const [
+      i,
+      { height: lineHeight, highlight },
+    ] of this.lineHeights.entries()) {
       lineNumbers.push(
-        html`<div class="line-number" style="--height: ${lineHeight}px">
+        html`<div
+          class="line-number ${classMap({ highlight })}"
+          style="${styleMap({ "--height": lineHeight })}"
+        >
           ${i + 1}
         </div>`,
       );
