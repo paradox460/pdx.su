@@ -7,13 +7,19 @@ local linters = new Mapping<String, Step> {
   ["prettier"] = (Builtins.prettier) {
     batch = false
   }
+  ["mix compile"] {
+    glob = elixir_files
+    exclude = List("deps/**/*")
+    stage = elixir_files
+    check = "mix compile --warnings-as-errors --strict-warnings"
+  }
   ["mix format"] {
     glob = elixir_files
     exclude = List("deps/**/*")
     stage = elixir_files
     check = "mix format --check-formatted {{files}}"
     fix = "mix format {{files}}"
-
+    depends = List("mix compile")
   }
   ["pkl"] {
     glob = "*.pkl"
