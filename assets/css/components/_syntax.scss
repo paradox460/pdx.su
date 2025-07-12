@@ -8,9 +8,11 @@ pre.athl {
   border-radius: var(--radius);
   background-color: transparent;
   color: var(--base05);
+  display: flex;
 
   &[data-code-block] {
     padding: 0;
+    display: block;
   }
 
   code {
