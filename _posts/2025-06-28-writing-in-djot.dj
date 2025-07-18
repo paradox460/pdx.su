@@ -69,9 +69,23 @@ And then I was done. As testified by this post being written in Djot.
 
 ## Plans for the future of Djot in Elixir
 
-Working with the MDEx API has been a joy, and working with the HTML output from Djot has been a bit of a pain. Since [jotdown][] has an event based system under the hood, I think a project I might explore over the next few months is to implement a Djot AST, similar to MDEx's AST. It wouldn't be 1:1, as Djot and Markdown have different structural components, but it would be similar enough to have the same good ergonomics. In particular I am a _massive_ fan of how it implements Access, which leads to one of the most ergonomic parsing experiences I've ever had in any language.
+Working with the MDEx API has been a joy, and working with the HTML output from [jotdown][] has been a bit of a pain. Since jotdown has an event based system under the hood, I think a project I might explore over the next few months is to implement a Djot AST, similar to MDEx's AST. It wouldn't be 1:1, as Djot and Markdown have different structural components, but it would be similar enough to have the same good ergonomics. In particular I am a _massive_ fan of how MDEx implements [Access](https://hexdocs.pm/elixir/Access.html), which leads to one of the most ergonomic tree manipulation experiences I've ever had in any language:
 
-I'm also interested in moving Autumn based syntax highlighting over to the Rust side of things, so that it can occur with some native speed, without the serialization and HTML parsing costs. For Djot to be something usable in a dynamic setting, thats a bit more of a requirement.
+```elixir
+# Walk the MDEx AST, finding all MDEX.Image structs, and rewrite their URLs to netlify urls
+defp do_netlify_images(pipe) do
+  selector = fn
+    %MDEx.Image{url: <<"/postimages/", _::binary>>} -> true
+    _ -> false
+  end
+
+  Pipe.update_nodes(pipe, selector, fn %MDEx.Image{url: original_url} = image ->
+    %MDEx.Image{image | url: "/.netlify/images?url=" <> original_url}
+  end)
+end
+```
+
+I'm also interested in moving Autumn based syntax highlighting over to the Rust side of things, so that it can occur with some native speed, without the serialization and HTML parsing costs. For Elixir Djot to be something usable in a dynamic setting, thats a bit more of a requirement.
 
 
 
