@@ -1,5 +1,25 @@
 #!/usr/bin/env fish
 #MISE description="Checks links in the site"
 #MISE tools=["elixir", "erlang"]
+#USAGE flag "-x --no-server" help="Do not start independent tableau server"
 
-docker run --rm tennox/linkcheck host.docker.internal:4999 $argv
+if not set -q usage_no_server
+  set port 4999
+
+  mix tableau.server &>/dev/null &
+  set loops 0
+  while true
+    if test $loops -ge 10
+      echo "Server did not start in a reasonable time" >&2
+      exit 1
+    end
+    lsof -i :$port &>/dev/null; and break
+    set loops (math $loops + 1)
+    sleep 1
+  end
+end
+docker run --rm tennox/linkcheck host.docker.internal:$port $argv
+
+if not set -q usage_no_server
+  lsof -i :$port | awk 'NR>1 && /beam\.smp/{ print $2 }' | xargs kill
+end
