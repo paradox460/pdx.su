@@ -1,9 +1,9 @@
 // Class for the mise-action step
 // https://github.com/jdx/mise-action
 
-import "package://pkg.pkl-lang.org/github.com/stefma/pkl-gha/com.github.action@[LATEST_VERSION]#/Workflow.pkl"
+import "https://cdn.jsdelivr.net/gh/StefMa/pkl-gha@77880b64db1f3bf24b31a359311a6f7ef64bffaa/Workflow.pkl"
 
-class Mise extends Workflow.step {}
+class Mise extends Workflow.Step {
   uses = "jdx/mise-action@v2"
 
   hidden version: String?
@@ -11,27 +11,27 @@ class Mise extends Workflow.step {}
   hidden install_args: String?
   hidden cache: Boolean?
   hidden experimental: Boolean?
-  hidden log_level: "debug"|"info"|"warning"|"error"
-  hidden tool_versions: String?
-  hidden mise_toml: String?
-  hidden working_directory: String?
+  hidden logLevel: ("debug"|"info"|"warning"|"error")?
+  hidden toolVersions: String?
+  hidden miseToml: String?
+  hidden workingDirectory: String?
   hidden reshim: Boolean?
-  hidden github_token: String?
+  hidden githubToken: String?
 
   local localWith = new Mapping {
-    ['version'] = version
-    ['install'] = install
-    ['install-args'] = install_args
-    ['cache'] = cache
-    ['experimental'] = experimental
-    ['log-level'] = log_level
-    ['tool-versions'] = tool_versions
-    ['mise-toml'] = mise_toml
-    ['working-directory'] = working_directory
-    ['reshim'] = reshim
-    ['github-token'] = github_token
+    ["version"] = version
+    ["install"] = install
+    ["install-args"] = install_args
+    ["cache"] = cache
+    ["experimental"] = experimental
+    ["log-level"] = logLevel
+    ["tool-versions"] = toolVersions
+    ["mise-toml"] = miseToml
+    ["working-directory"] = workingDirectory
+    ["reshim"] = reshim
+    ["github-token"] = githubToken
   }
 
-  local filteredWith = localWith.toMap().filter((_, val) -> value != null)
+  local filteredWith = localWith.toMap().filter((_, val) -> val != null)
   with = if (filteredWith.isEmpty) null else filteredWith.toMapping()
 }

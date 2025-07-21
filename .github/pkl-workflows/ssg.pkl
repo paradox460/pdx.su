@@ -1,5 +1,5 @@
-amends "package://pkg.pkl-lang.org/github.com/stefma/pkl-gha/com.github.action@::77880b6#/Workflow.pkl"
-import "package://pkg.pkl-lang.org/github.com/stefma/pkl-gha/com.github.action@::77880b6#/Action.pkl"
+amends "https://cdn.jsdelivr.net/gh/StefMa/pkl-gha@77880b64db1f3bf24b31a359311a6f7ef64bffaa/Workflow.pkl"
+import "https://cdn.jsdelivr.net/gh/StefMa/pkl-gha@77880b64db1f3bf24b31a359311a6f7ef64bffaa/Action.pkl"
 
 import "modules/mise.pkl"
 
@@ -17,7 +17,7 @@ on {
 
 concurrency = new Concurrency {
   group = "pages"
-  `cancel_in_progress` = true
+  `cancel-in-progress` = true
 }
 
 jobs {
@@ -25,8 +25,8 @@ jobs {
     `runs-on` = "ubuntu-24.04"
     steps {
       Action.checkout
-      (Mise) {
-        mise_toml = """
+      (mise.Mise) {
+        miseToml = """
           [settings]
           enable_tools = ["elixir", "erlang"]
           """
@@ -40,7 +40,7 @@ jobs {
           .mix/archives/
           """
         key = "elixir-build-${{hashFiles('.tool-versions')}}-${{hashFiles('mix.lock')}}"
-        `restore-keys` = "elixir-build-${{hashFiles('.tool-versions')}}-"
+        restoreKeys = "elixir-build-${{hashFiles('.tool-versions')}}-"
       }
       new {
         name = "Install Elixir Dependencies"
@@ -56,7 +56,7 @@ jobs {
         }
         run = "mix tableau.build"
       }
-      (Action.uploadArtifact) {
+      (Action.uploadArtitact) {
         path = "./_site"
         ifNoFilesFound = "error"
         name = "site-elixir"
@@ -67,8 +67,8 @@ jobs {
     `runs-on` = "ubuntu-latest"
     steps {
       Action.checkout
-      (Mise) {
-        mise_toml = """
+      (mise.Mise) {
+        miseToml = """
           [settings]
           enable_tools = ["bun"]
           """
@@ -78,7 +78,7 @@ jobs {
         id = "bun-deps-cache"
         path = "~/.bun/install/cache"
         key = "bun-cache-${{hashFiles('.tool-versions')}}-${{hashFiles('assets/bun.lock')}}"
-        `restore-keys` = "bun-cache-${{hashFiles('.tool-versions')}}-"
+        restoreKeys = "bun-cache-${{hashFiles('.tool-versions')}}-"
       }
       new {
         name = "Install JS dependencies"
@@ -93,7 +93,7 @@ jobs {
         }
         run = "bun run build"
       }
-      (Action.uploadArtifact) {
+      (Action.uploadArtitact) {
         path = "./_site"
         ifNoFilesFound = "error"
         name = "site-static"
@@ -102,7 +102,7 @@ jobs {
   }
 
   ["deploy-netlify"] = new {
-    needs = List("build-elixir", "build-assets")
+    needs = new Listing { "build-elixir" "build-assets" }
     `runs-on` = "ubuntu-latest"
     environment = new Environment {
       name = "netlify-prod"
@@ -120,8 +120,8 @@ jobs {
         pattern = "site-*"
         mergeMultiple = true
       }
-      (Mise) {
-        mise_toml = """
+      (mise.Mise) {
+        miseToml = """
           [settings]
           enable_tools = ["ubi:wilsonzlin/minify-html"]
           """
