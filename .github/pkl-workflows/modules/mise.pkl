@@ -1,0 +1,37 @@
+// Class for the mise-action step
+// https://github.com/jdx/mise-action
+
+import "package://pkg.pkl-lang.org/github.com/stefma/pkl-gha/com.github.action@[LATEST_VERSION]#/Workflow.pkl"
+
+class Mise extends Workflow.step {}
+  uses = "jdx/mise-action@v2"
+
+  hidden version: String?
+  hidden install: Boolean?
+  hidden install_args: String?
+  hidden cache: Boolean?
+  hidden experimental: Boolean?
+  hidden log_level: "debug"|"info"|"warning"|"error"
+  hidden tool_versions: String?
+  hidden mise_toml: String?
+  hidden working_directory: String?
+  hidden reshim: Boolean?
+  hidden github_token: String?
+
+  local localWith = new Mapping {
+    ['version'] = version
+    ['install'] = install
+    ['install-args'] = install_args
+    ['cache'] = cache
+    ['experimental'] = experimental
+    ['log-level'] = log_level
+    ['tool-versions'] = tool_versions
+    ['mise-toml'] = mise_toml
+    ['working-directory'] = working_directory
+    ['reshim'] = reshim
+    ['github-token'] = github_token
+  }
+
+  local filteredWith = localWith.toMap().filter((_, val) -> value != null)
+  with = if (filteredWith.isEmpty) null else filteredWith.toMapping()
+}
