@@ -24,12 +24,12 @@ class Mise extends Workflow.Step {
     ["install-args"] = install_args
     ["cache"] = cache
     ["experimental"] = experimental
-    ["log-level"] = logLevel
-    ["tool-versions"] = toolVersions
-    ["mise-toml"] = miseToml
-    ["working-directory"] = workingDirectory
+    ["log_level"] = logLevel
+    ["tool_versions"] = toolVersions
+    ["mise_toml"] = miseToml
+    ["working_directory"] = workingDirectory
     ["reshim"] = reshim
-    ["github-token"] = githubToken
+    ["github_token"] = githubToken
   }
 
   local filteredWith = localWith.toMap().filter((_, val) -> val != null)
