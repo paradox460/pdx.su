@@ -80,7 +80,7 @@ jobs:
     - build-assets
     runs-on: ubuntu-latest
     environment:
-      name: netlify-prod
+      name: netlfiy-prod
     steps:
     - uses: actions/checkout@v4
       with:

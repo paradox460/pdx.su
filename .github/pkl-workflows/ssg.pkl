@@ -14,7 +14,6 @@ on {
   workflow_dispatch {}
 }
 
-
 concurrency = new Concurrency {
   group = "pages"
   `cancel-in-progress` = true
@@ -105,7 +104,7 @@ jobs {
     needs = new Listing { "build-elixir" "build-assets" }
     `runs-on` = "ubuntu-latest"
     environment = new Environment {
-      name = "netlify-prod"
+      name = "netlfiy-prod"
     }
     steps {
       (Action.checkout) {
