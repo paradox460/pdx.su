@@ -133,6 +133,9 @@ jobs {
           minify-html --minify-css --minify-js _site/**/*.html
           """
       }
+
+      // Netlify's CLI _can_ be installed against bun, but it also needs python and a bunch of other crap
+      // So we just use the docker container action instead
       new {
         name = "Deploy to Netlify"
         uses = "netlify/actions/cli@master"

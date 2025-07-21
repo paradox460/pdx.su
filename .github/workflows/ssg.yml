@@ -1,128 +1,111 @@
-name: Deploy site
+# Do not modify!
+# This file was generated from a template using https://github.com/StefMa/pkl-gha
 
-on:
+name: Deploy Site
+'on':
   push:
-    branches: ["main"]
-  workflow_dispatch:
-
-permissions:
-  contents: read
-  pages: write
-  id-token: write
-
+    branches:
+    - main
+  workflow_dispatch: {}
 concurrency:
-  group: "pages"
+  group: pages
   cancel-in-progress: true
-
 jobs:
   build-elixir:
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v4
-      - uses: jdx/mise-action@v2
-        with:
-          mise_toml: |
-            [settings]
-            enable_tools = ["elixir", "erlang"]
-      - name: Elixir Deps Cache
-        id: elixir-deps-cache
-        uses: actions/cache@v4
-        with:
-          path: |
-            deps
-            _build
-            .mix/archives/
-          key: elixir-build-${{hashFiles('.tool-versions')}}-${{hashFiles('mix.lock')}}
-          restore-keys: elixir-build-${{hashFiles('.tool-versions')}}-
-
-      - name: Install Elixir Dependencies
-        run: |
-          mix local.hex --force --if-missing
-          mix deps.get
-
-      - name: "Build Tableau"
-        env:
-          MIX_ENV: prod
-        run: |
-          mix tableau.build
-
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
-        with:
-          path: ./_site
-          if-no-files-found: error
-          name: site-elixir
-
+    - uses: actions/checkout@v4
+    - uses: jdx/mise-action@v2
+      with:
+        mise_toml: |-
+          [settings]
+          enable_tools = ["elixir", "erlang"]
+    - name: Elixir Deps cache
+      id: elixir-deps-cache
+      uses: actions/cache@v4
+      with:
+        path: |-
+          deps
+          _build
+          .mix/archives/
+        key: elixir-build-${{hashFiles('.tool-versions')}}-${{hashFiles('mix.lock')}}
+        restore-keys: elixir-build-${{hashFiles('.tool-versions')}}-
+    - name: Install Elixir Dependencies
+      run: |-
+        mix local.hex --force --if-missing
+        mix deps.get
+    - name: Build Tableau
+      env:
+        MIX_ENV: prod
+      run: mix tableau.build
+    - name: site-elixir
+      uses: actions/upload-artifact@v4
+      with:
+        name: site-elixir
+        path: ./_site
+        if-no-files-found: error
   build-assets:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: jdx/mise-action@v2
-        with:
-          mise_toml: |
-            [settings]
-            enable_tools = ["bun"]
-      - name: Bun Deps Cache
-        id: bun-deps-cache
-        uses: actions/cache@v4
-        with:
-          path: ~/.bun/install/cache
-          key: bun-cache-${{hashFiles('.tool-versions')}}-${{hashFiles('assets/bun.lock')}}
-          restore-keys: bun-cache-${{hashFiles('.tool-versions')}}-
-
-      - name: Install node Dependencies
-        working-directory: assets/
-        run: bun install --frozen-lockfile
-
-      - name: "Build static assets"
-        working-directory: assets/
-        env:
-          NODE_ENV: "production"
-        run: |
-          bun run build
-
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
-        with:
-          path: ./_site
-          if-no-files-found: error
-          name: site-static
-
+    - uses: actions/checkout@v4
+    - uses: jdx/mise-action@v2
+      with:
+        mise_toml: |-
+          [settings]
+          enable_tools = ["bun"]
+    - name: Bun Deps Cache
+      id: bun-deps-cache
+      uses: actions/cache@v4
+      with:
+        path: ~/.bun/install/cache
+        key: bun-cache-${{hashFiles('.tool-versions')}}-${{hashFiles('assets/bun.lock')}}
+        restore-keys: bun-cache-${{hashFiles('.tool-versions')}}-
+    - name: Install JS dependencies
+      working-directory: assets/
+      run: bun install --frozen-lockfile
+    - name: Build Static Assets
+      env:
+        NODE_ENV: production
+      working-directory: assets/
+      run: bun run build
+    - name: site-static
+      uses: actions/upload-artifact@v4
+      with:
+        name: site-static
+        path: ./_site
+        if-no-files-found: error
   deploy-netlify:
     needs:
-      - build-elixir
-      - build-assets
+    - build-elixir
+    - build-assets
     runs-on: ubuntu-latest
     environment:
-      name: netlfiy-prod
+      name: netlify-prod
     steps:
-      - uses: actions/checkout@v4
-        with:
-          sparse-checkout: |
-            .mise.toml
-            .mise.lock
-          sparse-checkout-cone-mode: false
-      - uses: actions/download-artifact@v4
-        with:
-          path: _site/
-          pattern: site-*
-          merge-multiple: true
-      - uses: jdx/mise-action@v2
-        with:
-          mise_toml: |
-            [settings]
-            enable_tools = ["ubi:wilsonzlin/minify-html"]
-      - name: Shrink HTML
-        run: |
-          shopt -s globstar
-          minify-html --minify-css --minify-js _site/**/*.html
-
-      # Netlify's CLI _can_ be installed against bun, but it also needs python and a bunch of other crap
-      # So we just use the docker container action instead
-      - name: Deploy to Netlify
-        uses: netlify/actions/cli@master
-        with:
-          args: deploy --dir=_site --prod -m "https://github.com/paradox460/pdx.su/commit/${{ github.sha }}"
-        env:
-          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
-          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+    - uses: actions/checkout@v4
+      with:
+        sparse-checkout: |-
+          .mise.toml
+          .mise.lock
+        sparse-checkout-cone-mode: false
+    - uses: actions/download-artifact@v4
+      with:
+        path: _site/
+        pattern: site-*
+        merge-multiple: true
+    - uses: jdx/mise-action@v2
+      with:
+        mise_toml: |-
+          [settings]
+          enable_tools = ["ubi:wilsonzlin/minify-html"]
+    - name: Minify HTML
+      run: |-
+        shopt -s globstar
+        minify-html --minify-css --minify-js _site/**/*.html
+    - name: Deploy to Netlify
+      env:
+        NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+        NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+      uses: netlify/actions/cli@master
+      with:
+        args: deploy --dir=_site --prod -m "https://github.com/paradox460/pdx.su/commit/${{ github.sha }}"
