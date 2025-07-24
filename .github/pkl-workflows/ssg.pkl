@@ -60,8 +60,8 @@ jobs {
         name = "Bun Deps Cache"
         id = "bun-deps-cache"
         path = "~/.bun/install/cache"
-        key = "bun-cache-${{hashFiles('.tool-versions')}}-${{hashFiles('assets/bun.lock')}}"
-        restoreKeys = "bun-cache-${{hashFiles('.tool-versions')}}-"
+        key = "bun-cache-${{hashFiles('.mise.lock')}}-${{hashFiles('assets/bun.lock')}}"
+        restoreKeys = "bun-cache-${{hashFiles('.mise.lock')}}-"
       }
       new {
         name = "Install JS dependencies"
