@@ -28,8 +28,8 @@ jobs:
           deps
           _build
           .mix/archives/
-        key: elixir-build-${{hashFiles('.tool-versions')}}-${{hashFiles('mix.lock')}}
-        restore-keys: elixir-build-${{hashFiles('.tool-versions')}}-
+        key: elixir-build-${{hashFiles('.mise.lock')}}-${{hashFiles('mix.lock')}}
+        restore-keys: elixir-build-${{hashFiles('.mise.lock')}}-
     - name: Install Elixir Dependencies
       run: |-
         mix local.hex --force --if-missing

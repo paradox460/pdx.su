@@ -1,7 +1,8 @@
 amends "https://cdn.jsdelivr.net/gh/StefMa/pkl-gha@77880b64db1f3bf24b31a359311a6f7ef64bffaa/Workflow.pkl"
 import "https://cdn.jsdelivr.net/gh/StefMa/pkl-gha@77880b64db1f3bf24b31a359311a6f7ef64bffaa/Action.pkl"
 
-import "modules/mise.pkl"
+import "https://cdn.jsdelivr.net/gh/paradox460/shared-pkl@0c33020a8e18437752765a0483aeefbf3bb03fe5/gha/mise.pkl"
+import "https://cdn.jsdelivr.net/gh/paradox460/shared-pkl@0c33020a8e18437752765a0483aeefbf3bb03fe5/gha/elixir.pkl"
 
 name = "Deploy Site"
 
@@ -30,24 +31,7 @@ jobs {
           enable_tools = ["elixir", "erlang"]
           """
       }
-      (Action.cache) {
-        name = "Elixir Deps cache"
-        id = "elixir-deps-cache"
-        path = """
-          deps
-          _build
-          .mix/archives/
-          """
-        key = "elixir-build-${{hashFiles('.tool-versions')}}-${{hashFiles('mix.lock')}}"
-        restoreKeys = "elixir-build-${{hashFiles('.tool-versions')}}-"
-      }
-      new {
-        name = "Install Elixir Dependencies"
-        run = """
-          mix local.hex --force --if-missing
-          mix deps.get
-          """
-      }
+      ...elixir.elixir
       new {
         name = "Build Tableau"
         env = new EnvironmentVariables {
