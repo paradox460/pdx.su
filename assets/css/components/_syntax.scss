@@ -83,13 +83,14 @@ pre.athl {
     color: var(--base0d);
   }
 
-  .keyword {
+  .keyword, .keyword-function {
     color: var(--base0e);
   }
 
   .label {
     color: var(--base0e);
   }
+
 
   .markup.bold {
     font-weight: bold;
@@ -123,6 +124,10 @@ pre.athl {
 
   .markup.raw {
     color: var(--base0b);
+  }
+
+  .module {
+    color: var(--base0a);
   }
 
   .namespace {
