@@ -1,45 +1,41 @@
 [tools.bun]
-version = "1.2.17"
+version = "1.2.19"
 backend = "core:bun"
 
-[tools.bun.checksums]
-"bun-darwin-aarch64.zip" = "sha256:9f55fd213f2f768d02eb5b9885aaa44b1e1307a680c18622b57095302a931af9"
+[tools.bun.platforms.macos-arm64]
+checksum = "blake3:1d033789f9a12ddcc7b1e03c675af1dfcbf770aa7fbfa2c49dc6599e591e4779"
+size = 21573514
 
 [tools.elixir]
 version = "1.18.2-otp-27"
 backend = "core:elixir"
 
-[tools.elixir.checksums]
-"v1.18.2-otp-27.zip" = "sha256:694e56534db9074e78a9e0b53c5f5281b60e8ea83c5abfcbdeed70c20387ddee"
-
 [tools.erlang]
 version = "27.3.4.1"
 backend = "core:erlang"
 
-[tools.erlang.checksums]
-"otp-aarch64-apple-darwin.tar.gz" = "sha256:65eff2b54565e2d602a6429bc7af1faf3f3b0627b41b76b9f0793441f017940b"
-
 [tools.hk]
-version = "1.2.0"
+version = "1.2.2"
 backend = "aqua:jdx/hk"
 
-[tools.hk.checksums]
-"hk-aarch64-apple-darwin.tar.gz" = "sha256:fcdf6fa53e68a8db4872ac960239b1d08da103e77c4dc2c81d0a873639c0f274"
+[tools.hk.platforms.macos-arm64]
+checksum = "blake3:3af928c2c443cd4f4e3176b4137affd960d55e4c28e5245a0bc581396ab7b392"
+size = 5320365
+url = "https://github.com/jdx/hk/releases/download/v1.2.2/hk-aarch64-apple-darwin.tar.gz"
 
 [tools."npm:prettier"]
 version = "3.6.2"
 backend = "npm:prettier"
 
 [tools.pkl]
-version = "0.28.2"
+version = "0.29.0"
 backend = "aqua:apple/pkl"
 
-[tools.pkl.checksums]
-pkl-macos-aarch64 = "sha256:452c75769d85c07714356f223a9d99a02bdc0bf360c0741765958e9aa080a50c"
+[tools.pkl.platforms.macos-arm64]
+checksum = "blake3:b70836a640dc8ff41aa19f3edd7748a6ba7a281fb85335a48e59cd29c796b1ee"
+size = 104891168
+url = "https://github.com/apple/pkl/releases/download/0.29.0/pkl-macos-aarch64"
 
 [tools."ubi:wilsonzlin/minify-html"]
 version = "0.16.4"
 backend = "ubi:wilsonzlin/minify-html"
-
-[tools."ubi:wilsonzlin/minify-html".checksums]
-minify-html-macos-aarch64 = "sha256:e65e258e97886e1abfb95cd4750f97c220a9488f64baed2a136ef56ca13958eb"
