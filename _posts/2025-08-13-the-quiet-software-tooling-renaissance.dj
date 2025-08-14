@@ -1,0 +1,104 @@
+---
+date: 2025-08-13T19:06:34.613474-06:00
+title: The quiet software tooling renaissance
+---
+
+# The quiet software tooling renaissance
+
+A quiet renaissance has been happening in software tooling. New projects are cropping up that do things _far_ better than the tools they replace, and in many ways, they carry the ideals of older unix tools into the 21st century. Newer tools typically discard decades of baggage, embrace modern standards, and ultimately _just work better_. And the best part about most of them is that you can start using them _now_, without having to get your team or coworkers or anyone else on-board, as they interoperate extremely well with older tools.
+
+Recently, I took a week off for a staycation. During that week, I spent some time looking at updating the ways I did some things. Some personal projects got updates yes, but most of that was just a vehicle to do something new with new tools. Some of those tools are tools I've been using for a while now, but not to their fullest potential. Other tools are things I tried in the past, saw the potential, but ultimately had to stop using due to their immaturity at the time of testing. I think that, from time to time, everyone needs a week to themselves to hone their skills in something that they might not have the time to use during their normal work.
+
+
+## Mise
+
+I've been using [Mise](https://mise.jdx.dev) for a while now. I was actually using it when it was called rtx. On the "tin," mise is _just_ another tool version manager, in the vein of generic ones like [asdf](https://asdf-vm.com) and language-specific ones like [rbenv](https://github.com/rbenv/rbenv). And you can use mise as just a tool version manager. Its very good at that. But its got way more features than just version management.
+
+First, Mise lets you install _far more_ than the usual language runtimes that are what you'd typically think of. I'm using it to manage a few different binaries that come from rust packages, as cargo binaries. Sure, I could use cargo-binstall (which is what mise wraps) to do most of that, but keeping them in my user level mise configuration means that, regardless of rust version, I've got those tools installed, and managed in a centralized place.
+
+### Tasks
+
+Second, and this is where the power really starts to shine through with mise, is its tasks system. [The documentation on tasks is extensive](https://mise.jdx.dev/tasks/), but the tl;dr is that they are a convenient way to provide common scripts and other, well, tasks, that you'd need in software development. Sure, other tools have been around for ages that cover this as well. There's the venerable makefile, rake, node and elixir have supported tasks for their entire existence, and then there are modern dedicated task tools like just, and if all that fails, just writing a quick shell script can usually get the job done. But mise steps things up a bit in two very important ways. First, tasks have metadata associated with them, so you can compose them together. Say you have a build task, and want an install task. You can make the install task _require_the build task to run before it runs, so it will install new versions of a binary. You can also tag the files, both input and output, that a mise task will interact with, so you can do things like have tasks noop if any of their source files haven't changed. And tasks can either be encoded as short little scripts in your project or global mise configuration, _or_ you can just take the various shell scripts some projects have lying about a `bin/` directory, and turn them into mise tasks. And when you make a shell script a mise task, you get excellent arg parsing for free, via the `usage` tool.
+
+### Usage
+
+Its not really fair to call [usage](https://usage.jdx.dev) a subset of mise, as its got plenty of utility on its own as a standard way of encoding CLI options, and as a parsing library for said options. I'm shoving it as a sub-section of mise because you can still use usage based arguments in mise tasks without having usage installed.
+
+The [mise file task documentation](https://mise.jdx.dev/tasks/file-tasks.html#arguments) has a rather good example of how a `usage` configuration looks in a task, but suffice to say it sure beats having to muck about with optparse, or even "better" parsers like fish shell's `argparse`. You can get flags, enum options, arguments, and even subcommands, without having to go too far out of your way. Since a lot of portable scripts for projects like this just target `sh`, which isn't terribly pleasant to write, having `usage` handle a lot of the heavy lifting can dramatically simplify things.
+
+### Envars
+
+Finally, mise has an envar management system, that works extremely similarly to how tools like [direnv](https://direnv.net) work. You define your environment variables, and when you enter the part of the directory tree where those are configured, those are set, and when you exit, they're reverted.
+
+But mise has a few more tricks going for it. First, you don't have to ship a `.envrc` sidecar. You can configure your envars in your mise config file, which reduces the number of configuration files you have floating around. If you already have an envrc, and don't want to port it over to mise, you can actually include envrc style files, easily, into your mise config. Some of the more advanced direnv directives don't work with mise, but I haven't seen much use of them.
+
+Since mise env configurations live in your mise configs, you get all the benefits mise configs give you, like easy nesting, environments, local-only configs, etc, as well as some that are _just_ for envars, like secrets.
+
+## Jujutsu
+
+I like git. I like to think I'm rather good at git as well. It's been a long time since I got myself into a git hole that I couldn't get myself out of. I'm often the guy friends and coworkers will ask to un-break their git repos or config. I do things like set up automatic git trailers for my commits, based on the branch they're added to. I have custom scripts built atop git that do repetitive things.
+
+[Jujutsu](https://jj-vcs.github.io/jj/latest/) aims is to be a modern VCS, solving some of the issues that previous VCSes grappled with, while building atop the good (and hopefully leaving behind the bad) other VCSes have brought. It adopts a committing and branching model more akin to what you'd find in Mercurial than git, which takes a bit of getting used to, but ultimately proves to be a more powerful approach. At the same time, it builds atop git's speed, and the relative ease of collaboration with a tool like git.
+
+In jujutsu, unlike git, there _is no index and staging area_. Every change you make to any file that can be tracked, _is tracked_. This is probably the biggest thing to get used to, coming from git, but in terms of changes to development workflow, its actually an easy change to make. A pattern I've long followed was to work on a _bunch_ of changes in git, making commits whenever I felt like it, then when whatever I was working on was in a state that needed to be made more widely available (pull request, pushed up to remote, etc), I'd rebase the whole set of changes down, and split it up into _logical_ chunks, based either on what files were changed, or what functional change I was making. You can copy this workflow _very easily_ in jujutsu. I'm going to use git terms here, but remember, _jujutsu has no index, no stash, none of those crutches git relies on_. Working copy, in this example, is _just_ the head commit.
+
+To take changes out of the current index and put them into commits, you can use the `jj split` command. If you just want to move a whole file into a new commit, you just run `jj split file.txt`, and a commit edit dialog will pop up, allowing you to describe the commit for that file. But if you want to do patch-level changes, for splitting up a change into logical commits, rather than file-based commits, jujutsu has you covered. Running `jj split -i` gives you an _interactive_ split tool, that lets you select which chunks, lines, or files to cleave out into the split, and which ones to leave on the head commit. Note that after every split, the files chosen to be split are placed in a commit _before_ the head commit (index), and the head commit now contains everything else. You can change where the split commit is placed, but thats beyond the scope of this example. Since I typically work on a large feature, and then want to recursively split it up into smaller chunks, I wrote a [small fish shell script](https://github.com/paradox460/.dotfiles/blob/master/bin/jjx) that recursively invokes `jj split -i` until there is _nothing_ left in the head commit, or the split command is exited with a non-zero exit status.
+
+Moving the other way is just as easy. If you have a _bunch_ of commits, and you want to combine them into each other, or take files from one commit and move them to another, jujutsu has you covered via the `jj squash` command. Unlike split, it doesn't create new commits, but only works with existing ones.
+
+You might think you want to use the squash command fairly often, particularly if you're a heavy user of fixup commits and interactive rebase in git. But in jujutsu, you dont have to. You can take _any_ commit[^1] and edit it, right there. All the downstream changes from your changes will be automatically rebased. And thats kind of the secret sauce of jujutsu. Where git made _branches_ cheap compared to subversion, jujutsu makes _rebases_ cheap, while keeping the cheap branches. In fact, jujutsu doesn't really use the git branch paradigm at all. Instead, they are called `bookmarks`, and work more like mercurial bookmarks. Any single change can have many bookmarks, and change histories can weave in and out, with changes that exist as the head of _multiple_ branches at once.
+
+[^1]: You can really edit any commit, but if you're working with other people, jj has a sanity check to make sure you don't edit a commit that you've already pushed up accidentally. If a commit is marked "immutable", which is to say exists on a remote, you have to pass an extra param to any change that will modify it, be it an edit, squash, or rebase.
+
+The best part about jujutsu is that you can use it seamlessly with git. Currently the most common way to use jujutsu is with git providing a backend, although there is theoretical support for other backends. jujutsu repos can be initialized on top of existing git repos, and all your jujutsu changes will map nearly perfectly down to plain old git commits, branches, and so forth. Other users of the git repo won't be able to tell you're using jujutsu at all, unless you do things like single changes up as their own branch, or suddenly get a lot better at rebasing.[^2] Support for some parts of git is limited, such as minimal support for subrepos, tags, and virtually no support for extensions like git-lfs, but there is work being done on these. And if you run into any corners where you can't do something in jujutsu but _can_ do it in git, you can always just _do it in git_, and jujutsu will pick up the changes and show them to you. Some people see this and assume jujutsu is little more than a git interface, like tower or lazygit. But I'd say that's an unfair comparison, given jujutsu fundamentally changes how you think about things like changes, branches, and rebases.
+
+And if you ever make a mistake in jujutsu, you have `jj undo` right there, which immediately reverts your last change, whatever it was, just like in every other modern program.
+
+[^2]: I've actually been using jujutsu to manage this blog's source code, which is hosted on github. [See if you can tell by reading the source](https://github.com/paradox460/pdx.su)
+
+Learning jujutsu is fairly easy, and it has a decent ecosystem of articles and tooling around it. Here's some of my favorites:
+
++ [Jujutsu's official documentation](https://jj-vcs.github.io/jj/latest/)
++ [Steve Klabnik's big tutorial on JJ](https://steveklabnik.github.io/jujutsu-tutorial/)
++ [Madeleine Mortensen's excellent JJ article](https://maddie.wtf/posts/2025-07-21-jujutsu-for-busy-devs), which inspired me to try JJ again
++ [jjui](https://github.com/idursun/jjui), an extremely good jujutsu TUI, which is honestly how I mostly interact with it
+
+I actually tried jj a few years back, when it was much newer. I liked it then too, but it's git interop was still rather shabby, and I quickly got into a few places that I couldn't easily get out of, and had to fall back down to git. This time around, I've only had to pop out to plain git once, and that was to manage some submodules.
+
+## Pkl
+
+The third thing I "learned" during my week off was Apple's [pkl](https://pkl-lang.org/index.html) language. Pkl is a new language for writing configuration files from Apple. It's got a clean syntax, and the typing system in place makes it possible to easily compose complex configs without getting lost. It's designed to easily compile down to json, yaml, toml, xml, property lists, or really any other configuration language you care to use.
+
+Like with the other tools mentioned in this article, I wont go over _every_ facet of it; the docs are very good and I suggest reading them. But I will highlight a few of my favorite features.
+
+Pkl, by default, is rather forgiving when it comes to types. If you don't specify a type of something in it, its more or less dynamically typed, letting maps and objects contain arbitrary key-value pairs. But you can very easily start typing things, creating classes and so forth, which then tighten up your configuration tremendously, and catch dumb fat-finger errors.
+
+Pkl supports late binding, which means you can make any field reference _any other field_ in your document for its value. This significantly reduces the amount of typing you have to engage in, and, again, prevents mistakes. You can also run various built-in functions, or define your own, that accept values. A common one I've used in some of my things is the `sha1` function to generate unique IDs for HomeAssistant entities based off their names.
+
+Finally, Pkl supports arbitrary output drivers. It ships with some useful built-in ones, like a yaml formatter, a json formatter, xml, plist, and more. But you can create your own quite easily. The toml output formatter, for example, isn't actually a built in, but rather an external package that just ships as a part of the Pkl Pantry, which is a registry of useful and common Pkl packages. Since outputs can be configured as _part of the document_, or _part of a document you're amending_, you don't have to have complex compilation strings. For a lot of things, `pkl eval file.pkl` will do the trick.
+
+Pkl has a robust package system. Pkl can load other pkl files locally, or source them from anywhere on the internet. You can easily use other pkl files that set up primitives for things like [Github Actions](https://github.com/StefMa/pkl-gha/), [HomeAssistant configs](https://github.com/paradox460/homeassistant-pkl), [SystemD configs](https://github.com/declix/pkl-systemd), and more.
+
+I've actually [used pkl to generate the Github Actions that deploy this blog](https://github.com/paradox460/pdx.su/blob/main/.github/pkl-workflows/ssg.pkl). They may look a bit more verbose than the corresponding output Yaml file, but they're much easier to reason about, their code is deterministic, and the yaml output will _always_ be valid Yaml. No more failed to parse due to a misplaced tab.
+
+## Closing
+
+One interesting thing to note, that someone else brought up in a hackernews comment on Maddie's JJ article, was that it seems like a lot of the new tools are being written in Rust. Mise, Usage, and JJ are all rust projects, as are a bunch of other tools I use (sd, bat, fd, rg, czkawka, deno, cargo-generate, and more). By now, most people have encountered the "rewrite it in rust" phenomenon, which is where older unix utilities are rewritten in rust, or similar enough utilities to cover the same task are written in rust. Sometimes these tools are _very good_, significant improvements (in at least ergonomics, if not functionality) over their older counterparts. Other times they're basically just "old tool but with colorful output". Is rust the reason we're seeing so many new, useful tools? Maybe. Its certainly enjoyable to write, although I still prefer Elixir. Or is this more of a cyclic pattern, with the language almost being irrelevant?
+
+20 years ago, Ruby was "taking over." Many new tools were cropping up, all of them written in ruby and distributed as rubygems. The number of tools that required you to install some gem was surprisingly high. 20 years before that, Perl caused a similar renaissance in tools. A lot of the "ruby renaissance" tools were just rewrites of older Perl tools into ruby. Are rust based tools just the continuation of this pattern? Possibly, but they do have some distinct advantages over their predecessors. Rust tools can be compiled, they don't require you to install some runtime to use them, and then there's the whole safety ballyhoo with rust, which doesn't really matter day-to-day when you're using one of these tools, but does matter when it can't crash your system.
+
+Ultimately, there's a lot of inertia thats driving newer tools, with better ergonomics around _nearly everything_. Mise configs are a breath of fresh air compared to the somewhat awkward configurations we'd see with tools like Asdf or its language-specific predecessors. JJ commands are clear and to the point, you don't have to open up a glossary to determine what `jj abandon` means, nor do you have to ask StackOverflow or some stackoverflow-regurgitating AI on how to use it. sd, fd, and rg all do similar things to their older unix counterparts, but with saner defaults (like starting with regexp, not requiring extra flags to use it) and simpler invocations. Want to find all the jpgs in a directory tree? You can write a somewhat simple find command:
+
+```sh
+find . -type f -iname "*.jpg" -o -iname "*.jpeg"
+```
+
+or just
+
+```sh
+fd jpe?g
+```
+
+Sure, you can make GNU find use regexp patterns, but the point is that with modern tools like `fd`, _you don't have to_.
+
+And thats ultimately the point of this whole "renaissance." Tools are getting better, either directly or via replacements, and there's been relatively little fanfare about it.
