@@ -1,5 +1,6 @@
 ---
 date: 2025-05-10T10:39:06.282963-06:00
+updated: 2025-08-19T23:59:53-06:00
 title: DIY overengineered fridge/freezer monitor
 permalink: /blog/2025-05-10-diy-overengineered-fridge/freezer-monitor
 amazon: true
@@ -65,7 +66,9 @@ For _all_ the sensors according to this board, I didn't want them to update too 
 
 ## State of the market 2025
 
-Since building this, there are a few new products on the market that might be interesting to people wanting to do the same thing, without going the DIY approach. Sonoff has come out with a Zigbee based temperature probe, the [SNZB-02LD](https://amzn.to/43fhZbz) that has a _remote_ probe. You'd stick the transmitter/screen on the wall or side of your fridge, and the probe inside. No clue how well it works, but it's an option if you want something easy, and already are invested in the Zigbee universe.
+Since building this, there are a few new products on the market that might be interesting to people wanting to do the same thing, without going the DIY approach. Sonoff has come out with a Zigbee based temperature probe, the ~~[SNZB-02LD](https://amzn.to/43fhZbz)~~[SNZB-02LD](https://sonoff.tech/en-us/products/sonoff-snzb-02ld-ip65-zigbee-lcd-smart-thermometer-probe-version)[^2] that has a _remote_ probe. You'd stick the transmitter/screen on the wall or side of your fridge, and the probe inside. No clue how well it works, but it's an option if you want something easy, and already are invested in the Zigbee universe.
+
+[^2]: **2025-08-20**: Amazon no longer lists the `02LD` model, listing only the `02D` model, which _does not_ have a remote probe.
 
 You'll want to make sure you get one that has the external probe. The amazon listing seems to be an "updated" use of an old listing, for a probe-less model.
 
