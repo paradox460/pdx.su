@@ -73,6 +73,7 @@ main {
   margin: 0 auto;
   gap: var(--grid-gap);
   translate: calc(((var(--sidebar-width) + var(--grid-gap)) / 2) * -1) 0;
+  text-wrap: pretty;
 
   @media screen and (max-width: $toc-hide), print {
     grid-template-areas:
