@@ -1,0 +1,34 @@
+[[tools.bun]]
+version = "1.3.5"
+backend = "core:bun"
+"platforms.linux-x64" = { checksum = "sha256:7051d86a924aefea3e0b96213b5fd8f79c0793f9cae6534233e627e5c3db4669", url = "https://github.com/oven-sh/bun/releases/download/bun-v1.3.5/bun-linux-x64.zip"}
+"platforms.linux-x64-baseline" = { checksum = "sha256:6bddacd6a65855698b9816f2d74871eda4dd0b7fa921140c6445248f94a742fd", url = "https://github.com/oven-sh/bun/releases/download/bun-v1.3.5/bun-linux-x64-baseline.zip"}
+"platforms.linux-x64-musl" = { checksum = "sha256:720d88e0e5f40450a1da91c0226f626b156eaa224876d794fa95f6ebf74f46b6", url = "https://github.com/oven-sh/bun/releases/download/bun-v1.3.5/bun-linux-x64-musl.zip"}
+"platforms.linux-x64-musl-baseline" = { checksum = "sha256:57997319f8b9f72ce137363c3dfcd8d401327925108bb30dc5c3257452fba524", url = "https://github.com/oven-sh/bun/releases/download/bun-v1.3.5/bun-linux-x64-musl-baseline.zip"}
+"platforms.macos-arm64" = { checksum = "sha256:db17588a4aea8804856825d4bead3f05e1f37276ca606f37e369b4f72f35d3fb", url = "https://github.com/oven-sh/bun/releases/download/bun-v1.3.5/bun-darwin-aarch64.zip"}
+
+[[tools.elixir]]
+version = "1.19.4-otp-28"
+backend = "core:elixir"
+
+[[tools.erlang]]
+version = "28.3"
+backend = "core:erlang"
+
+[[tools.hk]]
+version = "1.12.0"
+backend = "aqua:jdx/hk"
+
+[[tools."npm:prettier"]]
+version = "3.7.4"
+backend = "npm:prettier"
+
+[[tools.pkl]]
+version = "0.29.1"
+backend = "aqua:apple/pkl"
+"platforms.linux-x64" = { checksum = "sha256:0925a87b00f19d40c4cf8a3eadb0b2af3138f2a8c15071966d51f5c737b42804", url = "https://github.com/apple/pkl/releases/download/0.29.1/pkl-linux-amd64"}
+"platforms.macos-arm64" = { checksum = "sha256:75ca92e3eee7746e22b0f8a55bf1ee5c3ea0a78eec14586cd5618a9195707d5c", url = "https://github.com/apple/pkl/releases/download/0.29.1/pkl-macos-aarch64"}
+
+[[tools."ubi:wilsonzlin/minify-html"]]
+version = "0.18.1"
+backend = "ubi:wilsonzlin/minify-html"

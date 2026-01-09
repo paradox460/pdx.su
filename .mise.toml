@@ -2,8 +2,8 @@ min_version = "2025.7.0"
 
 [tools]
 bun = "latest"
-elixir = "1.18"
-erlang = "27"
+elixir = "latest"
+erlang = "latest"
 hk = "latest"
 "npm:prettier" = "latest"
 pkl = "latest"
