@@ -1,4 +1,9 @@
 @use "./sass-vars" as *;
+
+// ==========================================================================
+// Links
+// ==========================================================================
+
 a {
   color: var(--base0d);
   text-decoration: underline wavy;
@@ -25,6 +30,10 @@ a {
     vertical-align: middle;
   }
 }
+
+// ==========================================================================
+// Headings
+// ==========================================================================
 
 section h1 {
   margin: 0.83em 0;
@@ -58,6 +67,10 @@ h1 {
   font-size: 1.75em;
 }
 
+// ==========================================================================
+// Typography
+// ==========================================================================
+
 blockquote {
   all: unset;
   display: block;
@@ -66,6 +79,45 @@ blockquote {
   margin-left: 0.5em;
   padding-left: 1em;
 }
+
+code {
+  font-family: var(--font-mono);
+  font-feature-settings: "calt";
+  color: var(--base0d);
+}
+
+.codeblock code {
+  &::before,
+  &::after {
+    content: "";
+  }
+}
+
+hr {
+  all: unset;
+  display: block;
+  border-top: 1px solid var(--base02);
+  margin-block: 1em 0;
+}
+
+img {
+  max-width: 100%;
+  border-radius: var(--radius);
+}
+
+p:has(img) {
+  text-align: center;
+  font-style: italic;
+}
+
+abbr {
+  cursor: help;
+}
+
+ul {
+  overflow-wrap: break-word;
+}
+
 pre {
   font-family: var(--font-mono);
   font-size: 0.9rem;
@@ -75,30 +127,29 @@ pre {
   white-space: pre-wrap;
   word-wrap: break-word;
 }
-code {
-  font-family: var(--font-mono);
-  font-feature-settings: "calt";
-  color: var(--base0d);
-}
-.codeblock code {
-  &::before,
-  &::after {
-    content: "";
+
+dl {
+  dt {
+    font-weight: bold;
+  }
+  dd {
+    margin-inline-start: 2ch;
   }
 }
-hr {
-  all: unset;
-  display: block;
-  border-top: 1px solid var(--base02);
-  margin-block: 1em 0;
-}
+
+// ==========================================================================
+// Tables
+// ==========================================================================
+
 table {
   border-collapse: collapse;
   border-spacing: 0;
 }
+
 thead :is(th, td) {
   border-bottom: 2px solid var(--foreground);
 }
+
 th,
 td {
   padding: 5px 30px 5px 0;
@@ -107,115 +158,15 @@ td {
     padding-right: 0;
   }
 }
+
 tr:hover :is(th, td) {
   background-color: var(--base01);
 }
-ul {
-  overflow-wrap: break-word;
-}
-img {
-  max-width: 100%;
-  border-radius: var(--radius);
-}
-p:has(img) {
-  text-align: center;
-  font-style: italic;
-}
 
-p:has(.footnote-ref a:target, a:target[id^="fnref"]) {
-  animation: highlight 2s;
-  @media (prefers-reduced-motion) {
-    animation-timing-function: steps(1, end);
-  }
-}
-abbr {
-  cursor: help;
-}
 
-.footnotes {
-  li:target {
-    animation: highlight 5s;
-    @media (prefers-reduced-motion) {
-      animation-timing-function: steps(1, end);
-      animation-duration: 2s;
-    }
-  }
-}
-
-// Have to do this because you can't extend across media queries
-@mixin bottom-footnotes() {
-  margin-top: 3rem;
-  padding-top: 1rem;
-  border-top: 1px solid var(--base02);
-}
-
-section[role="doc-endnotes"] hr {
-  margin-top: 3rem;
-  padding-bottom: 1rem;
-}
-
-:is(.footnotes):not([data-sidebar]) {
-  @include bottom-footnotes();
-}
-
-:is(section[role="doc-endnotes"], .footnotes)[data-sidebar] {
-  @media screen and (max-width: calc($toc-hide - 1px)) {
-    @include bottom-footnotes();
-  }
-  @media screen and (min-width: $toc-hide) {
-    hr {
-      display: none;
-    }
-
-    li {
-      position: absolute;
-      right: calc(-1 * (var(--sidebar-width) + var(--grid-gap)));
-      top: calc(var(--top) - 1lh);
-      color: var(--base05);
-
-      display: flex;
-
-      border-radius: var(--radius);
-
-      // Have to manually redo list-items, because they're broken with flexbox
-      &::before {
-        counter-increment: list-item;
-        content: counter(list-item);
-        padding-top: 1ch;
-        padding-left: 1ch;
-        color: var(--base03);
-      }
-
-      p {
-        padding: 1ch;
-        width: calc(var(--sidebar-width) - 2ch);
-        box-sizing: border-box;
-      }
-
-      p:first-of-type {
-        margin-top: 0;
-      }
-
-      p:last-of-type {
-        margin-bottom: 0;
-      }
-    }
-  }
-
-  li {
-    transition: background linear 2000ms;
-    @media (prefers-reduced-motion) {
-      transition-timing-function: steps(1, end);
-    }
-  }
-  li[data-hover] {
-    background-color: var(--base02);
-    transition: background linear 250ms;
-    @media (prefers-reduced-motion) {
-      transition-timing-function: steps(1, end);
-    }
-  }
-}
+// ==========================================================================
+// Markdown Alerts
+// ==========================================================================
 
 .markdown-alert {
   background: var(--md-alert-bg);
@@ -236,33 +187,40 @@ section[role="doc-endnotes"] hr {
       margin-right: 0.5ch;
     }
   }
+
   p:nth-child(2) {
     margin-top: 0;
   }
+
   p:last-child {
     margin-bottom: 0;
   }
 }
+
 .markdown-alert-note {
   --md-alert-bg: color-mix(in oklch, var(--base0d), var(--background) 80%);
   --md-alert-fg: var(--base0d);
   --md-alert-icon: "ℹ️";
 }
+
 .markdown-alert-tip {
   --md-alert-bg: color-mix(in oklch, var(--base0b), var(--background) 80%);
   --md-alert-fg: var(--base0b);
   --md-alert-icon: "💡";
 }
+
 .markdown-alert-important {
   --md-alert-bg: color-mix(in oklch, var(--base0e), var(--background) 80%);
   --md-alert-fg: var(--base0e);
   --md-alert-icon: "☝️";
 }
+
 .markdown-alert-warning {
   --md-alert-bg: color-mix(in oklch, var(--base09), var(--background) 80%);
   --md-alert-fg: var(--base09);
   --md-alert-icon: "⚠️";
 }
+
 .markdown-alert-caution {
   --md-alert-bg: color-mix(in oklch, var(--base08), var(--background) 80%);
   --md-alert-fg: var(--base08);
