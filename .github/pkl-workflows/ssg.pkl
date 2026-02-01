@@ -106,7 +106,7 @@ jobs {
       (mise.Mise) {
         miseToml = """
           [settings]
-          enable_tools = ["ubi:wilsonzlin/minify-html"]
+          enable_tools = ["github:wilsonzlin/minify-html"]
           """
       }
       new {

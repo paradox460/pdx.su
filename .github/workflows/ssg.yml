@@ -58,8 +58,8 @@ jobs:
       uses: actions/cache@v4
       with:
         path: ~/.bun/install/cache
-        key: bun-cache-${{hashFiles('.tool-versions')}}-${{hashFiles('assets/bun.lock')}}
-        restore-keys: bun-cache-${{hashFiles('.tool-versions')}}-
+        key: bun-cache-${{hashFiles('.mise.lock')}}-${{hashFiles('assets/bun.lock')}}
+        restore-keys: bun-cache-${{hashFiles('.mise.lock')}}-
     - name: Install JS dependencies
       working-directory: assets/
       run: bun install --frozen-lockfile
@@ -97,7 +97,7 @@ jobs:
       with:
         mise_toml: |-
           [settings]
-          enable_tools = ["ubi:wilsonzlin/minify-html"]
+          enable_tools = ["github:wilsonzlin/minify-html"]
     - name: Minify HTML
       run: |-
         shopt -s globstar
