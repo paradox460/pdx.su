@@ -103,20 +103,6 @@ jobs {
         pattern = "site-*"
         mergeMultiple = true
       }
-      (mise.Mise) {
-        miseToml = """
-          [settings]
-          enable_tools = ["github:wilsonzlin/minify-html"]
-          """
-      }
-      new {
-        name = "Minify HTML"
-        run = """
-          shopt -s globstar
-          minify-html --minify-css --minify-js _site/**/*.html
-          """
-      }
-
       // Netlify's CLI _can_ be installed against bun, but it also needs python and a bunch of other crap
       // So we just use the docker container action instead
       new {
