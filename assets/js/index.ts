@@ -1,9 +1,8 @@
-import Toc from "./toc";
-import SidebarFootnotes from "./sidebar_footnotes";
-import "./md-note";
-import "./smart-time";
-import "./pretty-code";
-import { enhanceCodeBlocks } from "./pretty-code";
+import "./custom-elements/md-note";
+import "./custom-elements/smart-time";
+import { enhanceCodeBlocks } from "./custom-elements/pretty-code";
+import SidebarFootnotes from "./enhancements/sidebar-footnotes";
+import Toc from "./enhancements/toc";
 
 document.addEventListener("DOMContentLoaded", () => {
   new Toc();
