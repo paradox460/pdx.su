@@ -4,6 +4,7 @@ min_version = "2025.7.0"
 bun = "latest"
 elixir = "latest"
 erlang = "latest"
+"github:wilsonzlin/minify-html" = { version = "latest", bin = "minify-html" }
 hk = "latest"
 "npm:prettier" = "latest"
 pkl = "latest"
