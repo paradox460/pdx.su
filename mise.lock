@@ -25,15 +25,40 @@ checksum = "sha256:d8b96221828ad6f97ac7ac0ab7e95872341af763001e8803e8267652c2652
 url = "https://github.com/oven-sh/bun/releases/download/bun-v1.3.14/bun-darwin-aarch64.zip"
 
 [[tools.elixir]]
-version = "1.19.5-otp-28"
+version = "1.20.2-otp-29"
 backend = "core:elixir"
 
+[tools.elixir."platforms.linux-x64"]
+checksum = "sha256:a9e88cd41fbbba7da6f6dc237a49dd2ed4e70457121035cc7fc56ad05582f394"
+url = "https://builds.hex.pm/builds/elixir/v1.20.2-otp-29.zip"
+
+[tools.elixir."platforms.linux-x64-baseline"]
+checksum = "sha256:a9e88cd41fbbba7da6f6dc237a49dd2ed4e70457121035cc7fc56ad05582f394"
+url = "https://builds.hex.pm/builds/elixir/v1.20.2-otp-29.zip"
+
+[tools.elixir."platforms.linux-x64-musl"]
+checksum = "sha256:a9e88cd41fbbba7da6f6dc237a49dd2ed4e70457121035cc7fc56ad05582f394"
+url = "https://builds.hex.pm/builds/elixir/v1.20.2-otp-29.zip"
+
+[tools.elixir."platforms.linux-x64-musl-baseline"]
+checksum = "sha256:a9e88cd41fbbba7da6f6dc237a49dd2ed4e70457121035cc7fc56ad05582f394"
+url = "https://builds.hex.pm/builds/elixir/v1.20.2-otp-29.zip"
+
+[tools.elixir."platforms.macos-arm64"]
+checksum = "sha256:a9e88cd41fbbba7da6f6dc237a49dd2ed4e70457121035cc7fc56ad05582f394"
+url = "https://builds.hex.pm/builds/elixir/v1.20.2-otp-29.zip"
+
 [[tools.erlang]]
-version = "29.0.1"
+version = "29.0.3"
 backend = "core:erlang"
 
+[tools.erlang.options]
+precompiled = "if_available"
+
 [tools.erlang."platforms.macos-arm64"]
-checksum = "blake3:b96e51d337daff03cabd78ed3f91cfc68e622bd453826d8874796fa99006389c"
+checksum = "sha256:bfb187843b00fdff9a9eb79f15f17ffcd48d89150212f77206279fcd51136706"
+url = "https://github.com/erlef/otp_builds/releases/download/OTP-29.0.3/otp-aarch64-apple-darwin.tar.gz"
+url_api = "https://api.github.com/repos/erlef/otp_builds/releases/assets/464419851"
 
 [[tools."github:wilsonzlin/minify-html"]]
 version = "0.18.1"
@@ -65,31 +90,31 @@ url = "https://github.com/wilsonzlin/minify-html/releases/download/v0.18.1/minht
 url_api = "https://api.github.com/repos/wilsonzlin/minify-html/releases/assets/308678033"
 
 [[tools.hk]]
-version = "1.46.0"
+version = "1.49.0"
 backend = "aqua:jdx/hk"
 
 [tools.hk."platforms.linux-x64"]
-checksum = "sha256:85b2cc167443cd27b49e323ef9b9d1a946d4bc18196eccb66112842d30fb90cb"
-url = "https://github.com/jdx/hk/releases/download/v1.46.0/hk-x86_64-unknown-linux-gnu.tar.gz"
+checksum = "sha256:409c24b22c7f0c2f32be9330defbef54adf71aa53ec13853e20ac0ea952061d6"
+url = "https://github.com/jdx/hk/releases/download/v1.49.0/hk-x86_64-unknown-linux-gnu.tar.gz"
 
 [tools.hk."platforms.linux-x64-baseline"]
-checksum = "sha256:85b2cc167443cd27b49e323ef9b9d1a946d4bc18196eccb66112842d30fb90cb"
-url = "https://github.com/jdx/hk/releases/download/v1.46.0/hk-x86_64-unknown-linux-gnu.tar.gz"
+checksum = "sha256:409c24b22c7f0c2f32be9330defbef54adf71aa53ec13853e20ac0ea952061d6"
+url = "https://github.com/jdx/hk/releases/download/v1.49.0/hk-x86_64-unknown-linux-gnu.tar.gz"
 
 [tools.hk."platforms.linux-x64-musl"]
-checksum = "sha256:4ff45e1bfc9672b1b00572b4a50fac3b57e4add622ed56e9e2587745299932eb"
-url = "https://github.com/jdx/hk/releases/download/v1.46.0/hk-x86_64-unknown-linux-musl.tar.gz"
+checksum = "sha256:f26945b2e9e1f609ded9c64cd785ab7b2e32e3f61b111d7e30ab1e03cbc0a92f"
+url = "https://github.com/jdx/hk/releases/download/v1.49.0/hk-x86_64-unknown-linux-musl.tar.gz"
 
 [tools.hk."platforms.linux-x64-musl-baseline"]
-checksum = "sha256:4ff45e1bfc9672b1b00572b4a50fac3b57e4add622ed56e9e2587745299932eb"
-url = "https://github.com/jdx/hk/releases/download/v1.46.0/hk-x86_64-unknown-linux-musl.tar.gz"
+checksum = "sha256:f26945b2e9e1f609ded9c64cd785ab7b2e32e3f61b111d7e30ab1e03cbc0a92f"
+url = "https://github.com/jdx/hk/releases/download/v1.49.0/hk-x86_64-unknown-linux-musl.tar.gz"
 
 [tools.hk."platforms.macos-arm64"]
-checksum = "sha256:9db3fac25754cfb929dc3f92b294fffdb966d4e838b8e0adeaf5b9b7eccc4f6c"
-url = "https://github.com/jdx/hk/releases/download/v1.46.0/hk-aarch64-apple-darwin.tar.gz"
+checksum = "sha256:2a5b302b97107c036bc7362cd6d8d0501dbb1b735db07c70bc1231a6fe90df44"
+url = "https://github.com/jdx/hk/releases/download/v1.49.0/hk-aarch64-apple-darwin.tar.gz"
 
 [[tools."npm:prettier"]]
-version = "3.8.3"
+version = "3.9.4"
 backend = "npm:prettier"
 
 [[tools.pkl]]
