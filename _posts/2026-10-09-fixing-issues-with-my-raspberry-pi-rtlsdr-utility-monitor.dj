@@ -1,0 +1,510 @@
+---
+date: 2026-10-09T10:22:34.094489-06:00
+title: Fixing issues with my Raspberry Pi RTL-SDR Utility Monitor
+---
+
+# Fixing issues with my Raspberry Pi RTL-SDR Utility Monitor
+
+A few years ago I [wrote a blog post about how I read my utility meters using a cheap SDR dongle](/blog/2024-03-17-reading-my-electric-meter-with-rtlsdr/). That system has served me very well, mostly, for the last few years, pulling data into my Home Assistant install with only a few issues.
+
+However, the few issues are the kind that would sit there and break everything, not reporting any data, and only get fixed when I noticed that something was wrong (no data for the last _n_ days) and attempted to fix it, usually by power cycling the RPi. This past week, I noticed another such lack of data, going back 8 days, and decided to fix it for good.
+
+## The usual cause
+
+The usual cause of downtime, in my case, was that my Home Assistant install would restart for whatever reason (updates, power failure, etc.), or the network would go down, or something like that, and the MQTT broker would no longer be listening. [rtlamr2mqtt][rtlamr2mqtt] can get into a funky state where it fails if it can't connect to the MQTT server. Back when I wrote the script, I attempted to fix this by making the docker container restart every few hours. It didn't work terribly well, but it did paper over enough of the problem that I could generally ignore it.
+
+There were some other emergent issues over time. The RPi frequently suffers undervoltage (my fault, bad power supply), and when this happens, _strange_ things happen. One such thing is the RPi's USB and Ethernet controller shutting down. This doesn't just disconnect it from the network, but _also_ disconnects the SDR dongle. When that happens, even when it comes back up, the dongle is missing from the rtlamr2mqtt docker container, and nothing works.
+
+## Fixing it
+
+Fixing it isn't terribly difficult, but it does require more "stuff": a collection of scripts, changes to the docker compose file, and some udev rules.
+
+I'll have the complete set of configurations at the bottom of the post.
+
+### Fixing the docker container
+
+There are a few issues with our setup for how the docker container works. Some of them are rooted in rtlamr2mqtt, some of them are how docker works.
+
+We were capturing all logs, as good sysadmins do, and they were filling the SD card. The fix is simple: cap the logging at three rotated 10 MB files. Docker supports this out of the box; simply set the logging config, and done.
+
+A more complex issue is that docker compose doesn't restart unhealthy containers on its own. We implement a healthcheck that tests the TCP connection to the MQTT broker, and runs `kill 1` when it fails. This stops the container's main process immediately, and `retries` has no effect, because the kill happens on the _first_ failure. The container exits, docker compose exits, and systemd restarts it 30 seconds later.
+
+To make this last part work, we have to change the docker configuration's restart settings. We used to have `restart: unless-stopped`. If the Pi comes up and the dongle is missing, or hasn't initialized yet, or some similar issue, the container fails and restarts forever. Every attempt logs a useless warning, but we don't get any notification about it. Furthermore, after a hard restart (which a power failure could be), docker restarts any container that was running before. This restart happens the _moment_ dockerd starts, bypassing systemd checks.
+
+### Fixing the missing USB dongle problem
+
+We only want to run this when the SDR dongle is actually visible to the system. The dongle I use identifies itself as a `Realtek 0bda:2838` on the USB bus.
+
+Making this visible to systemd requires a udev rule. Setting the udev rule allows us to specify, in our systemd configuration, that the service must bind to the dongle, starting only when the dongle is present (or appears), and stopping when the dongle is removed.
+
+Unfortunately, there is still another corner case we can get into.
+
+### Race condition between dongle and shutdown
+
+If the dongle disappears, for whatever reason, the systemd stop runs `docker compose down`, which can take a little while (for me, about 7s). If the dongle comes back in that time window, no restart task is queued. systemd ignores the udev notification, as it's busy shutting down the previous run.
+
+The fix is to add another systemd service that's _only_ responsible for watching for the device and triggering a start of the rtlamr2mqtt service. This works because systemd starts are queued; shutting down the service because the dongle disappeared sits at the top of the queue, and then our "kicker" service comes in and queues a start because the dongle is back.
+
+## Monitoring it
+
+Of course, all that is only good as long as it works. I needed monitoring.
+
+I'd been loath to set it up in the past because it's one of those things that's tricky to get right. There are a lot of moving parts, and a poorly configured monitoring system will cause nothing but noise.
+
+But with several repeated downtimes and missing data from these downtimes, I decided to get off my duff and add some monitoring.
+
+I set up a monitoring script that logs Pi vitals, such as memory, load, and disk usage, to a log file, and then a little heartbeat script, using mosquitto, that periodically tells Home Assistant "yes, I'm alive". The heartbeat also reports the dongle, service, and container state, the undervoltage flags, and how long the Pi has been up. On the Home Assistant side, I set up a [DigitalAlchemy](https://docs.digital-alchemy.app) script (TypeScript-powered home automations) that watches for a few error states, and when it sees them, uses [Spook](https://spook.boo) to raise Repairs issues.
+
+I'm specifically watching for no heartbeats in 5 minutes, no SDR dongle connected for 5 minutes, no running container or service for 10 minutes, no electricity data (from either meter) for 3 hours, or no gas data for 3 hours. If any of these are true, I turn on a binary sensor, raise a Spook Repairs issue, and send a push notification. There's also a manual switch for clearing the issues.
+
+## Setting up a Pi to do all this
+
+If you already have an RPi install running similarly to my old blog post, you can follow along. Some of these steps modify an existing file; others create a new one.
+
+### Core docker compose
+
+Create/edit a file at `/opt/rtlamr2mqtt/docker-compose.yml`:
+
+```yaml
+services:
+  rtlamr:
+    container_name: rtlamr2mqtt
+    image: allangood/rtlamr2mqtt
+    # systemd (rtlamr2mqtt.service) is the only supervisor; it is bound to the SDR device unit.
+    restart: "no"
+    devices:
+      - /dev/bus/usb
+    volumes:
+      - /opt/rtlamr2mqtt/rtlamr2mqtt.yaml:/etc/rtlamr2mqtt.yaml:ro
+      - /opt/rtlamr2mqtt/data:/var/lib/rtlamr2mqtt
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    healthcheck:
+      test: ["CMD-SHELL", "python3 -c \"import socket; s=socket.socket(); s.settimeout(5); s.connect(('homeassistant.internal', 1883))\" || kill 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+```
+
+### Udev rules
+
+Create `/etc/udev/rules.d/99-rtl-sdr.rules`:
+
+```
+# RTL-SDR dongle (RTL2838). Creates /dev/rtl_sdr and the systemd unit dev-rtl_sdr.device,
+# which exists only while the dongle is enumerated. rtlamr2mqtt.service is bound to it.
+SUBSYSTEM=="usb", ENV{DEVTYPE}=="usb_device", ATTR{idVendor}=="0bda", ATTR{idProduct}=="2838", SYMLINK+="rtl_sdr", TAG+="systemd"
+```
+
+Apply with `sudo udevadm control --reload && sudo udevadm trigger --subsystem-match=usb --action=add`. Check with `systemctl status dev-rtl_sdr.device` and `ls -l /dev/rtl_sdr`.
+
+### systemd configuration
+
+Systemd starts the container when the dongle appears, stops it when the dongle disappears, and restarts it when it exits.
+
+Create `/etc/systemd/system/rtlamr2mqtt.service`:
+
+```ini
+[Unit]
+Description=RTLAMR2MQTT
+Requires=docker.service
+# Only run while the RTL-SDR is present (see /etc/udev/rules.d/99-rtl-sdr.rules).
+# BindsTo stops the service when the dongle disappears; a missing dongle fails the
+# start as a dependency failure, which Restart= does not retry.
+BindsTo=dev-rtl_sdr.device
+After=docker.service dev-rtl_sdr.device
+
+[Service]
+Restart=always
+RestartSec=30
+User=rtlamr2mqtt
+WorkingDirectory=/opt/rtlamr2mqtt/
+ExecStartPre=-/usr/bin/docker compose -f docker-compose.yml down
+ExecStart=/usr/bin/docker compose -f docker-compose.yml up --force-recreate
+ExecStop=/usr/bin/docker compose -f docker-compose.yml down
+```
+
+The service has no `[Install]` section. It is started by `/etc/systemd/system/rtlamr2mqtt-kick.service`:
+
+```ini
+[Unit]
+Description=Start rtlamr2mqtt when the RTL-SDR (re)appears
+# Separate from rtlamr2mqtt.service on purpose: if the dongle drops and re-enumerates
+# while rtlamr2mqtt.service is still stopping (BindsTo), a direct device Wants= start
+# is discarded. A queued `systemctl start` waits for the stop and then starts it.
+BindsTo=dev-rtl_sdr.device
+After=dev-rtl_sdr.device
+
+[Service]
+Type=oneshot
+ExecStart=/bin/systemctl start --no-block rtlamr2mqtt.service
+
+[Install]
+WantedBy=dev-rtl_sdr.device
+```
+
+### Monitoring
+
+The vitals monitor is a dumb loop that appends to a log file every 10 seconds. It doesn't alert on anything; it's there so that after a crash, you can see what the Pi looked like right before it died.
+
+Create `/opt/rtlamr2mqtt/monitor.sh` (`chmod 755`):
+
+```bash
+#!/bin/bash
+while true; do
+  echo "--- $(date) ---" >> /var/log/pi-vitals.log
+  free -m >> /var/log/pi-vitals.log
+  uptime >> /var/log/pi-vitals.log
+  df -h / >> /var/log/pi-vitals.log
+  ps -e | wc -l | sed 's/^/Processes: /' >> /var/log/pi-vitals.log
+  sleep 10
+done
+```
+
+Create `/etc/systemd/system/pi-vitals.service`:
+
+```ini
+[Unit]
+Description=Pi Vitals Monitor
+After=network.target
+
+[Service]
+ExecStart=/bin/bash /opt/rtlamr2mqtt/monitor.sh
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+```
+
+The heartbeat is what Home Assistant actually watches.
+
+Create `/opt/rtlamr2mqtt/heartbeat.sh` (`chmod 755`). There's deliberately no `set -e`: `systemctl is-active` exits non-zero for inactive units, and the heartbeat must still be sent.
+
+```bash
+#!/bin/bash
+# Publishes a JSON heartbeat for Home Assistant (sensor.rtlamr_pi_heartbeat).
+set -u
+sdr=false; systemctl is-active --quiet dev-rtl_sdr.device && sdr=true
+svc=$(systemctl is-active rtlamr2mqtt.service || true)
+health=$(docker inspect -f '{{if .State.Health}}{{.State.Health.Status}}{{else}}none{{end}}' rtlamr2mqtt 2>/dev/null) || health=absent
+restarts=$(systemctl show -p NRestarts --value rtlamr2mqtt.service)
+throttled=$(vcgencmd get_throttled | cut -d= -f2)
+uptime_s=$(cut -d. -f1 /proc/uptime)
+ts=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+payload=$(printf '{"ts":"%s","sdr_present":%s,"service_state":"%s","container_health":"%s","service_restarts":%s,"throttled":"%s","uptime_s":%s}' \
+  "$ts" "$sdr" "$svc" "$health" "${restarts:-0}" "$throttled" "$uptime_s")
+exec mosquitto_pub -h "$MQTT_HOST" -p 1883 -u "$MQTT_USER" -P "$MQTT_PASS" \
+  -i rpi-rtlamr-heartbeat -q 1 -t rtlamr/pi/heartbeat -m "$payload"
+```
+
+Create `/opt/rtlamr2mqtt/heartbeat.env` (root, `0600`) from the existing MQTT credentials rather than by hand. The `awk` below assumes the password sits under the top-level `mqtt:` key as `  password: ...` (two-space indent, unquoted). If your config is laid out differently, it finds nothing: you'll see the error, but the file still gets written with an empty password, so fix the pattern (or write the file by hand) and re-run it.
+
+```bash
+pass=$(sudo awk '/^mqtt:/{m=1} m&&/^  password:/{print $2; exit}' /opt/rtlamr2mqtt/rtlamr2mqtt.yaml)
+[ -n "$pass" ] || echo "ERROR: no mqtt.password found; check rtlamr2mqtt.yaml layout"
+printf 'MQTT_HOST=homeassistant.internal\nMQTT_USER=rtlamr2mqtt\nMQTT_PASS=%s\n' "$pass" | sudo install -m 600 -o root -g root /dev/stdin /opt/rtlamr2mqtt/heartbeat.env
+```
+
+Create `/etc/systemd/system/rtlamr-heartbeat.service` (`TimeoutStartSec` bounds a hung broker connect; a failed run only logs, the timer keeps firing):
+
+```ini
+[Unit]
+Description=Publish rpi-rtlamr heartbeat to MQTT
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=oneshot
+EnvironmentFile=/opt/rtlamr2mqtt/heartbeat.env
+ExecStart=/opt/rtlamr2mqtt/heartbeat.sh
+TimeoutStartSec=20
+```
+
+Create `/etc/systemd/system/rtlamr-heartbeat.timer`:
+
+```ini
+[Unit]
+Description=rpi-rtlamr heartbeat every 60s
+
+[Timer]
+OnBootSec=30s
+OnUnitActiveSec=60s
+AccuracySec=1s
+
+[Install]
+WantedBy=timers.target
+```
+
+### Home Assistant side of monitoring
+
+Add `/packages/rtlamr_pi.yaml` for the MQTT sensors:
+
+```yaml
+# Heartbeat from rpi-rtlamr (/opt/rtlamr2mqtt/heartbeat.sh, every 60s).
+# Fault logic lives in home_automation/src/rtlamr-pi-monitor.mts.
+mqtt:
+  sensor:
+    - name: "RTLAMR Pi Heartbeat"
+      unique_id: rtlamr_pi_heartbeat
+      state_topic: rtlamr/pi/heartbeat
+      value_template: "{{ value_json.ts }}"
+      device_class: timestamp
+      json_attributes_topic: rtlamr/pi/heartbeat
+      icon: mdi:heart-pulse
+```
+
+(The version I use is available on [GitHub](https://github.com/paradox460/HomeAssistantConfig/blob/main/packages/rtlamr_pi.yaml).)
+
+The automation itself is covered by DigitalAlchemy.
+
+Create the [following TypeScript file in your DigitalAlchemy configuration](https://github.com/paradox460/HomeAssistantConfig/blob/main/home_automation/src/rtlamr-pi-monitor.mts):
+
+```ts
+import { TServiceParams } from "@digital-alchemy/core";
+
+const MINUTE = 60_000;
+const HEARTBEAT_LOST_MS = 5 * MINUTE;
+const SDR_MISSING_HOLD_MS = 5 * MINUTE;
+const SERVICE_UNHEALTHY_HOLD_MS = 10 * MINUTE;
+const METER_STALE_MS = 180 * MINUTE;
+const ISSUE_ID = "rtlamr_pi_repair_needed";
+const PUSH_TAG = "rtlamr_pi_fault";
+const PUSH_CHANNEL = "RTLAMR Pi";
+const TITLE = "RTLAMR Pi needs repair";
+
+type FaultKey =
+  | "heartbeat_lost"
+  | "sdr_missing"
+  | "service_unhealthy"
+  | "electricity_stale"
+  | "gas_stale";
+
+function ageMs(ts: { valueOf(): number } | undefined): number {
+  return ts ? Date.now() - ts.valueOf() : Number.POSITIVE_INFINITY;
+}
+
+function formatAge(ms: number): string {
+  if (!Number.isFinite(ms)) return "never";
+  const minutes = Math.floor(ms / MINUTE);
+  if (minutes < 120) return `${minutes} min`;
+  return `${(ms / (60 * MINUTE)).toFixed(1)} h`;
+}
+
+/**
+ * Watches the rpi-rtlamr heartbeat (packages/rtlamr_pi.yaml) and the meter sensors it feeds.
+ * Any newly appearing fault latches the "Repair Needed" switch, raises a Spook Repairs issue,
+ * and pushes to notify.jeff. Turning the switch off clears all three.
+ */
+export function RtlamrPiMonitor({
+  context,
+  hass,
+  lifecycle,
+  logger,
+  scheduler,
+  synapse,
+}: TServiceParams) {
+  const device_id = synapse.device.register("rtlamr_pi_monitor", {
+    name: "RTLAMR Pi Monitor",
+  });
+  const faultSensor = synapse.binary_sensor({
+    context,
+    device_id,
+    name: "RTLAMR Pi Fault",
+    unique_id: "rtlamr_pi_fault",
+    device_class: "problem",
+    icon: "mdi:radio-tower",
+  });
+  const repairNeeded = synapse.switch({
+    context,
+    device_id,
+    name: "RTLAMR Pi Repair Needed",
+    unique_id: "rtlamr_pi_repair_needed",
+    icon: "mdi:wrench-clock",
+  });
+
+  const heartbeat = hass.refBy.id("sensor.rtlamr_pi_heartbeat");
+  const electricity = [
+    hass.refBy.id("sensor.electricity_import_meter"),
+    hass.refBy.id("sensor.electricity_export_meter"),
+  ];
+  const gas = hass.refBy.id("sensor.gas_meter");
+
+  // In-memory: a DA restart restarts the hold timers.
+  const conditionSince = new Map<FaultKey, number>();
+  function held(key: FaultKey, condition: boolean, holdMs: number): boolean {
+    if (!condition) {
+      conditionSince.delete(key);
+      return false;
+    }
+    const now = Date.now();
+    let since = conditionSince.get(key);
+    if (since === undefined) {
+      since = now;
+      conditionSince.set(key, since);
+    }
+    return now - since >= holdMs;
+  }
+
+  function evaluate(): Map<FaultKey, string> {
+    const faults = new Map<FaultKey, string>();
+    const hbAge = ageMs(heartbeat.last_updated);
+    const fresh =
+      hbAge <= HEARTBEAT_LOST_MS && !["unavailable", "unknown"].includes(String(heartbeat.state));
+    const { sdr_present, service_state, container_health } = heartbeat.attributes;
+
+    if (hbAge > HEARTBEAT_LOST_MS) {
+      faults.set(
+        "heartbeat_lost",
+        `Heartbeat lost: nothing from rpi-rtlamr for ${formatAge(hbAge)}`,
+      );
+    }
+    if (held("sdr_missing", fresh && sdr_present === false, SDR_MISSING_HOLD_MS)) {
+      faults.set("sdr_missing", "SDR dongle missing on rpi-rtlamr (dev-rtl_sdr.device inactive)");
+    }
+    // Gated on sdr_present: a missing dongle stops the service by design (BindsTo).
+    if (
+      held(
+        "service_unhealthy",
+        fresh &&
+          sdr_present === true &&
+          (service_state !== "active" || container_health !== "healthy"),
+        SERVICE_UNHEALTHY_HOLD_MS,
+      )
+    ) {
+      faults.set(
+        "service_unhealthy",
+        `rtlamr2mqtt unhealthy: service ${service_state}, container ${container_health}`,
+      );
+    }
+    // Each meter alone legitimately goes quiet for hours (solar export / overnight); require both.
+    const electricityAge = Math.min(...electricity.map(e => ageMs(e.last_updated)));
+    if (electricityAge > METER_STALE_MS) {
+      faults.set("electricity_stale", `No electricity meter data for ${formatAge(electricityAge)}`);
+    }
+    const gasAge = ageMs(gas.last_updated);
+    if (gasAge > METER_STALE_MS) {
+      faults.set("gas_stale", `No gas meter data for ${formatAge(gasAge)}`);
+    }
+    return faults;
+  }
+
+  async function raise(faults: Map<FaultKey, string>) {
+    const lines = [...faults.values()].map(l => `- ${l}`).join("\n");
+    const description = `${lines}\n\nTurn off the "RTLAMR Pi Repair Needed" switch once fixed. Rebuild/troubleshooting notes: zettekasen linux/rtlamr2mqtt-rpi-setup.md`;
+
+    repairNeeded.is_on = true;
+    try {
+      await hass.call.repairs.create({
+        issue_id: ISSUE_ID,
+        title: TITLE,
+        description,
+        severity: "error",
+        persistent: true,
+      });
+    } catch (error) {
+      logger.error({ error }, "repairs.create failed");
+    }
+    try {
+      await hass.call.persistent_notification.create({
+        notification_id: ISSUE_ID,
+        title: TITLE,
+        message: description,
+      });
+    } catch (error) {
+      logger.error({ error }, "persistent_notification.create failed");
+    }
+    try {
+      await hass.call.notify.jeff({
+        title: "RTLAMR Pi fault",
+        message: lines,
+        data: {
+          tag: PUSH_TAG,
+          group: "rtlamr_pi",
+          channel: PUSH_CHANNEL,
+          notification_icon: "mdi:radio-tower",
+          url: "/config/repairs",
+          importance: "high",
+        },
+      });
+    } catch (error) {
+      logger.error({ error }, "notify.jeff failed");
+    }
+    logger.info({ faults: [...faults.keys()] }, "RTLAMR Pi fault raised");
+  }
+
+  // Only newly appearing faults re-latch; clearing the switch acknowledges ongoing ones.
+  let previousActive = new Set<FaultKey>();
+  async function tick() {
+    const faults = evaluate();
+    const active = new Set(faults.keys());
+    faultSensor.is_on = active.size > 0;
+    const newKeys = [...active].filter(k => !previousActive.has(k));
+    previousActive = active;
+    if (newKeys.length > 0) {
+      await raise(faults);
+    }
+  }
+
+  repairNeeded.onTurnOff(async () => {
+    try {
+      await hass.call.repairs.remove({ issue_id: ISSUE_ID });
+    } catch (error) {
+      logger.warn({ error }, "repairs.remove failed");
+    }
+    try {
+      await hass.call.persistent_notification.dismiss({ notification_id: ISSUE_ID });
+    } catch (error) {
+      logger.warn({ error }, "persistent_notification.dismiss failed");
+    }
+    try {
+      await hass.call.notify.jeff({
+        message: "clear_notification",
+        data: { tag: PUSH_TAG, channel: PUSH_CHANNEL },
+      });
+    } catch (error) {
+      logger.warn({ error }, "notify.jeff clear failed");
+    }
+  });
+
+  lifecycle.onReady(tick);
+  scheduler.cron({ schedule: "* * * * *", exec: tick });
+}
+```
+
+And then register it in your DigitalAlchemy application: import it in `src/main.mts` and add `RtlamrPiMonitor` to the `services` list.
+
+A few things in there are specific to my setup, so you'll want to change them:
+
+- `notify.jeff` (both calls) is my phone's notify target. Use your own `notify.*` service.
+- `sensor.electricity_import_meter`, `sensor.electricity_export_meter`, and `sensor.gas_meter` are what my rtlamr2mqtt meters are named in Home Assistant. Swap in your meter entity IDs. If you only have one electricity meter, a one-element array works fine.
+- The issue description points at my personal notes. Replace it with whatever reminder is useful to you.
+
+It also needs [Spook](https://spook.boo) installed, since `hass.call.repairs.*` comes from Spook. Once Spook is set up and the heartbeat sensor exists, regenerate your DigitalAlchemy types (`type-writer`) so `sensor.rtlamr_pi_heartbeat` and the `repairs` actions typecheck.
+
+If you want a plain Home Assistant YAML automation that does much the same thing, it shouldn't be too hard to figure out.
+
+### Setup and execution
+
+Once you have the above files in place on the RPi, run the following commands:
+
+```bash
+# Expose the dongle to systemd
+sudo udevadm control --reload
+sudo udevadm trigger --subsystem-match=usb --action=add
+
+# Install the service (started by the kick unit when dev-rtl_sdr.device appears, not by multi-user.target)
+sudo systemctl daemon-reload
+sudo systemctl enable --now rtlamr2mqtt-kick.service
+
+# Set up vitals monitor
+sudo systemctl enable --now pi-vitals.service
+
+# Heartbeat to Home Assistant
+sudo apt-get install -y mosquitto-clients
+sudo systemctl enable --now rtlamr-heartbeat.timer
+```
+
+[rtlamr2mqtt]: https://github.com/allangood/rtlamr2mqtt

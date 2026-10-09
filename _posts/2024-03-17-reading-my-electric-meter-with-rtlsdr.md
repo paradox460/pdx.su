@@ -11,6 +11,10 @@ As I dive deeper into HomeAssistant automations, one thing has been nagging at m
 
 ![My Energy Dashboard for March 17, 2024](/postimages/energy-dashboard.png)
 
+## Note
+
+I've recently made some changes to how I built my monitoring and logging, to make it more resilient with regards to downtime and monitoring. Check out [the new post][newpost], as the technical setup in that post supersedes this one. Keep reading for motivation and reasoning!
+
 ## Background
 
 ### HomeAssistant's energy dashboard and integrations
@@ -200,5 +204,11 @@ Since the article was published, my system picked up some messages from my gas m
 I spent some time tonight setting up the [digital-alchemy](https://docs.digital-alchemy.app) add-on for HomeAssistant. It lets you write automations using typescript, with some nice tooling for VSCode or other typescript language server compatible editors. [I ported my tariff switching logic out of NodeRED and into typescript](https://github.com/paradox460/HomeAssistantConfig/blob/739ae0618bb57620bfd7c33457e9a742d4b04e01/typescript/src/electricity-tariffs.ts), and find the end result much simpler to reason about. I'll probably wind up doing the same style script for my gas tariff tracking.
 
 
+### 2026-10-09
+
+There were some issues with downtime and lack of visibility into the state of the device, so I've [written a new blog post][newpost] that aims to solve some reliability. You can start from scratch with it, or layer it atop the changes here
+
 [^1]: Seriously, have you seen some of these installs? They look like horrific rats nests!
 [^2]: I'm so ridiculously fortunate to have one of the few remaining RadioShacks nearby, so I try to get as much as I can justify from them, to help keep them afloat.
+
+[newpost]: /blog/2026-10-09-fixing-issues-with-my-raspberry-pi-rtlsdr-utility-monitor
