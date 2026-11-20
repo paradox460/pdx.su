@@ -1,0 +1,10 @@
+/// Entrypoint for every GitHub Actions workflow in this repo.
+///
+/// Pins each action to its git SHA (recorded in `workflows/__lockfile__.yml`) and writes
+/// `dependabot.yml` so dependabot keeps those pins current. Regenerate with:
+/// `pkl eval --project-dir .github -m .github .github/index.pkl`
+amends "@pkl.github.dependabotManagedActions/DependabotManagedActions.pkl"
+
+workflows {
+  ["workflows/ssg.yml"] = import("pkl-workflows/ssg.pkl")
+}

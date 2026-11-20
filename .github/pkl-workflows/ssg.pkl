@@ -1,8 +1,9 @@
-amends "https://cdn.jsdelivr.net/gh/StefMa/pkl-gha@77880b64db1f3bf24b31a359311a6f7ef64bffaa/Workflow.pkl"
-import "https://cdn.jsdelivr.net/gh/StefMa/pkl-gha@77880b64db1f3bf24b31a359311a6f7ef64bffaa/Action.pkl"
+/// Builds the site (Elixir and static assets in parallel) and deploys it to Netlify.
+///
+/// Rendered via `../index.pkl`; don't evaluate this module on its own.
+amends "@com.github.actions/Workflow.pkl"
 
-import "https://cdn.jsdelivr.net/gh/paradox460/shared-pkl@0c33020a8e18437752765a0483aeefbf3bb03fe5/gha/mise.pkl"
-import "https://cdn.jsdelivr.net/gh/paradox460/shared-pkl@0c33020a8e18437752765a0483aeefbf3bb03fe5/gha/elixir.pkl"
+import "../catalog.pkl"
 
 name = "Deploy Site"
 
@@ -15,53 +16,96 @@ on {
   workflow_dispatch {}
 }
 
-concurrency = new Concurrency {
+concurrency {
   group = "pages"
   `cancel-in-progress` = true
 }
 
+permissions {
+  contents = "read"
+}
+
+/// Checkout without leaving the GITHUB_TOKEN in the local git config.
+local checkout = (catalog.`actions/checkout@v6`) {
+  with {
+    `persist-credentials` = false
+  }
+}
+
+local function mise(tools: String) = (catalog.`jdx/mise-action@v5`) {
+  with {
+    mise_toml = """
+      [settings]
+      enable_tools = [\(tools)]
+      """
+  }
+}
+
 jobs {
-  ["build-elixir"] = new {
+  ["build-elixir"] {
     `runs-on` = "ubuntu-24.04"
     steps {
-      Action.checkout
-      (mise.Mise) {
-        miseToml = """
-          [settings]
-          enable_tools = ["elixir", "erlang"]
+      checkout
+      mise(#""elixir", "erlang""#)
+      (catalog.`actions/cache@v5`) {
+        name = "Elixir Deps cache"
+        id = "elixir-deps-cache"
+        with {
+          pathList {
+            "deps"
+            "_build"
+            ".mix/archives/"
+          }
+          key = "elixir-build-${{hashFiles('mise.lock')}}-${{hashFiles('mix.lock')}}"
+          `restore-keys-list` {
+            "elixir-build-${{hashFiles('mise.lock')}}-"
+          }
+        }
+      }
+      new {
+        name = "Install Elixir Dependencies"
+        run = """
+          mix local.hex --force --if-missing
+          mix deps.get
           """
       }
-      ...elixir.elixir
       new {
         name = "Build Tableau"
-        env = new EnvironmentVariables {
+        env {
           ["MIX_ENV"] = "prod"
         }
         run = "mix tableau.build"
       }
-      (Action.uploadArtitact) {
-        path = "./_site"
-        ifNoFilesFound = "error"
+      (catalog.`actions/upload-artifact@v7`) {
         name = "site-elixir"
+        with {
+          name = "site-elixir"
+          pathList {
+            "./_site"
+          }
+          `if-no-files-found` = "error"
+        }
       }
     }
   }
-  ["build-assets"] = new {
+
+  ["build-assets"] {
     `runs-on` = "ubuntu-latest"
     steps {
-      Action.checkout
-      (mise.Mise) {
-        miseToml = """
-          [settings]
-          enable_tools = ["bun"]
-          """
-      }
-      (Action.cache) {
+      checkout
+      mise(#""bun""#)
+      (catalog.`actions/cache@v5`) {
         name = "Bun Deps Cache"
         id = "bun-deps-cache"
-        path = "~/.bun/install/cache"
-        key = "bun-cache-${{hashFiles('.mise.lock')}}-${{hashFiles('assets/bun.lock')}}"
-        restoreKeys = "bun-cache-${{hashFiles('.mise.lock')}}-"
+        with {
+          pathList {
+            "~/.bun/install/cache"
+          }
+          key = "bun-cache-${{hashFiles('mise.lock')}}-${{hashFiles('assets/bun.lock')}}"
+          `restore-keys-list` {
+            "bun-cache-${{hashFiles('mise.lock')}}-"
+          }
+        }
       }
       new {
         name = "Install JS dependencies"
@@ -71,47 +115,74 @@ jobs {
       new {
         name = "Build Static Assets"
         `working-directory` = "assets/"
-        env = new EnvironmentVariables {
+        env {
           ["NODE_ENV"] = "production"
         }
         run = "bun run build"
       }
-      (Action.uploadArtitact) {
-        path = "./_site"
-        ifNoFilesFound = "error"
+      (catalog.`actions/upload-artifact@v7`) {
         name = "site-static"
+        with {
+          name = "site-static"
+          pathList {
+            "./_site"
+          }
+          `if-no-files-found` = "error"
+        }
       }
     }
   }
 
-  ["deploy-netlify"] = new {
-    needs = new Listing { "build-elixir" "build-assets" }
+  ["deploy-netlify"] {
+    needs {
+      "build-elixir"
+      "build-assets"
+    }
     `runs-on` = "ubuntu-latest"
-    environment = new Environment {
+    environment {
       name = "netlfiy-prod"
     }
     steps {
-      (Action.checkout) {
-        sparseCheckoutConeMode = false
-        sparseCheckout = """
-          .mise.toml
-          .mise.lock
+      // The catalog types `sparse-checkout` as a Boolean (it's a newline-separated pattern list),
+      // so this checkout is an untyped step.
+      new {
+        uses = checkout.uses
+        with {
+          ["persist-credentials"] = false
+          ["sparse-checkout"] = """
+            .mise.toml
+            mise.lock
+            """
+          ["sparse-checkout-cone-mode"] = false
+        }
+      }
+      (catalog.`actions/download-artifact@v8`) {
+        with {
+          path = "_site/"
+          pattern = "site-*"
+          `merge-multiple` = true
+        }
+      }
+      mise(#""github:wilsonzlin/minify-html""#)
+      new {
+        name = "Minify HTML"
+        run = """
+          shopt -s globstar
+          minify-html --minify-css --minify-js _site/**/*.html
           """
       }
-      (Action.downloadArtifact) {
-        path = "_site/"
-        pattern = "site-*"
-        mergeMultiple = true
-      }
       // Netlify's CLI _can_ be installed against bun, but it also needs python and a bunch of other crap
-      // So we just use the docker container action instead
+      // So we just use the docker container action instead.
+      // This action only publishes a `master` branch (no version tags), so the lockfile can't manage
+      // it; it's pinned by hand to master's SHA. Update with:
+      // `git ls-remote https://github.com/netlify/actions.git refs/heads/master`
       new {
         name = "Deploy to Netlify"
-        uses = "netlify/actions/cli@master"
+        uses = "netlify/actions/cli@3185065f4ab2f6df6f2ef41ee013626e1c02a426"
         with {
           ["args"] = #"deploy --dir=_site --prod -m "https://github.com/paradox460/pdx.su/commit/${{ github.sha }}""#
         }
-        env = new EnvironmentVariables {
+        env {
           ["NETLIFY_SITE_ID"] = "${{ secrets.NETLIFY_SITE_ID }}"
           ["NETLIFY_AUTH_TOKEN"] = "${{ secrets.NETLIFY_AUTH_TOKEN }}"
         }

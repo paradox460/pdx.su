@@ -1,0 +1,9 @@
+/// The upstream `actions/*` catalog, plus typed steps for the third-party actions this repo uses.
+///
+/// Regenerate a third-party step with:
+/// `pkl eval package://pkg.pkl-lang.org/pkl-pantry/com.github.actions.contrib@1.0.20#/generate-action.pkl -m .github -p action-name=<owner/repo@version> -p action-package-name=@com.github.actions`
+extends "@com.github.actions/catalog.pkl"
+
+import "jdx/mise-action/v5/MiseAction.pkl"
+
+`jdx/mise-action@v5`: MiseAction

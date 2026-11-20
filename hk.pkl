@@ -23,7 +23,18 @@ local linters = new Mapping<String, Step> {
   }
   ["pkl"] {
     glob = "*.pkl"
+    // Workflow modules belong to the .github Pkl project and only render through index.pkl.
+    exclude = List(".github/**/*")
     check = "pkl eval {{files}} >/dev/null"
+  }
+  ["github workflows"] {
+    glob = List(".github/**/*.pkl", ".github/PklProject")
+    stage = List(".github/workflows/*.yml", ".github/dependabot.yml")
+    check = #"""
+      out=$(mktemp -d) && pkl eval --project-dir .github -m "$out" .github/index.pkl >/dev/null \
+        && (cd "$out" && find * -type f) | while read -r f; do cmp -s "$out/$f" ".github/$f" || { echo "stale: .github/$f"; exit 1; }; done
+      """#
+    fix = "pkl eval --project-dir .github -m .github .github/index.pkl >/dev/null"
   }
 }
 
