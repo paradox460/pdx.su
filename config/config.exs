@@ -1,10 +1,12 @@
 import Config
 
+config :mdex_native, syntax_highlighter: :lumis
+
 config :tableau, :reloader,
   patterns: [
     ~r"assets/.*\.(scss|js|ts)",
     ~r"lib/.*\.ex",
-    ~r"(_posts|_pages)/.*.(md|dj)"
+    ~r"(_posts|_pages)/.*\.(md|dj)"
   ]
 
 config :tableau, :config,
@@ -13,30 +15,30 @@ config :tableau, :config,
   converters: [
     dj: Pdx.Converters.DjotConverter,
     md: Pdx.Converters.MDExConverter
-  ],
-  markdown: [
-    mdex: [
-      extension: [
-        alerts: true,
-        autolink: true,
-        description_lists: true,
-        footnotes: true,
-        header_ids: "",
-        math_dollars: true,
-        multiline_block_quotes: true,
-        strikethrough: true,
-        subscript: true,
-        superscript: true,
-        table: true,
-        tasklist: true,
-        underline: true
-      ],
-      render: [unsafe: true],
-      syntax_highlight: [
-        formatter: :html_linked
-      ]
-    ]
   ]
+
+syntax_highlight = [engine: :lumis, opts: [formatter: :html_linked]]
+
+config :tableau, Pdx.Converters.MDExConverter,
+  extension: [
+    alerts: true,
+    autolink: true,
+    description_lists: true,
+    footnotes: true,
+    header_id_prefix: "",
+    math_dollars: true,
+    multiline_block_quotes: true,
+    strikethrough: true,
+    subscript: true,
+    superscript: true,
+    table: true,
+    tasklist: true,
+    underline: true
+  ],
+  render: [unsafe: true],
+  syntax_highlight: syntax_highlight
+
+config :tableau, Pdx.Converters.DjotConverter, syntax_highlight: syntax_highlight
 
 config :tableau, :assets, bun: ~w[--cwd assets watch]
 
@@ -56,7 +58,5 @@ config :tableau, Tableau.RSSExtension,
 config :tableau, Tableau.SitemapExtension, enabled: true
 
 config :elixir, :time_zone_database, Tz.TimeZoneDatabase
-
-config :floki, :html_parser, Floki.HTMLParser.Html5ever
 
 import_config "#{Mix.env()}.exs"

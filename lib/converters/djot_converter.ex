@@ -1,97 +1,50 @@
 defmodule Pdx.Converters.DjotConverter do
-  def convert(_filepath, _front_matter, body, _site) do
-    body
-    |> to_ast()
-    |> Floki.raw_html()
+  @moduledoc "Djot converter backed by `Djot`."
+
+  use Pdx.Converter, key: :pdx_djot
+
+  @smart %{
+    left_single_quote: "‘",
+    right_single_quote: "’",
+    left_double_quote: "“",
+    right_double_quote: "”",
+    ellipsis: "…",
+    en_dash: "–",
+    em_dash: "—"
+  }
+
+  @impl Pdx.Converter
+  def new(source, options) do
+    [source: source]
+    |> Kernel.++(options)
+    |> Djot.new()
+    |> Djot.Document.append_steps(plaintext_code_blocks: &plaintext_code_blocks/1)
   end
 
-  def to_ast(body) do
-    Djot.to_html!(body)
-    |> Floki.parse_fragment!()
-    |> maybe_netlify_images()
-    |> highlight_code_blocks()
+  # Djot.Highlight skips language "" blocks; Autumn used to highlight them as plaintext
+  # (pre.athl), so keep them styled. A predicate, not a struct selector: struct selectors
+  # treat default-valued fields as wildcards and would match every code block.
+  defp plaintext_code_blocks(doc) do
+    Djot.Document.update_nodes(
+      doc,
+      &match?(%Djot.CodeBlock{language: ""}, &1),
+      &%{&1 | language: "plaintext"}
+    )
   end
 
-  defp maybe_netlify_images(ast) do
-    if Application.get_env(:pdx, :netlify, false) do
-      Floki.attr(ast, "img[src^='/postimages/']", "src", &"/.netlify/images?url=#{&1}")
-    else
-      ast
-    end
-  end
+  @impl Pdx.Converter
+  def to_html!(document), do: Djot.to_html!(document)
 
-  defp highlight_code_blocks(ast) do
-    ast
-    |> Floki.traverse_and_update(fn
-      {"pre", pre_attrs, [{"code", attrs, children}]} ->
-        language =
-          Enum.find_value(attrs, fn
-            {"class", <<"language-" <> language>>} -> language
-            _ -> false
-          end)
+  @impl Pdx.Converter
+  def text_fragment(%Djot.Text{literal: literal}), do: literal
+  def text_fragment(%Djot.Verbatim{literal: literal}), do: literal
+  def text_fragment(%Djot.SmartPunctuation{kind: kind}), do: Map.fetch!(@smart, kind)
+  def text_fragment(%Djot.NonBreakingSpace{}), do: "\u00A0"
+  def text_fragment(%Djot.SoftBreak{}), do: " "
+  def text_fragment(%Djot.HardBreak{}), do: " "
+  def text_fragment(%Djot.Symbol{name: name}), do: ":#{name}:"
+  def text_fragment(_node), do: ""
 
-        highlights =
-          Enum.find_value(pre_attrs, [], fn
-            {"highlight", highlights} ->
-              highlights
-              |> String.split(",")
-              |> Enum.flat_map(fn
-                highlight ->
-                  Regex.named_captures(
-                    ~r[^(?<line>\d+)$|^(?<lower>\d+)-(?<upper>\d+)(?:/+(?<step>\d+))?$],
-                    highlight
-                  )
-                  |> case do
-                    %{"line" => "", "lower" => "", "upper" => "", "step" => ""} ->
-                      []
-
-                    %{"line" => line} when line != "" ->
-                      [String.to_integer(line)]
-
-                    %{"lower" => lower, "upper" => upper, "step" => step} ->
-                      lower = String.to_integer(lower)
-                      upper = String.to_integer(upper)
-                      step = String.to_integer(if step != "", do: step, else: "1")
-
-                      Range.to_list(lower..upper//step)
-                  end
-              end)
-
-            _ ->
-              false
-          end)
-
-        formatter =
-          (Application.get_env(:tableau, :config)[:markdown][:mdex][:syntax_highlight][:formatter] ||
-             :html_inline)
-          |> then(fn
-            {formatter, opts} ->
-              {formatter, Keyword.put(opts, :highlight_lines, %{lines: highlights})}
-
-            formatter ->
-              {formatter, highlight_lines: %{lines: highlights}}
-          end)
-
-        children
-        |> Floki.text()
-        |> Autumn.highlight!(language: language, formatter: formatter)
-        |> Floki.parse_fragment!()
-        |> Floki.find("pre")
-        |> hd()
-        |> merge_pre_attrs(pre_attrs)
-
-      x ->
-        x
-    end)
-  end
-
-  defp merge_pre_attrs({_, code_attrs, _} = code_block, pre_attrs) do
-    pre_attrs
-    |> Enum.reject(fn
-      {"highlight", _} -> true
-      _ -> false
-    end)
-    |> Enum.concat(code_attrs)
-    |> then(&put_elem(code_block, 1, &1))
-  end
+  @impl Pdx.Converter
+  def heading_id(%Djot.Heading{id: id}, _text, seen), do: {id, seen}
 end

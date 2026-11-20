@@ -52,14 +52,18 @@ defmodule Pdx.RootLayout do
           <.navbar />
           {render(@inner_content)}
           <.footer />
-          <%= if Mix.env() == :dev do %>
-            {Phoenix.HTML.raw(Tableau.live_reload(assigns))}
-          <% end %>
+          {live_reload(assigns)}
         </main>
       </body>
     </html>
     """
     |> Phoenix.HTML.Safe.to_iodata()
+  end
+
+  if Mix.env() == :dev do
+    defp live_reload(assigns), do: Phoenix.HTML.raw(TableauDevServer.live_reload(assigns))
+  else
+    defp live_reload(_assigns), do: nil
   end
 
   def navbar(assigns) do
@@ -96,11 +100,11 @@ defmodule Pdx.RootLayout do
     """
   end
 
-  defp analytics_file, do: "script.outbound-links.js"
+  if Mix.env() == :prod do
+    defp analytics_file, do: "script.outbound-links.js"
 
-  defp analytics(assigns) do
-    ~H"""
-    <%= if Mix.env() == :prod do %>
+    defp analytics(assigns) do
+      ~H"""
       <%= if Application.get_env(:pdx, :netlify) do %>
         <script defer data-domain="pdx.su" data-api="/pa/api/event" src={"/pa/js/#{analytics_file()}"}>
         </script>
@@ -108,8 +112,10 @@ defmodule Pdx.RootLayout do
         <script defer data-domain="pdx.su" src={"https://plausible.io/js/#{analytics_file()}"}>
         </script>
       <% end %>
-    <% end %>
-    """
+      """
+    end
+  else
+    defp analytics(assigns), do: ~H""
   end
 
   defp remap_metadata(%{page: page} = assigns) do

@@ -1,4 +1,4 @@
-import { debounce } from "lodash";
+import debounce from "lodash/debounce";
 
 export default class SidebarFootnotes {
   private footnotesElem: HTMLElement = document.querySelector(
@@ -26,6 +26,7 @@ export default class SidebarFootnotes {
         "li",
       ) as NodeListOf<HTMLElement>) {
         const inlineNote = document.querySelector(`a[href='#${fn.id}']`);
+        if (!inlineNote) continue;
 
         let top = window.scrollY + inlineNote.getBoundingClientRect().top;
 
@@ -46,10 +47,11 @@ export default class SidebarFootnotes {
 
   private hoverHighlight() {
     for (let el of document.querySelectorAll(
-      ".footnote-ref a, a[id^='fnref'",
+      ".footnote-ref a, a[id^='fnref']",
     )) {
       const footnoteId = el.getAttribute("href");
-      const footnote: HTMLElement = document.querySelector(footnoteId);
+      const footnote: HTMLElement = footnoteId && document.querySelector(footnoteId);
+      if (!footnote) continue;
       const debouncedEnter = debounce(
         () => {
           footnote.dataset.hover = "";

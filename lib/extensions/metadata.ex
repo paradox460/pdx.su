@@ -7,74 +7,53 @@ defmodule Pdx.Extensions.Metadata do
 
   @impl Tableau.Extension
   def pre_build(%{posts: posts} = token) do
-    posts
-    |> Enum.map(&build_metadata/1)
-    |> then(&Map.put(token, :posts, &1))
-    |> FE.Result.ok()
+    {:ok, %{token | posts: Enum.map(posts, &build_metadata/1)}}
   end
 
-  defp build_metadata(post) do
-    doc =
-      case post do
-        %{mdex_document: doc} -> doc
-        %{djot_document: doc} -> doc
-      end
-
+  defp build_metadata(%{engine: engine, document: document} = post) do
     Map.put(post, :metadata, %{
-      description: description(post, doc),
-      image: image(post, doc)
+      description: description(post, engine, document),
+      image: image(post, document)
     })
   end
 
-  defp description(%{description: description}, _), do: description
+  defp build_metadata(post), do: post
 
-  defp description(_post, %MDEx.Document{} = doc) do
-    case doc[:paragraph] do
-      [paragraph | _] ->
-        paragraph[:text]
-        |> Enum.map_join("", & &1.literal)
-        |> truncate_description()
+  defp description(%{description: description}, _engine, _document), do: description
 
-      _ ->
-        nil
+  defp description(_post, engine, document) do
+    case document[:paragraph] do
+      [paragraph | _] -> engine |> Pdx.Converter.text(paragraph) |> truncate_description()
+      _ -> nil
     end
-  end
-
-  defp description(_post, [_] = doc) do
-    doc
-    |> Floki.find("p")
-    |> hd()
-    |> Floki.text()
-    |> truncate_description()
   end
 
   defp image(%{image: image}, _document), do: image
 
-  defp image(_post, %MDEx.Document{} = doc) do
-    case doc[:image] do
+  defp image(_post, document) do
+    case document[:image] do
       [image | _] -> Pdx.full_url(image.url)
       _ -> nil
     end
   end
 
-  defp image(_post, [_] = doc) do
-    with [img | _] <- Floki.find(doc, "img"),
-         [src] <- Floki.attribute(img, "src") do
-      Pdx.full_url(src)
-    else
-      _ -> nil
-    end
-  end
+  @description_sentences 2
 
   defp truncate_description(text) do
-    text
-    |> String.split(~r/([.?!])/, parts: 3, trim: true, include_captures: true)
-    |> Enum.take(3)
-    |> Enum.join("")
-    |> then(&(&1 <> "…"))
-  end
-end
+    # A sentence ends at `.`, `?` or `!` followed by whitespace and something that can start a
+    # sentence, so abbreviations such as "e.g. this" and numbers such as "1.5" don't split.
+    sentence_boundary = ~r/(?<=[.?!])\s+(?=[\p{Lu}\p{N}"“‘'(\[])/u
 
-defmodule Pdx.Metadata.Config do
-  def new(input), do: {:ok, input}
+    case String.split(text, sentence_boundary, parts: @description_sentences + 1) do
+      sentences when length(sentences) > @description_sentences ->
+        sentences
+        |> Enum.take(@description_sentences)
+        |> Enum.join(" ")
+        |> String.trim_trailing(".")
+        |> Kernel.<>("…")
+
+      _ ->
+        text
+    end
+  end
 end

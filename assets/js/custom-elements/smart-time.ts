@@ -43,7 +43,7 @@ export class SmartTime extends LitElement {
 
   render() {
     return html`
-      <time datetime="${this.timestamp}" title="${this.fullTimestamp()}">
+      <time datetime="${this.t.toISOString()}" title="${this.fullTimestamp()}">
         ${this.niceTimestamp()}
       </time>
     `;

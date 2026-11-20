@@ -1,45 +1,30 @@
 defmodule Pdx.Converters.MDExConverter do
-  alias MDEx.Pipe
+  @moduledoc "Markdown converter backed by `MDEx`."
 
-  def convert(_filepath, _front_matter, body, _site) do
-    body
-    |> pipeline()
-    |> MDEx.to_html!()
-  end
+  use Pdx.Converter, key: :pdx_mdex
 
-  def to_ast(body, options \\ []) do
-    body
-    |> pipeline(options)
-    |> Pipe.run()
-    |> Map.get(:document)
-  end
+  @impl Pdx.Converter
+  def new(source, options), do: MDEx.new([markdown: source] ++ options)
 
-  def pipeline(source, options \\ []) do
-    options =
-      Application.get_env(:tableau, :config)[:markdown][:mdex]
-      |> Keyword.merge(options)
-      |> Keyword.put(:document, source)
+  @impl Pdx.Converter
+  def to_html!(document), do: MDEx.to_html!(document)
 
-    MDEx.new(options)
-    |> maybe_netlify_images()
-  end
+  @impl Pdx.Converter
+  def text_fragment(%MDEx.Text{literal: literal}), do: literal
+  def text_fragment(%MDEx.Code{literal: literal}), do: literal
+  def text_fragment(%MDEx.SoftBreak{}), do: " "
+  def text_fragment(%MDEx.LineBreak{}), do: " "
+  def text_fragment(_node), do: ""
 
-  defp maybe_netlify_images(pipe) do
-    if Application.get_env(:pdx, :netlify, false) do
-      Pipe.append_steps(pipe, netlify_images: &do_netlify_images/1)
-    else
-      pipe
+  # Mirrors comrak's header id de-duplication: the first occurrence keeps the bare id,
+  # later ones get `-1`, `-2`, ...
+  @impl Pdx.Converter
+  def heading_id(_heading, text, seen) do
+    id = MDEx.anchorize(text)
+
+    case Map.get(seen, id, 0) do
+      0 -> {id, Map.put(seen, id, 1)}
+      n -> {"#{id}-#{n}", Map.put(seen, id, n + 1)}
     end
-  end
-
-  defp do_netlify_images(pipe) do
-    selector = fn
-      %MDEx.Image{url: <<"/postimages/", _::binary>>} -> true
-      _ -> false
-    end
-
-    Pipe.update_nodes(pipe, selector, fn %MDEx.Image{url: original_url} = image ->
-      %MDEx.Image{image | url: "/.netlify/images?url=" <> original_url}
-    end)
   end
 end

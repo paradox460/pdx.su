@@ -6,7 +6,7 @@ defmodule Mix.Tasks.Post.New do
 
   ## Options
   - `m`, `markdown` -- Use markdown instead of djot.
-  - `f`, `filename` -- File name to save post to. Defaults to `yyyy-mm-dd-[transformed title]`. No extension is required
+  - `f`, `filename` -- File name to save post to, inside `_posts/`. Defaults to `yyyy-mm-dd-[transformed title]`. No extension is required
   - `d`, `date` -- Date for post. If absent, defaults to "now"
   - `p`, `permalink` -- Permalink for post frontmatter. If absent, will be up to application configuration
   """
@@ -34,19 +34,16 @@ defmodule Mix.Tasks.Post.New do
 
     date =
       if parsed[:date] do
-        parsed.date
+        parsed[:date]
         |> DateTime.from_iso8601()
         |> then(fn {:ok, date, _offset} -> date end)
-        |> DateTime.shift_zone("America/Denver")
+        |> DateTime.shift_zone(config.timezone)
         |> then(fn {:ok, date} -> date end)
       else
         DateTime.now!(config.timezone)
       end
 
-    front_date =
-      date
-      |> DateTime.to_iso8601()
-      |> then(&"#{&1}")
+    front_date = DateTime.to_iso8601(date)
 
     title = Enum.join(args, " ")
 
@@ -64,33 +61,33 @@ defmodule Mix.Tasks.Post.New do
         """
       end)
 
-    title = Enum.join(args, " ")
-
     filename =
-      parsed[:filename] ||
-        gen_filename(date, title, !!parsed[:markdown])
-        |> then(&Path.join("_posts/", &1))
+      Path.join("_posts", post_filename(parsed[:filename], date, title, !!parsed[:markdown]))
 
     post_template(frontmatter: frontmatter, title: title)
     |> then(&Mix.Generator.create_file(filename, &1))
   end
 
-  defp maybe_put_permalink(frontmatter, %{permalink: permalink}) do
-    Map.put(frontmatter, :permalink, permalink)
+  defp maybe_put_permalink(frontmatter, parsed) do
+    case Keyword.fetch(parsed, :permalink) do
+      {:ok, permalink} -> Map.put(frontmatter, :permalink, permalink)
+      :error -> frontmatter
+    end
   end
 
-  defp maybe_put_permalink(frontmatter, _), do: frontmatter
-
-  defp gen_filename(date, title, markdown) do
-    filename =
+  defp post_filename(nil, date, title, markdown) do
+    slug =
       title
       |> String.replace(~r/[^[:alnum:]]+/i, "-")
       |> String.downcase()
 
-    output_date = Calendar.strftime(date, "%Y-%m-%d")
+    post_filename("#{Calendar.strftime(date, "%Y-%m-%d")}-#{slug}", date, title, markdown)
+  end
 
-    extension = if markdown, do: "md", else: "dj"
-
-    "#{output_date}-#{filename}.#{extension}"
+  defp post_filename(filename, _date, _title, markdown) do
+    case Path.extname(filename) do
+      "" -> "#{filename}.#{if markdown, do: "md", else: "dj"}"
+      _ -> filename
+    end
   end
 end

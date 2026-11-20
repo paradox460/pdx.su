@@ -5,17 +5,17 @@ import { styleMap } from "lit/directives/style-map.js";
 
 /**
  * Enhances code blocks by wrapping them with a custom "pretty-code" LitElement.
- * This function iterates through all "pre.athl code" elements in the document,
+ * This function iterates through all "pre.lumis code" elements in the document,
  * creates a new "pretty-code" element, and inserts it before each code block.
- * It also sets the "pre.athl" element's "codeBlock" dataset attribute, so you
+ * It also sets the "pre.lumis" element's "codeBlock" dataset attribute, so you
  * can style wrapped codeblocks and unwrapped ones differently
  */
 export function enhanceCodeBlocks() {
-  for (const codeBlock of document.querySelectorAll("pre.athl code")) {
+  for (const codeBlock of document.querySelectorAll("pre.lumis code")) {
     const litContainer = document.createElement("pretty-code");
     codeBlock.insertAdjacentElement("beforebegin", litContainer);
     litContainer.insertAdjacentElement("afterbegin", codeBlock);
-    (codeBlock.closest("pre.athl") as HTMLPreElement).dataset.codeBlock = "";
+    (codeBlock.closest("pre.lumis") as HTMLPreElement).dataset.codeBlock = "";
   }
 }
 
@@ -34,7 +34,7 @@ export class PrettyCode extends LitElement {
 
   _onSlotChange(e) {
     // Annoyingly complex calculation of line heights, due to subpixel heights
-    for (const line of e.target.assignedNodes()[0].querySelectorAll(".line")) {
+    for (const line of e.target.assignedNodes()[0].querySelectorAll(".l-line")) {
       const boxHeight = line.getBoundingClientRect().height;
       const lineHeight = getComputedStyle(line).lineHeight;
       const lineHeightNum = parseFloat(lineHeight);
@@ -44,7 +44,7 @@ export class PrettyCode extends LitElement {
       }
       this.lineHeights.push({
         height: outHeight,
-        highlight: line.classList.contains("cursorline"),
+        highlight: line.classList.contains("l-highlighted"),
       });
     }
     this.requestUpdate();

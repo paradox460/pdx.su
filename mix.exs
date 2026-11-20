@@ -5,7 +5,7 @@ defmodule Pdx.MixProject do
     [
       app: :pdx,
       version: "0.1.0",
-      elixir: "~> 1.15",
+      elixir: "~> 1.16",
       start_permanent: Mix.env() == :prod,
       deps: deps()
     ]
@@ -21,19 +21,27 @@ defmodule Pdx.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:autumn, "~> 0.4"},
-      {:fe, "~> 0.1.5"},
-      {:floki, "~> 0.38"},
-      {:html5ever, "~> 0.16"},
-      {:date_time_parser, "~> 1.2"},
-      {:djot, "~> 0.1"},
-      {:mdex, "~> 0.7", override: true},
-      {:phoenix_live_view, "~> 1.0"},
-      {:rustler, ">= 0.0.0", optional: true},
-      {:rustler_precompiled, "0.8.2", override: true},
-      {:tableau, "~> 0.25"}
-      # {:dep_from_hexpm, "~> 0.3.0"},
-      # {:dep_from_git, git: "https://github.com/elixir-lang/my_dep.git", tag: "0.1.0"}
+      {:date_time_parser, "~> 1.3"},
+      {:djot, "~> 1.0"},
+      {:lumis, "~> 0.10"},
+      {:lumis_wasm_bash, "~> 0.26"},
+      {:lumis_wasm_comment, "~> 0.26"},
+      {:lumis_wasm_css, "~> 0.26"},
+      {:lumis_wasm_elixir, "~> 0.26"},
+      {:lumis_wasm_fish, "~> 0.26"},
+      {:lumis_wasm_heex, "~> 0.26"},
+      {:lumis_wasm_html, "~> 0.26"},
+      {:lumis_wasm_ini, "~> 0.26"},
+      {:lumis_wasm_javascript, "~> 0.26"},
+      {:lumis_wasm_json, "~> 0.26"},
+      {:lumis_wasm_regex, "~> 0.26"},
+      {:lumis_wasm_typescript, "~> 0.26"},
+      {:lumis_wasm_vue, "~> 0.26"},
+      {:lumis_wasm_yaml, "~> 0.26"},
+      {:mdex, "~> 0.14"},
+      {:phoenix_live_view, "~> 1.2"},
+      {:tableau, "~> 0.31"},
+      {:tableau_dev_server, "~> 0.1", only: :dev}
     ]
   end
 end

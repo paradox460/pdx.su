@@ -1,29 +1,31 @@
 defmodule Pdx.Extensions.PregenAST do
   @moduledoc """
-  Stores the current posts "document" in the token, so other extensions don't have to regen it
+  Stores each post's converter (`:engine`) and parsed document (`:document`), so other
+  extensions don't have to regenerate it, and renders the post from that document instead of
+  re-parsing the body.
   """
 
   use Tableau.Extension, key: :pregen_ast, priority: 101
 
   @impl Tableau.Extension
   def pre_build(%{posts: posts} = token) do
-    for post <- posts do
-      case Path.extname(post.file) do
-        ".md" ->
-          doc = Pdx.Converters.MDExConverter.to_ast(post.body)
+    posts =
+      for post <- posts do
+        case Pdx.Converter.engine_for(post) do
+          nil ->
+            post
 
-          Map.put(post, :mdex_document, doc)
+          engine ->
+            document = Pdx.Converter.document(engine, post.body)
 
-        ".dj" ->
-          doc = Pdx.Converters.DjotConverter.to_ast(post.body)
-
-          Map.put(post, :djot_document, doc)
-
-        _ ->
-          post
+            Map.merge(post, %{
+              engine: engine,
+              document: document,
+              renderer: fn _assigns -> engine.to_html!(document) end
+            })
+        end
       end
-    end
-    |> then(&Map.put(token, :posts, &1))
-    |> FE.Result.ok()
+
+    {:ok, %{token | posts: posts}}
   end
 end

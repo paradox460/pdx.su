@@ -1,21 +1,20 @@
 {
   "name": "assets",
-  "packageManager": "yarn@4.0.2",
   "scripts": {
     "build": "node build.mjs",
     "watch": "node watch.mjs"
   },
   "devDependencies": {
-    "autoprefixer": "^10.5.0",
-    "esbuild": "^0.28.0",
-    "esbuild-plugin-minify-html-literals": "^3.0.0",
+    "autoprefixer": "^10.7.0",
+    "esbuild": "^0.28.2",
+    "esbuild-plugin-minify-html-literals": "^3.0.2",
     "esbuild-sass-plugin": "^3.7.0",
-    "postcss": "^8.5.15",
-    "postcss-preset-env": "^11.3.0"
+    "postcss": "^8.5.33",
+    "postcss-preset-env": "^11.6.3"
   },
   "dependencies": {
-    "baseline-browser-mapping": "^2.10.33",
-    "caniuse-lite": "^1.0.30001793",
+    "baseline-browser-mapping": "^2.11.39",
+    "caniuse-lite": "^1.0.30001826",
     "lit": "^3.3.3",
     "lodash": "4.18.1"
   }

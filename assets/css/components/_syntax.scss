@@ -1,4 +1,4 @@
-pre.athl {
+pre.lumis {
   --padding-x: 1em;
   --padding-y: 0.5em;
   padding: var(--padding-y) var(--padding-x);
@@ -21,160 +21,160 @@ pre.athl {
     overflow-block: hidden;
   }
 
-  .cursorline {
+  .l-highlighted {
     background-color: var(--base02);
   }
 
-  .attribute {
+  .l-attribute {
     color: var(--base09);
   }
 
-  .comment {
+  .l-comment {
     font-style: italic;
     color: var(--base03);
   }
 
-  .constant {
+  .l-constant {
     color: var(--base09);
   }
 
-  .constant.character.escape {
+  .l-constant-character-escape {
     color: var(--base0c);
   }
 
-  .constant.numeric {
+  .l-constant-numeric {
     color: var(--base09);
   }
 
-  .constructor {
+  .l-constructor {
     color: var(--base0d);
   }
 
-  .debug {
+  .l-debug {
     color: var(--base03);
   }
 
-  .diff.delta {
+  .l-diff-delta {
     color: var(--base09);
   }
 
-  .diff.minus {
+  .l-diff-minus {
     color: var(--base08);
   }
 
-  .diff.plus {
+  .l-diff-plus {
     color: var(--base0b);
   }
 
-  .error {
+  .l-error {
     color: var(--base08);
   }
 
-  .function,
-  .function-call {
+  .l-function,
+  .l-function-call {
     color: var(--base0d);
   }
 
-  .hint {
+  .l-hint {
     color: var(--base03);
   }
 
-  .info {
+  .l-info {
     color: var(--base0d);
   }
 
-  .keyword, .keyword-function {
+  .l-keyword, .l-keyword-function {
     color: var(--base0e);
   }
 
-  .label {
+  .l-label {
     color: var(--base0e);
   }
 
 
-  .markup.bold {
+  .l-markup-bold {
     font-weight: bold;
     color: var(--base0a);
   }
 
-  .markup.heading {
+  .l-markup-heading {
     color: var(--base0d);
   }
 
-  .markup.italic {
+  .l-markup-italic {
     font-style: italic;
     color: var(--base0e);
   }
 
-  .markup.link.text {
+  .l-markup-link-text {
     color: var(--base08);
   }
 
-  .markup.link.url {
+  .l-markup-link-url {
     color: var(--base09);
   }
 
-  .markup.list {
+  .l-markup-list {
     color: var(--base08);
   }
 
-  .markup.quote {
+  .l-markup-quote {
     color: var(--base0c);
   }
 
-  .markup.raw {
+  .l-markup-raw {
     color: var(--base0b);
   }
 
-  .module {
+  .l-module {
     color: var(--base0a);
   }
 
-  .namespace {
+  .l-namespace {
     color: var(--base0e);
   }
 
-  .operator {
+  .l-operator {
     color: var(--base05);
   }
 
-  .special {
+  .l-special {
     color: var(--base0d);
   }
 
-  .string {
+  .l-string {
     color: var(--base0b);
   }
 
-  .type {
+  .l-type {
     color: var(--base0a);
   }
 
-  .variable {
+  .l-variable {
     color: var(--base08);
   }
 
-  .variable.other.member {
+  .l-variable-other-member {
     color: var(--base0b);
   }
 
-  .variable-parameter {
+  .l-variable-parameter {
     color: var(--base0c);
   }
 
-  .property {
+  .l-property {
     color: var(--base0e);
   }
 
-  .warning {
+  .l-warning {
     color: var(--base09);
   }
 
-  .tag {
+  .l-tag {
     color: var(--base0e);
   }
 
-  .tag-attribute {
+  .l-tag-attribute {
     color: var(--base08);
   }
 }

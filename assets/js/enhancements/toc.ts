@@ -1,7 +1,13 @@
+/**
+ * The id a TOC link targets for a heading: Markdown headings carry it themselves,
+ * Djot headings take it from their wrapping `<section>`.
+ */
+function headingId(heading: Element | undefined): string | undefined {
+  return heading?.id || heading?.closest("section[id]")?.id;
+}
+
 export default class Toc {
-  static djHeadersSelector = "#content section[id] >:is(h2, h3, h4)";
-  static mdHeadersSelector = "#content :is(h2, h3, h4):has(a[id])";
-  static headersSelector = `${Toc.djHeadersSelector}, ${Toc.mdHeadersSelector}`;
+  static headersSelector = "#content :is(h2, h3, h4):is([id], section[id] > *)";
 
   private observer: IntersectionObserver;
   private activeToc = new Set<string>();
@@ -10,12 +16,7 @@ export default class Toc {
     this.observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          let id: string;
-          if (entry.target.matches(Toc.djHeadersSelector)) {
-            id = entry.target.closest("section[id]")?.getAttribute("id");
-          } else {
-            id = entry.target.querySelector("a[id]")?.getAttribute("id");
-          }
+          const id = headingId(entry.target);
           if (!id) return;
           const { isIntersecting, intersectionRatio } = entry;
           if (isIntersecting && intersectionRatio >= 1) {
@@ -30,17 +31,7 @@ export default class Toc {
             }
 
             if (this.activeToc.size === 0) {
-              const closest_header = this.findClosestOffscreenHeader();
-              let closest_id: string;
-              if (closest_header.matches(Toc.djHeadersSelector)) {
-                closest_id = closest_header
-                  .closest("section[id]")
-                  ?.getAttribute("id");
-              } else {
-                closest_id = closest_header
-                  .querySelector("a[id]")
-                  ?.getAttribute("id");
-              }
+              const closest_id = headingId(this.findClosestOffscreenHeader());
               if (closest_id) {
                 this.activeToc.add(closest_id);
               }
