@@ -6,13 +6,14 @@ config :tableau, :reloader,
   patterns: [
     ~r"assets/.*\.(scss|js|ts)",
     ~r"lib/.*\.ex",
-    ~r"(_posts|_pages)/.*\.(md|dj)"
+    ~r"(_posts|_pages)/.*\.(md|dj|crv)"
   ]
 
 config :tableau, :config,
   url: "http://localhost:4999",
   timezone: "America/Denver",
   converters: [
+    crv: Pdx.Converters.CarveConverter,
     dj: Pdx.Converters.DjotConverter,
     md: Pdx.Converters.MDExConverter
   ]
@@ -39,6 +40,7 @@ config :tableau, Pdx.Converters.MDExConverter,
   syntax_highlight: syntax_highlight
 
 config :tableau, Pdx.Converters.DjotConverter, syntax_highlight: syntax_highlight
+config :tableau, Pdx.Converters.CarveConverter, syntax_highlight: syntax_highlight
 
 config :tableau, :assets, bun: ~w[--cwd assets watch]
 

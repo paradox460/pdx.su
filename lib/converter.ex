@@ -1,14 +1,15 @@
 defmodule Pdx.Converter do
   @moduledoc """
-  Engine-agnostic conversion pipeline shared by the Markdown (MDEx) and Djot converters.
+  Engine-agnostic conversion pipeline shared by the Markdown (MDEx), Djot, and Carve (Carvex)
+  converters.
 
-  `MDEx.Document` and `Djot.Document` share the pipeline API this module relies on
-  (`append_steps/2`, `update_nodes/3`, `run/1`, Access, pre-order `Enumerable`), so the
+  `MDEx.Document`, `Djot.Document`, and `Carvex.Document` share the pipeline API this module
+  relies on (`append_steps/2`, `update_nodes/3`, `run/1`, Access, pre-order `Enumerable`), so the
   generic code dispatches on the document struct's module. Each engine implements the
   callbacks below for the parts that differ.
   """
 
-  @type document :: MDEx.Document.t() | Djot.Document.t()
+  @type document :: MDEx.Document.t() | Djot.Document.t() | Carvex.Document.t()
   @type toc_entry :: %{text: String.t(), id: String.t(), depth: 2..4}
 
   @callback new(source :: String.t(), options :: keyword()) :: document()
@@ -19,6 +20,8 @@ defmodule Pdx.Converter do
               text :: String.t(),
               seen :: %{String.t() => pos_integer()}
             ) :: {String.t(), %{String.t() => pos_integer()}}
+  @callback image_url(image :: struct()) :: String.t()
+  @callback put_image_url(image :: struct(), url :: String.t()) :: struct()
 
   defmacro __using__(opts) do
     quote do
@@ -35,7 +38,7 @@ defmodule Pdx.Converter do
   def document(engine, source) do
     source
     |> engine.new(Application.get_env(:tableau, engine, []))
-    |> maybe_netlify_images()
+    |> maybe_netlify_images(engine)
     |> run()
   end
 
@@ -72,18 +75,20 @@ defmodule Pdx.Converter do
   @spec engine_for(map()) :: module() | nil
   def engine_for(post), do: Application.get_env(:tableau, :config)[:converters][post.ext]
 
-  defp maybe_netlify_images(%mod{} = doc) do
+  defp maybe_netlify_images(%mod{} = doc, engine) do
     if Application.get_env(:pdx, :netlify, false) do
-      mod.append_steps(doc, netlify_images: &netlify_images/1)
+      mod.append_steps(doc, netlify_images: &netlify_images(&1, engine))
     else
       doc
     end
   end
 
-  defp netlify_images(%mod{} = doc) do
-    mod.update_nodes(doc, :image, fn
-      %{url: "/postimages/" <> _ = url} = image -> %{image | url: "/.netlify/images?url=" <> url}
-      image -> image
+  defp netlify_images(%mod{} = doc, engine) do
+    mod.update_nodes(doc, :image, fn image ->
+      case engine.image_url(image) do
+        "/postimages/" <> _ = url -> engine.put_image_url(image, "/.netlify/images?url=" <> url)
+        _ -> image
+      end
     end)
   end
 

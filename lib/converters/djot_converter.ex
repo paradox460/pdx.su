@@ -47,4 +47,10 @@ defmodule Pdx.Converters.DjotConverter do
 
   @impl Pdx.Converter
   def heading_id(%Djot.Heading{id: id}, _text, seen), do: {id, seen}
+
+  @impl Pdx.Converter
+  def image_url(%{url: url}), do: url
+
+  @impl Pdx.Converter
+  def put_image_url(image, url), do: %{image | url: url}
 end

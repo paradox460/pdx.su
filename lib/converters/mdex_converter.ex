@@ -27,4 +27,10 @@ defmodule Pdx.Converters.MDExConverter do
       n -> {"#{id}-#{n}", Map.put(seen, id, n + 1)}
     end
   end
+
+  @impl Pdx.Converter
+  def image_url(%{url: url}), do: url
+
+  @impl Pdx.Converter
+  def put_image_url(image, url), do: %{image | url: url}
 end

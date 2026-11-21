@@ -3,7 +3,7 @@ defmodule Pdx.ConverterTest do
   use ExUnit.Case, async: false
 
   alias Pdx.Converter
-  alias Pdx.Converters.{DjotConverter, MDExConverter}
+  alias Pdx.Converters.{CarveConverter, DjotConverter, MDExConverter}
 
   describe "toc/2" do
     test "MDEx ids match rendered headings, including duplicates and inline code" do
@@ -25,6 +25,17 @@ defmodule Pdx.ConverterTest do
       assert Enum.map(toc, & &1.depth) == [2, 2]
       for %{id: id} <- toc, do: assert(html =~ ~s(id="#{id}"))
     end
+
+    test "Carve uses parser heading ids, including duplicates and inline code" do
+      source = "# Title\n\n## Don't stop\n\n## Two\n\n## Two\n\n### Using `mix` here\n"
+      toc = Converter.toc(CarveConverter, Converter.document(CarveConverter, source))
+      html = CarveConverter.convert(source)
+
+      assert Enum.map(toc, & &1.text) == ["Don’t stop", "Two", "Two", "Using mix here"]
+      assert Enum.map(toc, & &1.id) == ["Don-t-stop", "Two", "Two-2", "Using-mix-here"]
+      assert Enum.map(toc, & &1.depth) == [2, 2, 2, 3]
+      for %{id: id} <- toc, do: assert(html =~ ~s(id="#{id}"))
+    end
   end
 
   describe "netlify image rewrite" do
@@ -40,7 +51,7 @@ defmodule Pdx.ConverterTest do
       end)
     end
 
-    for engine <- [MDExConverter, DjotConverter] do
+    for engine <- [MDExConverter, DjotConverter, CarveConverter] do
       test "rewrites local post images only (#{inspect(engine)})" do
         html =
           unquote(engine).convert("![a](/postimages/a.png) ![b](https://example.com/b.png)\n")
@@ -72,10 +83,30 @@ defmodule Pdx.ConverterTest do
       assert html =~ ~s(<pre class="lumis)
       assert html =~ "l-line"
     end
+
+    test "Carve fenced code uses Lumis linked HTML" do
+      html = CarveConverter.convert("```elixir\nIO.puts(1)\n```\n")
+      assert html =~ ~s(<pre class="lumis)
+      assert html =~ "l-line"
+    end
+
+    test "Carve bare fence is still styled" do
+      assert CarveConverter.convert("```\nplain\n```\n") =~ ~s(<pre class="lumis)
+    end
+
+    test "Carve highlight_lines marks lines" do
+      html = CarveConverter.convert(~s[{highlight_lines="1"}\n```elixir\nIO.puts(1)\n```\n])
+      assert html =~ "l-highlighted"
+    end
   end
 
   test "text/2 excludes footnote markers" do
     doc = Converter.document(DjotConverter, "It's a test[^1].\n\n[^1]: note\n")
     assert Converter.text(DjotConverter, hd(doc[:paragraph])) == "It’s a test."
+  end
+
+  test "Carve text/2 excludes footnote markers and renders smart punctuation" do
+    doc = Converter.document(CarveConverter, "It's a test[^1] -- done...\n\n[^1]: note\n")
+    assert Converter.text(CarveConverter, hd(doc[:paragraph])) == "It’s a test – done…"
   end
 end

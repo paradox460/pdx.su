@@ -13,7 +13,7 @@ defmodule Pdx.Extensions.Metadata do
   defp build_metadata(%{engine: engine, document: document} = post) do
     Map.put(post, :metadata, %{
       description: description(post, engine, document),
-      image: image(post, document)
+      image: image(post, engine, document)
     })
   end
 
@@ -28,11 +28,11 @@ defmodule Pdx.Extensions.Metadata do
     end
   end
 
-  defp image(%{image: image}, _document), do: image
+  defp image(%{image: image}, _engine, _document), do: image
 
-  defp image(_post, document) do
+  defp image(_post, engine, document) do
     case document[:image] do
-      [image | _] -> Pdx.full_url(image.url)
+      [image | _] -> Pdx.full_url(engine.image_url(image))
       _ -> nil
     end
   end

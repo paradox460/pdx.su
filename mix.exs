@@ -21,6 +21,7 @@ defmodule Pdx.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
+      {:carvex, "~> 0.0.1"},
       {:date_time_parser, "~> 1.3"},
       {:djot, "~> 1.0"},
       {:lumis, "~> 0.10"},
