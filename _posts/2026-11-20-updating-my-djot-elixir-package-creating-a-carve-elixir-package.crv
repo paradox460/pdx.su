@@ -1,0 +1,44 @@
+---
+date: 2026-11-20T20:31:35.836121-07:00
+title: Updating my Djot Elixir package, Creating a Carve Elixir package
+---
+
+# Updating my Djot Elixir package, Creating a Carve Elixir package
+
+I like markup languages. A lot. I've [blogged](/blog/2023-02-05-asciidoc-and-markdown/) about [them](/blog/2025-06-28-writing-in-djot/) twice now, and this is kind of the third time. Maybe it will become a trend.
+
+Last year I made a very skinny [Elixir wrapper around the Djot markup language](https://github.com/paradox460/djot). I [blogged about it when I did it](/blog/2025-06-28-writing-in-djot/), and at the [bottom of that blog post](/blog/2025-06-28-writing-in-djot/#Plans-for-the-future-of-Djot-in-Elixir), I mentioned wanting to make it have an API closer to that of [mdex](https://github.com/leandrocp/mdex), an /excellent/ Markdown library for Elixir that uses a Rust crate for all the heavy lifting. The initial layout of my djot package, how I set up the Rustler NIFs and precompiled binaries, was all inspired heavily by mdex.
+
+Things worked well enough that I was hesitant to break anything. My djot package had a low but steady increase in the number of users and stars, and very little noise (no issues or feature requests, mostly just quiet usage), so I focused on other things. In that same timeframe, programming was largely turned upside down. Whereas previously, building something to be API-compatible with another library would be a herculean task, now I can offload some of the work to a coding agent, and focus on the fun parts of the project, avoiding burnout.
+
+## Djot v1.0.0
+
+[Djot 1.0.0 was released earlier today](https://github.com/paradox460/djot/releases/tag/v1.0.0). The API is very similar to that of mdex. Since the basic API of the older versions of Djot was loosely inspired by mdex, the absolute base-level entry point (parse something with `Djot.to_html("hello *world*!")`) still works, but the innards have been reorganized completely.
+
+One of the sore points of my older implementations was that if you wanted to do any sort of "extra" features atop parsing, you had to output the HTML from `Djot.to_html` and then parse it yourself. With the new API, you can now do this in a more natural way, similar to how MDEx permits. I use such a pipeline to rewrite image URLs when deployed to prod, routing them through Netlify's image utilities, resizing and serving optimized versions. Previously, I had to take the generated HTML output from Djot, parse it into a document tree with Floki, modify it, and then output it back to HTML, to accomplish the same. Now, both Djot and MDEx (and Carve, but more on that later) can share most of the innards of a single pipeline, with small implementation shims acting as adapters for the minor differences between what each library supports.
+
+In general, the new Djot API lets you use it alongside MDEx and reuse a lot of primitives: syntax highlighting, HTML sanitization, and more come along for the ride.
+
+AI helped me tremendously with understanding the ins and outs of how MDEx's API works, setting up scaffolding of the code, and more. I did most of the implementation by hand still, but had all the boilerplate generated for me by a number of different AI models. I could ask the AI, after a long implementation session, to verify the integrity of my work, and review it, essentially moving what was a solo project to feeling more like a team project. This post isn't supposed to be about AI, and this is the only part I'll wax about it, but I do want to acknowledge that it's been an immensely useful tool for me.
+
+### MDEx extension compatibility
+
+Now, I can't promise pure 1:1 extension compatibility with MDEx. Djot can do a whole lot more than markdown can, out of the box, so there's less need for extensions to cover basic use cases. The AST format of a parsed Djot document is nearly identical to that of an MDEx document; however, Djot is more expressive, and so there is more information in the AST. A naïve plugin may clobber or lose data that Djot adds and markdown omits. Djot documents also have a separate module name, although that's easy enough to transform. Depending on the nature of your MDEx plugin, Djot support may be as simple as a shim that just matches the different ASTs.
+
+## Carve
+
+While working on the Djot updates, I kept coming across information regarding yet another new markup language, Carve. Markup languages are a dime a dozen these days, and so I went into Carve's docs with some skepticism. After all, I /desperately/ wanted to use [AsciiDoc](/blog/2023-02-05-asciidoc-and-markdown/) at the start of this blog, but the lack of decent implementations stymied my efforts. And I've seen other markup languages over the years, such as Textile, BBCode, the various ones Atlassian cooks up for their products, and others.
+
+Carve immediately struck me as different. In the docs they /explicitly/ call out that markdown backwards compatibility and ease of porting was /not/ a priority of Carve. Djot can generally be thought of as Markdown++; most markdown files will parse as Djot with only minor modifications needed. With Carve, this is not the case. Carve chose instead to look at what many different markup langs do well, and synthesize its own unique, yet familiar, syntax out of it. The differences are immediate: emphasis is no longer denoted by underscores or asterisks, but by slashes (!`/italic/` => /italic/). Fenced code blocks are more or less just as capable as they were under Djot, which is to say very capable. And this isn't surprising; Carve itself says it starts from Djot. There's a [list of the differences between Carve and Djot](https://markup-carve.github.io/carve/divergence-from-djot), but none of them are really show-stoppers.
+
+The biggest thing that attracted me to Carve was that it has first-class support for some features that I really like, such as Admonitions and the improved Table format. Markdown tables stink, Djot tables are better, but both still lack any easy way to indicate headers that aren't in the top row. Carve lets you mark any cell as a header, so first-col headers are just as easy to create as top-row headers.
+
+There are other useful things for prose writing, like easier list continuations[^lc], a whole smattering of other inline and block options, and more. It feels like a modern continuation of the ideas that Markdown started with and Djot improved on, but without the baggage of 20+ years of markup history. I probably won't use most of those, but it's nice to have them available when writing, as I can just focus on /what/ I'm saying, and not have to figure out how to render an admonition component or similar.
+
+[^lc]: With various markup formats, this has /always/ stunk, and stung me. The behavior is different, and just subtly enough that you have to poke it with a previewer to get everything looking right. Carve solves this elegantly, with a `+` indicating a continuation. I believe they got this from JGM's [Beyond Markdown](https://johnmacfarlane.net/beyond-markdown.html) post.
+
+### Carvex
+
+I liked Carve a lot. Enough that I wanted to use it to blog in, alongside Djot and Markdown. So, I took my newly updated Djot package, copied it over, threw out a bunch of the innards, wrapped it around [carve-rs](https://github.com/markup-carve/carve-rs), and got it working here. Updating the blog to support a /third/ markup language wasn't terribly difficult; Tableau is well designed, the document parser system I already built to toggle between Markdown and Djot was easy to extend, and Carvex was extremely similar to Djot and MDEx (almost as if by design 🤔).
+
+The source code for how I added Carvex support is [available on GitHub](https://github.com/paradox460/pdx.su/commit/39e59b51a5f69ca750fc5bb1d95379c29097b884). The proof is in the pudding, and this very blog post was written in Carve.
