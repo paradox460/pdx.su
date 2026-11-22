@@ -105,9 +105,13 @@ img {
   border-radius: var(--radius);
 }
 
-p:has(img) {
+p:has(img), figure {
   text-align: center;
   font-style: italic;
+}
+
+figure {
+  margin-inline: 0;
 }
 
 abbr {
