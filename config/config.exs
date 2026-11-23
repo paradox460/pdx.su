@@ -40,7 +40,9 @@ config :tableau, Pdx.Converters.MDExConverter,
   syntax_highlight: syntax_highlight
 
 config :tableau, Pdx.Converters.DjotConverter, syntax_highlight: syntax_highlight
-config :tableau, Pdx.Converters.CarveConverter, syntax_highlight: syntax_highlight
+config :tableau, Pdx.Converters.CarveConverter, syntax_highlight: syntax_highlight, extensions: [
+  heading_permalinks: [symbol: "#", show_on_hover: true]
+]
 
 config :tableau, :assets, bun: ~w[--cwd assets watch]
 
