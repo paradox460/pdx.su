@@ -41,6 +41,8 @@ config :tableau, Pdx.Converters.MDExConverter,
 
 config :tableau, Pdx.Converters.DjotConverter, syntax_highlight: syntax_highlight
 config :tableau, Pdx.Converters.CarveConverter, syntax_highlight: syntax_highlight, extensions: [
+  :details,
+  :smart_quotes,
   heading_permalinks: [symbol: "#", show_on_hover: true]
 ]
 
